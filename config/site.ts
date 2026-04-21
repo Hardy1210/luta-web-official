@@ -1,13 +1,21 @@
-import type { NavItem } from '@/types'
+import type { SiteConfig } from '@/types/seo'
 
 export const siteConfig = {
-  name: 'Agencia Base',
-  description: 'Sitio base reutilizable para proyectos de agencia.',
-  url: 'https://ejemplo.com',
+  name: 'NOM_DU_CLIENT',
+  tagline: 'TAGLINE_CLIENT',
+  description: 'DESCRIPTION_CLIENT',
+  url: 'https://www.NOM_DU_CLIENT.fr',
+  locale: 'fr_FR',
+  social: {
+    twitter: '@NOM_DU_CLIENT',
+    instagram: '@NOM_DU_CLIENT',
+    linkedin: 'NOM_DU_CLIENT',
+  },
+  ogImage: '/og-image.jpg',
   navItems: [
-    { label: 'Inicio', href: '/' },
-    { label: 'Servicios', href: '/servicios' },
-    { label: 'Nosotros', href: '/nosotros' },
-    { label: 'Contacto', href: '/contacto' },
-  ] satisfies NavItem[],
-} as const
+    { label: 'Accueil', href: '/' },
+    { label: 'Services', href: '/services' },
+    { label: 'À propos', href: '/a-propos' },
+    { label: 'Contact', href: '/contact' },
+  ],
+} satisfies SiteConfig
