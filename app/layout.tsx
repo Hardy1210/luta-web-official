@@ -1,10 +1,25 @@
+import Footer from '@/components/layout/footer/Footer'
+import Navbar from '@/components/layout/navbar/Navbar'
 import { siteConfig } from '@/config/site'
 import type { Metadata, Viewport } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import localFont from 'next/font/local'
 import '../styles/globals.css'
+import SmoothScrollProvider from './provider/SmoothScrollProvider'
 
-const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
-const geistMono = Geist_Mono({ variable: '--font-geist-mono', subsets: ['latin'] })
+const lora = localFont({
+  src: '../public/fonts/Lora.woff2',
+  variable: '--font-lora',
+})
+
+const inter = localFont({
+  src: '../public/fonts/Inter.woff2',
+  variable: '--font-inter',
+}) 
+
+const interRegular = localFont ({
+  src: '../public/fonts/inter-regular.woff2',
+  variable: '--font-inter-regular'
+})
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -38,10 +53,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="fr"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${lora.variable} ${inter.variable} ${interRegular.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-background text-foreground">
-        {children}
+      <body className="min-h-full flex flex-col">
+        <Navbar/>
+        
+        <SmoothScrollProvider>
+          {children}
+        </SmoothScrollProvider>
+        <Footer />
       </body>
     </html>
   )

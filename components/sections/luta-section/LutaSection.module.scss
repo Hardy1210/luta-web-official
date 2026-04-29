@@ -1,0 +1,100 @@
+.luta {
+  position: relative;
+  min-height: 120vh;
+  background-color: var(--c-black);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── Neon logo ── */
+.neonLogo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  pointer-events: none;
+  width: clamp(280px, 55vw, 700px);
+  text-align: center;
+}
+
+.neonText {
+  font-family: var(--ff-serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(6rem, 18vw, 18rem);
+  color: var(--c-white);
+  // Replace with actual neon glow if asset isn't available
+  text-shadow:
+    0 0 20px rgba(212, 36, 110, 0.9),
+    0 0 60px rgba(212, 36, 110, 0.5),
+    0 0 120px rgba(212, 36, 110, 0.2);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+/* ── Artist photo ── */
+.artistImage {
+  position: relative;
+  width: 55%;
+  aspect-ratio: 2 / 3;
+  z-index: 2;
+  will-change: transform;
+
+  @media (max-width: 767px) {
+    width: 90%;
+  }
+}
+
+.artistImg {
+  object-fit: cover;
+  object-position: center top;
+  mix-blend-mode: luminosity; // creates moody blend with background
+}
+
+/* ── Floating parallax images ── */
+.floatGrid {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+
+  @media (max-width: 767px) {
+    display: none; // hidden on mobile per requirement
+  }
+}
+
+.floatImg {
+  position: absolute;
+  overflow: hidden;
+  will-change: transform;
+
+  img { object-fit: cover; }
+}
+
+.floatImg1 {
+  top:  10%;
+  left: 5%;
+  width: 22vw;
+  aspect-ratio: 3 / 4;
+}
+
+.floatImg2 {
+  bottom: 8%;
+  right: 6%;
+  width: 18vw;
+  aspect-ratio: 2 / 3;
+}
+
+.floatImg3 {
+  top:  55%;
+  left: 3%;
+  width: 16vw;
+  aspect-ratio: 1 / 1;
+}
+
+.img {
+  object-fit: cover;
+}

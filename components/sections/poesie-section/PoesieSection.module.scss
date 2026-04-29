@@ -1,0 +1,103 @@
+.poesie {
+  background-color: var(--c-white);
+  color: var(--c-black);
+  padding: var(--section-pad-y) var(--section-pad-x);
+}
+
+.inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: center;
+
+  @media (max-width: 767px) {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+}
+
+/* ── Image pair ── */
+.imageRow {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 1rem;
+  align-items: end;
+}
+
+.imageA,
+.imageB {
+  position: relative;
+  overflow: hidden;
+  will-change: transform;
+
+  img { object-fit: cover; }
+}
+
+.imageA {
+  aspect-ratio: 3 / 4;
+}
+
+.imageB {
+  aspect-ratio: 2 / 3;
+}
+
+.img {
+  object-fit: cover;
+}
+
+/* ── Text ── */
+.textBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.heading {
+  font-family: var(--ff-display);
+  font-weight: 800;
+  font-size: clamp(2rem, 5vw, 5rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+
+  em {
+    font-family: var(--ff-serif);
+    font-style: italic;
+    font-weight: 300;
+    letter-spacing: 0;
+  }
+}
+
+.body {
+  font-family: var(--ff-body);
+  font-size: clamp(0.85rem, 1.2vw, 1rem);
+  font-weight: 300;
+  line-height: 1.8;
+  color: #444;
+  max-width: 38ch;
+}
+
+.spotifyBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.8rem 1.8rem;
+  border: 1.5px solid var(--c-black);
+  font-family: var(--ff-display);
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--c-black);
+  width: fit-content;
+  transition: background 0.25s, color 0.25s;
+
+  svg { color: #1db954; }
+
+  &:hover {
+    background: var(--c-black);
+    color: var(--c-white);
+  }
+}
