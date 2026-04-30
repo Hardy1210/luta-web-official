@@ -3,9 +3,9 @@
 import gsap, { SplitText } from '@/lib/gsap';
 import { useGSAP } from '@gsap/react';
 import { useRef } from 'react';
-import styles from './IntroSplitText.module.scss';
+import styles from './BarrelSplitTextProps.module.scss';
 
-type IntroSplitTextProps = {
+type BarrelSplitTextPropsProps = {
   children: string;
   as?: 'h1' | 'h2' | 'h3' | 'p' | 'span';
   className?: string;
@@ -16,7 +16,7 @@ type IntroSplitTextProps = {
   drumRadius?: number;
 };
 
-export function IntroSplitText({
+export function BarrelSplitTextProps({
   children,
   as: Tag = 'h1',
   className = '',
@@ -25,7 +25,7 @@ export function IntroSplitText({
   stagger = 0.045,
   once = true,
   drumRadius = 60,
-}: IntroSplitTextProps) {
+}: BarrelSplitTextPropsProps) {
   const rootRef = useRef<HTMLElement | null>(null);
 
   useGSAP(

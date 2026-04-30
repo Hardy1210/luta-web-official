@@ -1,4 +1,9 @@
+//orquestacion intro
 'use client';
+
+import { useAnimation } from '@/context/AnimationContext';
+import gsap from '@/lib/gsap';
+import { useEffect, useRef } from 'react';
 
 import { AppleMusic } from '@/components/icons/AppleMusic';
 import { Facebook } from '@/components/icons/Facebook';
@@ -55,6 +60,57 @@ function LogoMark() {
 }
 
 export default function Navbar() {
+  const { navbarReady } = useAnimation();
+
+  // Refs para los tres bloques del navbar
+  const logoRef = useRef<HTMLDivElement>(null);
+  const linksRef = useRef<HTMLUListElement>(null);
+  const socialIconsRef = useRef<(HTMLAnchorElement | null)[]>([]);
+
+  // Ocultar al montar — antes de cualquier orquestación
+  useEffect(() => {
+    gsap.set(
+      [
+        logoRef.current,
+        linksRef.current,
+        ...socialIconsRef.current.filter(Boolean),
+      ],
+      { opacity: 0 },
+    );
+  }, []);
+
+  useEffect(() => {
+    if (!navbarReady) return;
+
+    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+    // 1. Logo (izq) y links (der) entran simultáneos
+    tl.fromTo(
+      logoRef.current,
+      { xPercent: -110, opacity: 0 },
+      { xPercent: 0, opacity: 1, duration: 0.85 },
+    ).fromTo(
+      linksRef.current,
+      { xPercent: 110, opacity: 0 },
+      { xPercent: 0, opacity: 1, duration: 0.85 },
+      '<', // simultáneo
+    );
+
+    // 2. Iconos sociales en stagger — en cascada después
+    tl.fromTo(
+      socialIconsRef.current.filter(Boolean),
+      { y: -14, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.35,
+        stagger: 0.07,
+        clearProps: 'opacity', // ← elimina el inline style al terminar
+      },
+      '-=0.35',
+    );
+  }, [navbarReady]);
+
   return (
     <nav
       className={styles.nav}
@@ -62,16 +118,21 @@ export default function Navbar() {
       aria-label="Navigation principale"
       style={{ mixBlendMode: 'difference' }}
     >
-      <div className={styles.logo}>
+      {/* Logo — extremo izquierdo */}
+      <div ref={logoRef} className={styles.logo}>
         <Link href="/" aria-label="Accueil">
           <LogoMark />
         </Link>
       </div>
 
+      {/* Iconos sociales — centro, ref por elemento para el stagger */}
       <div className={styles.social}>
-        {socialLinks.map(({ href, label, icon }) => (
+        {socialLinks.map(({ href, label, icon }, i) => (
           <a
             key={label}
+            ref={(el) => {
+              socialIconsRef.current[i] = el;
+            }}
             href={href}
             target="_blank"
             rel="noopener noreferrer"
@@ -82,7 +143,8 @@ export default function Navbar() {
         ))}
       </div>
 
-      <ul className={styles.links}>
+      {/* Links — extremo derecho */}
+      <ul ref={linksRef} className={styles.links}>
         {navLinks.map(({ href, label }) => (
           <li key={href}>
             <Link href={href} className={styles.link}>
