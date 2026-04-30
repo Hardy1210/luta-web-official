@@ -19,39 +19,39 @@ const navLinks = [
 
 const socialLinks = [
   {
-    href: '#',
+    href: 'https://www.instagram.com/luta_musique/',
     label: 'Instagram',
-    icon: <Instagram width={32} />,
+    icon: <Instagram width={35} />,
   },
   {
-    href: '#',
+    href: 'https://www.facebook.com/profile.php?id=61565333910877',
     label: 'Facebook',
-    icon: <Facebook width={30} />,
+    icon: <Facebook width={38} />,
   },
   {
-    href: '#',
+    href: 'https://www.youtube.com/watch?v=wRvZoXmCl-M&list=OLAK5uy_ndYCNRIfm3g23dWv0ydQRqDu1BIshCKlo',
     label: 'YouTube',
-    icon: <Youtube width={30} />,
+    icon: <Youtube width={50} />,
   },
   {
-    href: '#',
+    href: 'https://music.apple.com/fr/artist/luta/1707409753',
     label: 'Apple Music',
-    icon: <AppleMusic width={30} />,
+    icon: <AppleMusic width={35} />,
   },
   {
-    href: '#',
-    label: 'Weezer',
-    icon: <WeezerIcon width={30} />,
+    href: 'https://link.deezer.com/s/338cnCzQ2Zne80LHMSqAT',
+    label: 'Deezer',
+    icon: <WeezerIcon width={35} />,
   },
   {
-    href: '#',
+    href: 'https://open.spotify.com/intl-fr/artist/7lIbxiBTO3ycZCiD0JLjWD?si=qWisvYOvRjOt7l-PKbdoYQ',
     label: 'Spotify',
     icon: <Spotify width={30} />,
   },
 ];
 
 function LogoMark() {
-  return <LutaLogo width={80} />;
+  return <LutaLogo width={90} />;
 }
 
 export default function Navbar() {
