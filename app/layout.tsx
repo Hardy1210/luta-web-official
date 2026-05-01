@@ -1,5 +1,3 @@
-import Footer from '@/components/layout/footer/Footer';
-import Navbar from '@/components/layout/navbar/Navbar';
 import { siteConfig } from '@/config/site';
 import { AnimationProvider } from '@/context/AnimationContext';
 import type { Metadata, Viewport } from 'next';
@@ -13,13 +11,23 @@ const lora = localFont({
 });
 
 const inter = localFont({
-  src: '../public/fonts/Inter.woff2',
+  src: '../public/fonts/Inter-medium.woff2',
   variable: '--font-inter',
 });
 
 const interRegular = localFont({
-  src: '../public/fonts/inter-regular.woff2',
+  src: '../public/fonts/Inter-regular.woff2',
   variable: '--font-inter-regular',
+});
+
+const interLight = localFont({
+  src: '../public/fonts/Inter-light.woff2',
+  variable: '--font-inter-light',
+});
+
+const interExtraLight = localFont({
+  src: '../public/fonts/Inter-ExtraLight.woff2',
+  variable: '--font-inter-extralight',
 });
 
 export const viewport: Viewport = {
@@ -65,14 +73,12 @@ export default function RootLayout({
   return (
     <html
       lang="fr"
-      className={`${lora.variable} ${inter.variable} ${interRegular.variable} h-full antialiased`}
+      className={`${lora.variable} ${inter.variable} ${interRegular.variable} ${interLight.variable} ${interExtraLight.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <AnimationProvider>
-          <Navbar />
-
           <SmoothScrollProvider>{children}</SmoothScrollProvider>
-          <Footer />
+          {/*  <Footer /> */}
         </AnimationProvider>
       </body>
     </html>

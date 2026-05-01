@@ -2,6 +2,7 @@
 'use client';
 
 import { useAnimation } from '@/context/AnimationContext';
+import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect';
 import gsap from '@/lib/gsap';
 import { useEffect, useRef } from 'react';
 
@@ -26,37 +27,37 @@ const socialLinks = [
   {
     href: 'https://www.instagram.com/luta_musique/',
     label: 'Instagram',
-    icon: <Instagram width={35} />,
+    icon: <Instagram width={24} />,
   },
   {
     href: 'https://www.facebook.com/profile.php?id=61565333910877',
     label: 'Facebook',
-    icon: <Facebook width={38} />,
+    icon: <Facebook width={30} />,
   },
   {
     href: 'https://www.youtube.com/watch?v=wRvZoXmCl-M&list=OLAK5uy_ndYCNRIfm3g23dWv0ydQRqDu1BIshCKlo',
     label: 'YouTube',
-    icon: <Youtube width={50} />,
+    icon: <Youtube width={40} />,
   },
   {
     href: 'https://music.apple.com/fr/artist/luta/1707409753',
     label: 'Apple Music',
-    icon: <AppleMusic width={35} />,
+    icon: <AppleMusic width={24} />,
   },
   {
     href: 'https://link.deezer.com/s/338cnCzQ2Zne80LHMSqAT',
     label: 'Deezer',
-    icon: <WeezerIcon width={35} />,
+    icon: <WeezerIcon width={24} />,
   },
   {
     href: 'https://open.spotify.com/intl-fr/artist/7lIbxiBTO3ycZCiD0JLjWD?si=qWisvYOvRjOt7l-PKbdoYQ',
     label: 'Spotify',
-    icon: <Spotify width={30} />,
+    icon: <Spotify width={25} />,
   },
 ];
 
 function LogoMark() {
-  return <LutaLogo width={90} />;
+  return <LutaLogo width={70} />;
 }
 
 export default function Navbar() {
@@ -67,8 +68,8 @@ export default function Navbar() {
   const linksRef = useRef<HTMLUListElement>(null);
   const socialIconsRef = useRef<(HTMLAnchorElement | null)[]>([]);
 
-  // Ocultar al montar — antes de cualquier orquestación
-  useEffect(() => {
+  // ─── Ocultar ANTES del paint — evita flash del navbar ────────
+  useIsomorphicLayoutEffect(() => {
     gsap.set(
       [
         logoRef.current,
@@ -82,17 +83,17 @@ export default function Navbar() {
   useEffect(() => {
     if (!navbarReady) return;
 
-    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+    const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
 
     // 1. Logo (izq) y links (der) entran simultáneos
     tl.fromTo(
       logoRef.current,
       { xPercent: -110, opacity: 0 },
-      { xPercent: 0, opacity: 1, duration: 0.85 },
+      { xPercent: 0, opacity: 1, duration: 1.5, ease: 'power4.out' },
     ).fromTo(
       linksRef.current,
       { xPercent: 110, opacity: 0 },
-      { xPercent: 0, opacity: 1, duration: 0.85 },
+      { xPercent: 0, opacity: 1, duration: 1.5, ease: 'power4.out' },
       '<', // simultáneo
     );
 
@@ -107,7 +108,7 @@ export default function Navbar() {
         stagger: 0.07,
         clearProps: 'opacity', // ← elimina el inline style al terminar
       },
-      '-=0.35',
+      '-=0.55',
     );
   }, [navbarReady]);
 

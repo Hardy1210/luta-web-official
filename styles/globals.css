@@ -3,8 +3,8 @@
    Importado UNA sola vez en app/layout.tsx
    ============================================================ */
 
-@import "tailwindcss";
-@import "./tokens.css";
+@import 'tailwindcss';
+@import './tokens.css';
 
 /* ── RESET MÍNIMO ──────────────────────────────────────────── */
 
@@ -12,8 +12,6 @@
 *::before,
 *::after {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
 
 html {
@@ -148,11 +146,12 @@ p {
 
 /* ── INTRO OVERLAY ─────────────────────────────────────────── */
 
-#intro-overlay {
+/* Z-INDEX: --z-intro-overlay (40) — ver tokens.css → INTRO STACK */
+.intro-overlay {
   position: fixed;
   inset: 0;
-  z-index: var(--z-loader);
-  background: var(--color-bg);
+  z-index: var(--z-intro-overlay);
+  background: var(--c-white);
   pointer-events: none;
 }
 

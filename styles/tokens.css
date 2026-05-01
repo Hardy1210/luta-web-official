@@ -7,7 +7,7 @@
   :root {
     /* ── COLORES PRINCIPALES DEL PROYECTO ───────────────────── */
     --c-black: #0c0b0b;
-    --c-white: #f2f0eb;
+    --c-white: #f4f4ed;
     --c-neon: #d4246e;
     --c-muted: #7a7672;
     --c-warm: #e8c49a;
@@ -41,15 +41,21 @@
     --color-warning: #e65100;
 
     /* ── TIPOGRAFÍA ────────────────────────────────────────── */
-   --ff-display: var(--font-inter), sans-serif;
-   --ff-serif:   var(--font-lora), serif;
-   --ff-body:     var(--font-inter-regular), sans-serif;
-   --ff-h2:      var(--font-lora), serif;
+    /*solo para el hero */
+    --ff-display: var(--font-inter), sans-serif;
+    --ff-serif: var(--font-lora), serif;
+    /*tiene qu eser para las letras engeneral*/
+    --ff-body: var(--font-inter-regular), sans-serif;
+    --ff-light: var(--font-inter-light), sans-serif;
+    --ff-extralight: var(--font-inter-extralight), sans-serif;
+    --ff-h2: var(--font-lora), serif;
 
-   --font-display: var(--ff-display);
-   --font-serif:   var(--ff-serif);
-   --font-body:    var(--ff-body);
-   --font-mono:    'JetBrains Mono', 'Fira Code', monospace;
+    --font-display: var(--ff-display);
+    --font-serif: var(--ff-serif);
+    --font-body: var(--ff-body);
+    --font-light: var(--ff-light), sans-serif;
+    --font-extralight: var(--ff-extralight), sans-serif;
+    --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
     /* ── TAMAÑOS TIPOGRÁFICOS ──────────────────────────────── */
     --text-xs: 0.75rem;
     --text-sm: 0.875rem;
@@ -61,7 +67,7 @@
     --text-3xl: 2.5rem;
     --text-4xl: 3.5rem;
     --text-5xl: clamp(3rem, 6vw, 5rem);
-    --text-hero: clamp(3.5rem, 9vw, 8rem);
+    --text-hero: clamp(3rem, 14vw, 17rem);
 
     /* ── LINE HEIGHT ───────────────────────────────────────── */
     --leading-none: 1;
@@ -91,7 +97,7 @@
     --space-32: 8rem;
 
     /* ── SECCIONES ─────────────────────────────────────────── */
-    --section-pad-x: clamp(1rem, 1.5vw, 6rem);
+    --section-pad-x: clamp(0.5rem, 1.5vw, 6rem);
     --section-pad-y: clamp(5rem, 10vh, 10rem);
 
     --section-sm: clamp(3rem, 6vw, 5rem);
@@ -121,7 +127,14 @@
     /* ── Z-INDEX ───────────────────────────────────────────── */
     --z-base: 0;
     --z-above: 10;
-    --z-navbar: 100;
+
+    /* INTRO STACK — fuente única de verdad para la secuencia de intro */
+    --z-intro-content: 0; /* contenido de página                   */
+    --z-intro-overlay: 40; /* cortina negra — tapa content, bajo imagen */
+    --z-intro-image: 50; /* IntroImage — encima del overlay        */
+    --z-navbar: 30; /* Navbar — encima de todo el intro       */
+    --z-hero-text: 51; /* HeroText — encima de la imagen        */
+
     --z-overlay: 200;
     --z-modal: 300;
     --z-cursor: 400;

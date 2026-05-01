@@ -1,10 +1,45 @@
 .text {
   display: block;
+  position: relative;
+  z-index: var(--z-hero-text);
+  font-size: var(--text-hero);
+  font-family: var(--font-inter);
+  //  opacity: 0;
   line-height: 0.9;
-  letter-spacing: -0.06em;
+  letter-spacing: 0.02em;
+  transform-style: preserve-3d;
+  mix-blend-mode: difference;
+  color: var(--c-white);
+}
+.text2 {
+  font-family: var(--font-inter);
+  display: block;
+  position: relative;
+  z-index: var(--z-hero-text);
+  font-size: var(--text-hero);
+  mix-blend-mode: difference;
+  color: var(--c-white);
+
+  //  opacity: 0;
+  line-height: 0.9;
+  letter-spacing: 0.02em;
   transform-style: preserve-3d;
 }
 
+.text3 {
+  font-family: var(--font-serif);
+  display: block;
+  position: relative;
+  z-index: var(--z-hero-text);
+  font-size: var(--text-hero);
+
+  //  opacity: 0;
+  line-height: 0.9;
+  letter-spacing: 0.02em;
+  transform-style: preserve-3d;
+  mix-blend-mode: difference;
+  color: var(--c-white);
+}
 .line {
   display: block;
   //overflow: hidden;

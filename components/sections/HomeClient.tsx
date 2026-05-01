@@ -2,7 +2,9 @@
 'use client';
 
 import { IntroImage } from '../intro-image/IntroImage';
+import { IntroOverlay } from '../intro-overlay/IntroOverlay';
 import { HeroText } from '../intro-split-text/HeroText';
+import Navbar from '../layout/navbar/Navbar';
 
 type HomeClientProps = {
   name: string;
@@ -21,9 +23,21 @@ type HomeClientProps = {
 export function HomeClient({ name, description }: HomeClientProps) {
   return (
     <>
-      <main className="flex flex-1 flex-col items-center justify-center px-6 py-24 text-center">
-        <IntroImage />
-        <HeroText />
+      <IntroOverlay />
+      <IntroImage />
+      <header>
+        <Navbar />
+      </header>
+
+      <main className="">
+        <section id="hero" className=" h-screen">
+          <div className="w-full h-full flex ">
+            <div className="w-full h-full flex items-center justify-center pt-120">
+              <h1 className="sr-only">Luta Musique</h1>
+              <HeroText className="text-center " />
+            </div>
+          </div>
+        </section>
       </main>
     </>
   );

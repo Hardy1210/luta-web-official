@@ -17,6 +17,7 @@ export type AnimationPhase =
   | 'heroText'
   | 'subText'
   | 'navbar'
+  | 'overlayOut'
   | 'complete';
 
 interface AnimationContextType {
@@ -35,16 +36,8 @@ export function AnimationProvider({ children }: { children: ReactNode }) {
 
   const triggerNavbar = useCallback(() => setNavbarReady(true), []);
   useEffect(() => {
-    if (phase === 'complete') {
-      document.body.style.overflow = '';
-      document.body.style.pointerEvents = '';
-    } else {
-      document.body.style.overflow = 'hidden';
-      document.body.style.pointerEvents = 'none';
-    }
-
+    document.body.style.pointerEvents = phase === 'complete' ? '' : 'none';
     return () => {
-      document.body.style.overflow = '';
       document.body.style.pointerEvents = '';
     };
   }, [phase]);

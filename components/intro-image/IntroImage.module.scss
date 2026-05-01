@@ -1,28 +1,29 @@
 // Wrapper fija el plano y centra en viewport
+// Z-INDEX: --z-intro-image (50) — ver tokens.css → INTRO STACK
 .wrapper {
-  position: fixed;
+  opacity: 0;
+  position: absolute;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 50;
+  z-index: var(--z-intro-image);
   pointer-events: none;
+  margin-bottom: 3rem;
 }
 
 // Contenedor de la imagen — tamaño inicial pequeño
 .container {
   position: relative;
-  width: clamp(180px, 28vw, 380px);
+  width: clamp(270px, 23.5vw, 380px);
   aspect-ratio: 3 / 4;
   will-change: transform, opacity;
   overflow: hidden;
-  border-radius: 6px;
+  border-radius: 0px;
 }
 
 // Cada imagen ocupa todo el contenedor, apiladas
 .imageLayer {
-  opacity: 0;
-
   position: absolute;
   inset: 0;
   will-change: transform, opacity;

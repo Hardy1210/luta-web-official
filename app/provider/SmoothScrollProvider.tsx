@@ -1,5 +1,6 @@
 'use client';
 
+import { useAnimation } from '@/context/AnimationContext';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import type { LenisRef } from 'lenis/react';
@@ -12,12 +13,21 @@ export default function SmoothScrollProvider({
   children: React.ReactNode;
 }) {
   const lenisRef = useRef<LenisRef>(null);
+  const { introComplete } = useAnimation();
+  const introCompleteRef = useRef(false);
+
+  useEffect(() => {
+    introCompleteRef.current = introComplete;
+    const lenis = lenisRef.current?.lenis;
+    if (!lenis) return;
+    introComplete ? lenis.start() : lenis.stop();
+  }, [introComplete]);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
-    // 🔥 GSAP ticker controla Lenis
     const update = (time: number) => {
+      if (!introCompleteRef.current) return;
       lenisRef.current?.lenis?.raf(time * 1000);
     };
 
