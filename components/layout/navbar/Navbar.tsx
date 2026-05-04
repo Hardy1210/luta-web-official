@@ -65,7 +65,7 @@ export default function Navbar() {
 
   // Refs para los tres bloques del navbar
   const logoRef = useRef<HTMLDivElement>(null);
-  const linksRef = useRef<HTMLUListElement>(null);
+  const linksRef = useRef<(HTMLAnchorElement | null)[]>([]);
   const socialIconsRef = useRef<(HTMLAnchorElement | null)[]>([]);
 
   // ─── Ocultar ANTES del paint — evita flash del navbar ────────
@@ -73,7 +73,7 @@ export default function Navbar() {
     gsap.set(
       [
         logoRef.current,
-        linksRef.current,
+        ...linksRef.current.filter(Boolean),
         ...socialIconsRef.current.filter(Boolean),
       ],
       { opacity: 0 },
@@ -82,7 +82,8 @@ export default function Navbar() {
 
   useEffect(() => {
     if (!navbarReady) return;
-
+    const links = linksRef.current.filter(Boolean);
+    const socialIcons = socialIconsRef.current.filter(Boolean);
     const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
 
     // 1. Logo (izq) y links (der) entran simultáneos
@@ -91,15 +92,22 @@ export default function Navbar() {
       { xPercent: -110, opacity: 0 },
       { xPercent: 0, opacity: 1, duration: 1.5, ease: 'power4.out' },
     ).fromTo(
-      linksRef.current,
-      { xPercent: 110, opacity: 0 },
-      { xPercent: 0, opacity: 1, duration: 1.5, ease: 'power4.out' },
+      links,
+      { x: 110, opacity: 0 },
+      {
+        x: 0,
+        opacity: 1,
+        duration: 1.5,
+        ease: 'power4.out',
+        stagger: 0.08,
+        clearProps: 'transform,opacity',
+      },
       '<', // simultáneo
     );
 
     // 2. Iconos sociales en stagger — en cascada después
     tl.fromTo(
-      socialIconsRef.current.filter(Boolean),
+      socialIcons,
       { y: -14, opacity: 0 },
       {
         y: 0,
@@ -145,10 +153,16 @@ export default function Navbar() {
       </div>
 
       {/* Links — extremo derecho */}
-      <ul ref={linksRef} className={styles.links}>
-        {navLinks.map(({ href, label }) => (
+      <ul className={styles.links}>
+        {navLinks.map(({ href, label }, i) => (
           <li key={href}>
-            <Link href={href} className={styles.link}>
+            <Link
+              ref={(el) => {
+                linksRef.current[i] = el;
+              }}
+              href={href}
+              className={styles.link}
+            >
               {label}
             </Link>
           </li>

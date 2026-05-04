@@ -67,7 +67,7 @@
     --text-3xl: 2.5rem;
     --text-4xl: 3.5rem;
     --text-5xl: clamp(3rem, 6vw, 5rem);
-    --text-hero: clamp(3rem, 15vw, 16rem);
+    --text-hero: clamp(3rem, 14vw, 16rem);
 
     /* ── LINE HEIGHT ───────────────────────────────────────── */
     --leading-none: 1;
@@ -132,7 +132,7 @@
     --z-intro-content: 0; /* contenido de página                   */
     --z-intro-overlay: 40; /* cortina negra — tapa content, bajo imagen */
     --z-intro-image: 50; /* IntroImage — encima del overlay        */
-    --z-navbar: 30; /* Navbar — encima de todo el intro       */
+    --z-navbar: 51; /* Navbar — encima de todo el intro       */
     --z-hero-text: 51; /* HeroText — encima de la imagen        */
 
     --z-overlay: 200;

@@ -50,17 +50,23 @@ export function HomeClient({ name, description }: HomeClientProps) {
                   <h1 className="sr-only">Luta Musique</h1>
                   {/**primer bloque para col */}
                   <div className="relative w-full flex-1">
+                    {/* Marco absoluto centrado */}
+                    <div className="absolute inset-0 m-auto translate-y-55 w-[clamp(270px,23.5vw,350px)] pointer-events-none hidden sm:block">
+                      <SubText className="absolute left-full top-1/2 ml-[35px] -translate-y-48 " />
+                    </div>
+
+                    {/* IntroImage queda libre con su clase original */}
                     <IntroImage
-                      className="absolute inset-0 m-auto translate-y-55"
+                      className="absolute inset-0 m-auto translate-y-15 sm:translate-y-55"
                       hoverSrc={revealProps.src}
                       brushSize={0.65}
                       trailDecay={2.5}
                       smoothness={0.95}
                     />
-                    <SubText className="relative left-[65%] top-[58%] pointer-events-none" />
                   </div>
                   {/**segundo bloque para el col */}
-                  <HeroText className="text-center  flex-1  pt-40" />
+                  <HeroText className="text-center  flex-1 hidden sm:block pt-40" />
+                  <HeroText className="text-center   pb-3 sm:hidden" />
                 </div>
               </div>
             </div>
