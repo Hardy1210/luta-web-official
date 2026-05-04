@@ -57,7 +57,7 @@
     --font-extralight: var(--ff-extralight), sans-serif;
     --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
     /* ── TAMAÑOS TIPOGRÁFICOS ──────────────────────────────── */
-    --text-xs: 0.75rem;
+    --text-xs: 0.65rem;
     --text-sm: 0.875rem;
     --text-base: 1rem;
     --text-md: 1.125rem;
@@ -79,7 +79,7 @@
     /* ── LETTER SPACING ────────────────────────────────────── */
     --tracking-tight: -0.03em;
     --tracking-normal: 0em;
-    --tracking-wide: 0.08em;
+    --tracking-wide: 0.07em;
     --tracking-wider: 0.15em;
 
     /* ── ESPACIADO ─────────────────────────────────────────── */

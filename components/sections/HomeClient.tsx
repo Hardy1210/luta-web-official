@@ -4,6 +4,7 @@
 import { IntroImage } from '../intro-image/IntroImage';
 import { IntroOverlay } from '../intro-overlay/IntroOverlay';
 import { HeroText } from '../intro-split-text/HeroText';
+import { SubText } from '../intro-split-text/SubText';
 import Navbar from '../layout/navbar/Navbar';
 
 type HomeClientProps = {
@@ -23,22 +24,31 @@ type HomeClientProps = {
 export function HomeClient({ name, description }: HomeClientProps) {
   return (
     <>
-      <IntroOverlay />
-      <IntroImage />
-      <header>
-        <Navbar />
-      </header>
+      <div className="relative w-full h-full">
+        <IntroOverlay />
 
-      <main className="">
-        <section id="hero" className=" h-screen">
-          <div className="w-full h-full flex ">
-            <div className="w-full h-full flex items-center justify-center pt-120">
-              <h1 className="sr-only">Luta Musique</h1>
-              <HeroText className="text-center " />
+        <header>
+          <Navbar />
+        </header>
+
+        <main className="">
+          <section id="hero" className=" h-screen">
+            <div className="w-full h-auto flex ">
+              <div className="relative w-full h-full flex flex-col items-center justify-center pt-120">
+                <h1 className="sr-only">Luta Musique</h1>
+                <div className="absolute top-44  flex flex-row justify-center  w-full h-auto gap-10 pl-64">
+                  <IntroImage
+                    className="pt-4"
+                    hoverSrc="/images/reveal-luta.webp"
+                  />
+                  <SubText className="" />
+                </div>
+                <HeroText className="text-center " />
+              </div>
             </div>
-          </div>
-        </section>
-      </main>
+          </section>
+        </main>
+      </div>
     </>
   );
 }

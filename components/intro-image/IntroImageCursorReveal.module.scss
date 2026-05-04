@@ -1,0 +1,13 @@
+// Canvas que se monta DENTRO del .container de IntroImage como capa superior
+// Hereda el transform del intro pero no participa del timeline
+.canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  // Anula el pointer-events: none del .wrapper padre
+  pointer-events: auto;
+  // Por encima de todos los imageLayer
+  z-index: 2;
+  will-change: transform;
+}
