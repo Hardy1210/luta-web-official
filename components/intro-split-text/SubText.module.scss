@@ -13,6 +13,7 @@
   //margin-inline: auto;
   width: clamp(270px, 23.5vw, 380px);
   aspect-ratio: 3 / 4;
+  // display: block;
 }
 
 .lineClip {
@@ -21,4 +22,10 @@
 
 .line {
   display: block;
+}
+
+@media screen and (max-width: 768px) {
+  .text {
+    //display: none;
+  }
 }

@@ -15,7 +15,7 @@
 // Contenedor de la imagen — tamaño inicial pequeño
 .container {
   position: relative;
-  width: clamp(270px, 23.5vw, 380px);
+  width: clamp(270px, 23.5vw, 350px);
   aspect-ratio: 3 / 4;
   will-change: transform, opacity;
   overflow: hidden;
