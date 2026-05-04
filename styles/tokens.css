@@ -8,14 +8,14 @@
     /* ── COLORES PRINCIPALES DEL PROYECTO ───────────────────── */
     --c-black: #0c0b0b;
     --c-white: #f4f4ed;
-    --c-neon: #d4246e;
+    --c-neon: #772eb1;
     --c-muted: #7a7672;
     --c-warm: #e8c49a;
 
     /* ── COLORES MARCA ─────────────────────────────────────── */
     --color-brand: var(--c-black);
     --color-accent: #ff3c00;
-    --color-accent-hover: #e03000;
+    --color-accent-hover: #997bac;
 
     /* ── NEUTROS ───────────────────────────────────────────── */
     --color-black: var(--c-black);

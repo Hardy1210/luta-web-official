@@ -10,13 +10,16 @@ export function IntroOverlay() {
   const overlayRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (phase !== 'overlayOut') return;
-    gsap.to(overlayRef.current, {
+    const el = overlayRef.current;
+    if (!el || el.style.display === 'none') return;
+    if (phase !== 'overlayOut' && phase !== 'complete') return;
+
+    gsap.to(el, {
       opacity: 0,
-      duration: 0.6,
+      duration: phase === 'complete' ? 0 : 0.6,
       ease: 'power2.inOut',
       onComplete: () => {
-        if (overlayRef.current) overlayRef.current.style.display = 'none';
+        if (el) el.style.display = 'none';
       },
     });
   }, [phase]);

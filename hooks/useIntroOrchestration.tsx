@@ -4,7 +4,7 @@
 import { useAnimation } from '@/context/AnimationContext';
 import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect';
 import gsap from '@/lib/gsap';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 interface UseIntroOrchestrationParams {
   containerRef: React.RefObject<HTMLDivElement | null>;
@@ -15,7 +15,8 @@ export function useIntroOrchestration({
   containerRef,
   imageRefs,
 }: UseIntroOrchestrationParams) {
-  const { setPhase, triggerNavbar } = useAnimation();
+  const { setPhase, triggerNavbar, introComplete } = useAnimation();
+  const tlRef = useRef<gsap.core.Timeline | null>(null);
 
   // ─── Estado inicial — corre ANTES del paint para evitar el flash ──
   useIsomorphicLayoutEffect(() => {
@@ -37,6 +38,7 @@ export function useIntroOrchestration({
 
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+      tlRef.current = tl;
 
       // ─── FASE 1: Imagen sube desde abajo al centro del viewport ───
       setPhase('imageRising');
@@ -95,7 +97,37 @@ export function useIntroOrchestration({
       tl.add(() => setPhase('complete'), '+=1'); // ← scroll libre
     });
 
-    return () => ctx.revert();
+    return () => {
+      tlRef.current = null;
+      ctx.revert();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // La timeline continúa su flujo aunque el usuario cambie de tab.
+  // Al volver se calcula el tiempo real transcurrido y se hace seek
+  // al punto exacto donde estaría si hubiera corrido sin interrupción.
+  useEffect(() => {
+    let hiddenAt = 0;
+
+    const handleVisibility = () => {
+      if (introComplete) return;
+
+      if (document.hidden) {
+        hiddenAt = performance.now();
+      } else if (hiddenAt > 0) {
+        const tl = tlRef.current;
+        if (tl) {
+          const elapsed = (performance.now() - hiddenAt) / 1000;
+          const target = Math.min(tl.time() + elapsed, tl.duration());
+          tl.seek(target);
+        }
+        hiddenAt = 0;
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibility);
+    return () =>
+      document.removeEventListener('visibilitychange', handleVisibility);
+  }, [introComplete]);
 }

@@ -17,7 +17,13 @@ interface IntroImageProps {
   smoothness?: number;
 }
 
-export function IntroImage({ className, hoverSrc }: IntroImageProps) {
+export function IntroImage({
+  className,
+  hoverSrc,
+  trailDecay,
+  brushSize,
+  smoothness,
+}: IntroImageProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Un único ref que contiene el array de elementos DOM
@@ -52,9 +58,10 @@ export function IntroImage({ className, hoverSrc }: IntroImageProps) {
           <IntroImageCursorReveal
             hoverSrc={hoverSrc}
             containerRef={containerRef}
-            pointerRadius={0.5}
-            pointerDuration={1}
-            accumRate={0.95}
+            pointerRadius={0.42}
+            pointerDuration={0.95}
+            accumRate={0.35}
+            liquidMotion={0.22}
           />
         )}
       </div>

@@ -69,6 +69,10 @@ export function SubText({ className }: SubTextProps) {
   }, []);
 
   useEffect(() => {
+    if (phase === 'complete') {
+      timelineRef.current?.progress(1, false);
+      return;
+    }
     if (phase !== 'subText') return;
     timelineRef.current?.restart();
   }, [phase]);

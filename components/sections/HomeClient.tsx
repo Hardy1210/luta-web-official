@@ -7,6 +7,8 @@ import { HeroText } from '../intro-split-text/HeroText';
 import { SubText } from '../intro-split-text/SubText';
 import Navbar from '../layout/navbar/Navbar';
 
+import { getImageProps } from 'next/image';
+
 type HomeClientProps = {
   name: string;
   description: string;
@@ -22,6 +24,14 @@ type HomeClientProps = {
         */
 }
 export function HomeClient({ name, description }: HomeClientProps) {
+  const { props: revealProps } = getImageProps({
+    src: '/images/reveal-luta.webp',
+    width: 1500,
+    height: 2250,
+    alt: '',
+    // quality: 90,
+  });
+
   return (
     <>
       <div className="relative w-full h-full">
@@ -39,7 +49,10 @@ export function HomeClient({ name, description }: HomeClientProps) {
                 <div className="absolute top-44  flex flex-row justify-center  w-full h-auto gap-10 pl-64">
                   <IntroImage
                     className="pt-4"
-                    hoverSrc="/images/reveal-luta.webp"
+                    hoverSrc={revealProps.src}
+                    brushSize={0.65}
+                    trailDecay={2.5}
+                    smoothness={0.95}
                   />
                   <SubText className="" />
                 </div>

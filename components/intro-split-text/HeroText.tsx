@@ -108,6 +108,10 @@ export function HeroText({ className }: HeroTextProps) {
   }, []);
 
   useEffect(() => {
+    if (phase === 'complete') {
+      timelineRef.current?.progress(1, false);
+      return;
+    }
     if (phase !== 'heroText') return;
     timelineRef.current?.restart();
   }, [phase]);

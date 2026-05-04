@@ -36,7 +36,9 @@ export default function SmoothScrollProvider({
     // 🔥 Cuando Lenis hace scroll → actualizar ScrollTrigger
     lenisRef.current?.lenis?.on('scroll', ScrollTrigger.update);
 
-    gsap.ticker.lagSmoothing(0);
+    // Cap time gaps >500ms to 33ms — prevents GSAP dumping accumulated time
+    // on tab-return and breaking the intro timeline
+    gsap.ticker.lagSmoothing(500, 33);
 
     return () => {
       gsap.ticker.remove(update);
