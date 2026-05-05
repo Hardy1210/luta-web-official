@@ -94,7 +94,8 @@ export function useIntroOrchestration({
 
       // ─── FASE 6: Completo ─────────────────────────────────────────
       tl.add(() => setPhase('overlayOut'), '-=1.5'); // ← cortina sale
-      tl.add(() => setPhase('complete'), '+=1'); // ← scroll libre
+      tl.add(() => setPhase('dibujo'), '+=1.8'); // ← DibujoLuta aparece
+      tl.add(() => setPhase('complete'), '+=0.5'); // ← scroll libre
     });
 
     return () => {

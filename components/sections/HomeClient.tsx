@@ -1,6 +1,7 @@
 //orquestacion intro
 'use client';
 
+import DibujoLuta from '../icons/dibujos/DibujoLuta';
 import { IntroImage } from '../intro-image/IntroImage';
 import { IntroOverlay } from '../intro-overlay/IntroOverlay';
 import { HeroText } from '../intro-split-text/HeroText';
@@ -50,11 +51,21 @@ export function HomeClient({ name, description }: HomeClientProps) {
                   <h1 className="sr-only">Luta Musique</h1>
                   {/**primer bloque para col */}
                   <div className="relative w-full flex-1">
-                    {/* Marco absoluto centrado */}
+                    <div
+                      className="absolute inset-0 m-auto translate-y-55 w-[clamp(270px,23.5vw,350px)] pointer-events-none hidden sm:block"
+                      style={{ zIndex: 'var(--z-dibujo)' }}
+                    >
+                      <DibujoLuta
+                        className="absolute -left-17 -top-13 "
+                        duration={2}
+                        stroke="currentColor"
+                      />
+                    </div>
+
                     <div className="absolute inset-0 m-auto translate-y-55 w-[clamp(270px,23.5vw,350px)] pointer-events-none hidden sm:block">
                       <SubText className="absolute left-full top-1/2 ml-[35px] -translate-y-48 " />
                     </div>
-
+                    {/* Marco absoluto centrado */}
                     {/* IntroImage queda libre con su clase original */}
                     <IntroImage
                       className="absolute inset-0 m-auto translate-y-15 sm:translate-y-55"

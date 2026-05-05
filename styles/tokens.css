@@ -134,6 +134,7 @@
     --z-intro-image: 50; /* IntroImage — encima del overlay        */
     --z-navbar: 51; /* Navbar — encima de todo el intro       */
     --z-hero-text: 51; /* HeroText — encima de la imagen        */
+    --z-dibujo: 51; /* DibujoLuta — mismo nivel que navbar    */
 
     --z-overlay: 200;
     --z-modal: 300;
