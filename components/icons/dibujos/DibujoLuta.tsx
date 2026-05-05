@@ -2,44 +2,23 @@
 
 import { useAnimation } from '@/context/AnimationContext';
 import gsap from '@/lib/gsap';
+import { DrawSVGPlugin } from 'gsap/DrawSVGPlugin';
 import { useEffect, useRef } from 'react';
 import styles from './DibujoLuta.module.scss';
 
-// ─── Props ────────────────────────────────────────────────────────────────────
+// ─── Registrar UNA sola vez, fuera del componente ────────────────────────────
+gsap.registerPlugin(DrawSVGPlugin);
+
+const DRAW_ORDER = ['p-l1', 'p-l2', 'p-diag', 'p-t', 'p-bar', 'p-o'];
 
 interface DibujoLutaProps {
-  /** Dispara la animación cuando pasa a true (default: true) */
   play?: boolean;
-  /** Grosor del trazo (default: 3.2) */
   strokeWidth?: number;
-  /** Color del trazo — acepta cualquier valor CSS (default: 'currentColor') */
   stroke?: string;
-  /** Duración de cada trazo en segundos (default: 0.7) */
   duration?: number;
-  /** Tiempo entre el inicio de cada trazo en segundos (default: 0.15) */
-  stagger?: number;
-  /** Callback al terminar toda la animación */
   onComplete?: () => void;
   className?: string;
 }
-
-// ─── Orden de animación ───────────────────────────────────────────────────────
-//
-//  Editá este array para controlar el orden exacto en que se dibujan los trazos.
-//  Cada string es el id del path en el SVG.
-//  Los paths se animan UNO DESPUÉS DEL OTRO según este orden.
-//  Si querés que dos paths arranquen en paralelo, poné el mismo stagger offset
-//  manualmente en el timeline (ver comentario abajo).
-//
-const DRAW_ORDER = [
-  'p-l', // L  — trazo largo principal
-  'p-diag', // diagonal que conecta L con T
-  'p-t', // T  — cuerpo vertical
-  'p-bar', // T  — barra horizontal
-  'p-o', // O  — círculo
-];
-
-// ─── Componente ───────────────────────────────────────────────────────────────
 
 export default function DibujoLuta({
   play,
@@ -53,17 +32,20 @@ export default function DibujoLuta({
   const tlRef = useRef<gsap.core.Timeline | null>(null);
   const { phase } = useAnimation();
 
-  // ── 1. Inicialización — mount only, DrawSVG maneja dasharray/dashoffset ────
+  // ── 1. Setup inicial — immediateRender evita el flash ────────────────────
   useEffect(() => {
     const svg = svgRef.current;
     if (!svg) return;
+
     DRAW_ORDER.forEach((id) => {
       const path = svg.getElementById(id) as SVGPathElement | null;
-      if (path) gsap.set(path, { drawSVG: 0 });
+      if (path) {
+        gsap.set(path, { drawSVG: '0%', immediateRender: true });
+      }
     });
   }, []);
 
-  // ── 2. Animación — reacciona a fase ────────────────────────────────────────
+  // ── 2. Animación ──────────────────────────────────────────────────────────
   useEffect(() => {
     const svg = svgRef.current;
     if (!svg) return;
@@ -73,7 +55,7 @@ export default function DibujoLuta({
         gsap.set(svg, { opacity: 1 });
         DRAW_ORDER.forEach((id) => {
           const path = svg.getElementById(id) as SVGPathElement | null;
-          if (path) gsap.set(path, { drawSVG: true });
+          if (path) gsap.set(path, { drawSVG: '100%', immediateRender: true });
         });
       }
       return;
@@ -84,34 +66,47 @@ export default function DibujoLuta({
 
     tlRef.current?.kill();
 
+    // ── Leer todos los lengths ANTES de crear el timeline (evita reflow) ──
+    const lengths = DRAW_ORDER.map((id) => {
+      const path = svg.getElementById(id) as SVGPathElement | null;
+      return path?.getTotalLength() ?? 0;
+    });
+
+    const totalLength = lengths.reduce((a, b) => a + b, 0);
+    const speed = totalLength / duration;
+
+    // ── Construir timeline con posiciones absolutas ───────────────────────
     const tl = gsap.timeline({ onComplete });
     tlRef.current = tl;
 
-    tl.set(svg, { opacity: 1 });
+    tl.set(svg, { opacity: 1, immediateRender: true });
 
-    const totalLength = DRAW_ORDER.reduce((sum, id) => {
-      const path = svg.getElementById(id) as SVGPathElement | null;
-      return sum + (path?.getTotalLength() ?? 0);
-    }, 0);
-
-    const speed = totalLength / duration;
-    const lastIndex = DRAW_ORDER.length - 1;
+    let cursor = 0; // posición absoluta en el timeline
+    const EASES: Record<string, string> = {
+      'p-l1': 'power1.out',
+      'p-l2': 'power1.out',
+    };
 
     DRAW_ORDER.forEach((id, i) => {
       const path = svg.getElementById(id) as SVGPathElement | null;
       if (!path) return;
-      const pathDuration = path.getTotalLength() / speed;
-      const ease = i === lastIndex ? 'power2.out' : 'none';
-      tl.to(path, { drawSVG: true, duration: pathDuration, ease }, '>');
+
+      const pathDuration = lengths[i] / speed;
+      const ease =
+        EASES[id] ?? (i === DRAW_ORDER.length - 1 ? 'power1.out' : 'none');
+
+      tl.to(path, { drawSVG: '100%', duration: pathDuration, ease }, cursor);
+      cursor += pathDuration;
     });
   }, [phase, play, duration, onComplete]);
 
-  // ── 3. Cleanup — solo en unmount ────────────────────────────────────────────
-  useEffect(() => {
-    return () => {
+  // ── 3. Cleanup ────────────────────────────────────────────────────────────
+  useEffect(
+    () => () => {
       tlRef.current?.kill();
-    };
-  }, []);
+    },
+    [],
+  );
 
   return (
     <svg
@@ -123,17 +118,20 @@ export default function DibujoLuta({
       aria-label="Luta"
       role="img"
     >
-      {/* L — trazo largo */}
       <path
-        id="p-l"
+        id="p-l1"
         fill="none"
         stroke={stroke}
         strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeLinejoin="round"
-        d="m 1.6,1.6 c 0,0 0.4769573,3.82143 2.4738949,9.632699 2.0986444,6.107246 4.9201663,13.049247 6.7978331,17.919177 3.439584,8.920927 9.591616,20.407572 12.994036,23.841759 3.479613,3.512101 14.138808,14.112781 17.360333,13.652173 2.93615,-0.419806 8.471683,0.733414 9.998382,-5.732606 C 52.751178,54.447183 46.742655,49.319533 45.237424,47.711746 43.4718,45.825824 38.187982,36.066924 38.561857,36.066924 c 0,0 -1.152264,-1.128457 0.269418,-0.419094 1.182845,0.590193 10.691216,12.984043 11.97411,16.85356 0.642942,1.939268 3.725985,2.078814 3.725985,2.078814 0,0 2.508697,0.778318 7.74737,-1.526699 5.238673,-2.305016 1.867066,-9.38411 1.458684,-10.251144 C 63.332888,41.943494 53.55943,31.037798 53.55943,31.037798 c 0,0 -0.318081,-0.629043 0.359224,-0.538835 1.243339,0.165595 6.067264,5.475074 9.522797,9.896373 2.083898,2.666316 3.365087,5.312159 3.588853,5.721696 0.37816,0.692109 4.31068,1.714455 5.657767,1.504908 0,0 4.658325,-0.491856 7.924061,-3.959143"
+        d="m 1.6,1.6
+     c 0,0 0.4769573,3.82143 2.4738949,9.632699
+     2.0986444,6.107246 4.9201663,13.049247 6.7978331,17.919177
+     3.439584,8.920927 9.591616,20.407572 12.994036,23.841759
+     3.479613,3.512101 14.138808,14.112781 17.360333,13.652173
+     2.93615,-0.419806 8.471683,0.733414 9.998382,-5.732606"
       />
-
       {/* T — cuerpo vertical */}
       <path
         id="p-t"
@@ -142,6 +140,28 @@ export default function DibujoLuta({
         strokeWidth={strokeWidth}
         strokeLinecap="round"
         d="m 67.50562,5.0782217 9.253648,12.3390263 c 0,0 8.007632,13.083577 9.531688,14.903976 1.524055,1.8204 4.529831,4.656836 5.926882,4.95318 1.397051,0.296344 2.518994,1.07561 5.546233,0.650431 3.027229,-0.425179 7.767459,-5.307267 7.767459,-5.307267 l 4.25528,-4.614501 c -1.4893,-0.739808 -5.66208,-7.267044 -5.17212,-7.366268 0,0 -1.7708,-4.78384 -0.62776,-7.916621 1.14304,-3.1327799 4.28733,-5.7878169 6.47724,-6.4772347 2.28608,-0.7196929 4.01603,-0.9496122 8.67864,-0.8466975 1.0187,0.022485 2.65068,0.1809182 3.62849,1.2042554 0.953,0.9973667 3.07483,4.2198058 3.55755,5.0561688 0,0 4.87339,3.901787 4.87339,5.358059 0,3.61266 -3.0272,5.917384 -5.9632,8.236572 -0.87384,0.690262 -6.01175,2.76195 -8.53394,3.130743 -3.11991,0.456193 -6.44293,0.0041 -6.91829,-0.378977"
+      />
+      <path
+        id="p-l2"
+        fill="none"
+        stroke={stroke}
+        strokeWidth={strokeWidth}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M 51.224479,61.913202
+     C 52.751178,54.447183 46.742655,49.319533 45.237424,47.711746
+     43.4718,45.825824 38.187982,36.066924 38.561857,36.066924
+     c 0,0 -1.152264,-1.128457 0.269418,-0.419094
+     1.182845,0.590193 10.691216,12.984043 11.97411,16.85356
+     0.642942,1.939268 3.725985,2.078814 3.725985,2.078814
+     0,0 2.508697,0.778318 7.74737,-1.526699
+     5.238673,-2.305016 1.867066,-9.38411 1.458684,-10.251144
+     C 63.332888,41.943494 53.55943,31.037798 53.55943,31.037798
+     c 0,0 -0.318081,-0.629043 0.359224,-0.538835
+     1.243339,0.165595 6.067264,5.475074 9.522797,9.896373
+     2.083898,2.666316 3.365087,5.312159 3.588853,5.721696
+     0.37816,0.692109 4.31068,1.714455 5.657767,1.504908
+     0,0 4.658325,-0.491856 7.924061,-3.959143"
       />
 
       {/* diagonal conector L → T */}
