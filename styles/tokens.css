@@ -57,6 +57,7 @@
     --font-extralight: var(--ff-extralight), sans-serif;
     --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
     /* ── TAMAÑOS TIPOGRÁFICOS ──────────────────────────────── */
+    --text-h2: 0.8rem;
     --text-xs: 0.65rem;
     --text-sm: 0.875rem;
     --text-base: 1rem;
@@ -68,6 +69,7 @@
     --text-4xl: 3.5rem;
     --text-5xl: clamp(3rem, 6vw, 5rem);
     --text-hero: clamp(3rem, 14vw, 16rem);
+    --text-section-p: clamp(1.4rem, 5vw, 5.8rem);
 
     /* ── LINE HEIGHT ───────────────────────────────────────── */
     --leading-none: 1;

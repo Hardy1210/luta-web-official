@@ -9,11 +9,52 @@ import { SubText } from '../intro-split-text/SubText';
 import Navbar from '../layout/navbar/Navbar';
 
 import { getImageProps } from 'next/image';
+import TextScrollAnimation, {
+  type TextLine,
+} from '../text-animation/TextScrollAnimation';
 
 type HomeClientProps = {
   name: string;
   description: string;
 };
+
+const defaultLines: TextLine[] = [
+  {
+    parts: [
+      { text: 'QUI EST ' },
+      { text: 'LUTA', className: 'font-serif italic font-normal' },
+      { text: ' ? UNE ARTISTE SIMPLE,' },
+    ],
+  },
+  {
+    parts: [
+      { text: 'HUMBLE ET ' },
+      { text: 'SOLAIRE.', className: 'font-serif italic font-normal' },
+      { text: ' ELLE AVANCE' },
+    ],
+  },
+  {
+    parts: [
+      { text: 'AVEC ' },
+      { text: 'DOUCEUR', className: 'font-serif italic font-normal' },
+      { text: ' ET ' },
+      { text: 'CONVICTION,', className: 'font-serif italic font-normal' },
+    ],
+  },
+  {
+    parts: [{ text: 'SÈME UN PEU DE LUMIÈRE' }],
+  },
+  {
+    parts: [{ text: 'AUTOUR D’ELLE.' }],
+  },
+];
+const { props: revealProps } = getImageProps({
+  src: '/images/reveal-luta.webp',
+  width: 1500,
+  height: 2250,
+  alt: '',
+  // quality: 90,
+});
 {
   /*
         <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
@@ -25,14 +66,6 @@ type HomeClientProps = {
         */
 }
 export function HomeClient({ name, description }: HomeClientProps) {
-  const { props: revealProps } = getImageProps({
-    src: '/images/reveal-luta.webp',
-    width: 1500,
-    height: 2250,
-    alt: '',
-    // quality: 90,
-  });
-
   return (
     <>
       <div className="relative w-full h-full">
@@ -82,29 +115,11 @@ export function HomeClient({ name, description }: HomeClientProps) {
               </div>
             </div>
           </section>
+          <section id="bio">
+            <TextScrollAnimation eyebrow="(BIO)" lines={defaultLines} />
+          </section>
         </main>
       </div>
     </>
   );
-  {
-    /**
-          
-           <section id="hero" className=" h-screen">
-            <div className="w-full h-auto flex ">
-              <div className="relative w-full h-full flex flex-col items-center justify-center pt-120">
-                <h1 className="sr-only">Luta Musique</h1>
-                <div className="absolute top-44  flex flex-row justify-center  w-full h-auto gap-10 ">
-                  <IntroImage
-                    className="pt-4"
-                    hoverSrc={revealProps.src}
-                    brushSize={0.65}
-                    trailDecay={2.5}
-                    smoothness={0.95}
-                  />
-                </div>
-                <HeroText className="text-center " />
-              </div>
-            </div>
-          </section>*/
-  }
 }

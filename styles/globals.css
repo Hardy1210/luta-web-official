@@ -79,7 +79,8 @@ h1 {
 }
 
 h2 {
-  font-size: var(--text-4xl);
+  font-size: var(--text-h2);
+  letter-spacing: var(--tracking-tight);
 }
 
 h3 {
@@ -99,7 +100,6 @@ h6 {
 }
 
 p {
-  max-width: 65ch;
   line-height: var(--leading-normal);
 }
 
