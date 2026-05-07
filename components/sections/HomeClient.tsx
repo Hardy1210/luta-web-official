@@ -9,9 +9,11 @@ import { SubText } from '../intro-split-text/SubText';
 import Navbar from '../layout/navbar/Navbar';
 
 import { getImageProps } from 'next/image';
+import { Camino } from '../icons/dibujos/caminos/Camino';
 import TextScrollAnimation, {
   type TextLine,
 } from '../text-animation/TextScrollAnimation';
+import BioSection from './biosection/BioSection';
 
 type HomeClientProps = {
   name: string;
@@ -117,7 +119,15 @@ export function HomeClient({ name, description }: HomeClientProps) {
           </section>
           <section id="bio">
             <TextScrollAnimation eyebrow="(BIO)" lines={defaultLines} />
+            <div className="flex w-full h-auto justify-center  sm:hidden">
+              <Camino size={100} />
+            </div>
           </section>
+          <BioSection
+            imageSrc="/images/lu-gui.webp"
+            imageMobileSrc="/images/lu-gui.webp"
+            imageAlt="Luta en concert"
+          />
         </main>
       </div>
     </>

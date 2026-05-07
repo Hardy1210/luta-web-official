@@ -1,78 +1,219 @@
+// ============================================================
+// BIO SECTION — Grid Layout (12 → 8 → 4 columns)
+// ============================================================
+//
+// COLUMN LOGIC POR BREAKPOINT:
+//
+//  MOBILE  (<768px) — 4 columnas
+//  ┌──┬──┬──┬──┐
+//  │ 1│ 2│ 3│ 4│
+//  └──┴──┴──┴──┘
+//  Heading  : col 1 → span 4  (full width)
+//  Image    : col 1 → span 4  (full width)
+//  Caption  : col 1 → span 4
+//  Bio text : col 1 → span 4
+//
+//  TABLET  (768px–1023px) — 8 columnas
+//  ┌──┬──┬──┬──┬──┬──┬──┬──┐
+//  │ 1│ 2│ 3│ 4│ 5│ 6│ 7│ 8│
+//  └──┴──┴──┴──┴──┴──┴──┴──┘
+//  Heading  : col 1 → span 5  | row 1
+//  Image    : col 6 → span 3  | row 1–2 (span 2 rows)
+//  Caption  : col 1 → span 2  | row 2
+//  Bio text : col 3 → span 3  | row 2
+//
+//  DESKTOP (≥1024px) — 12 columnas
+//  ┌──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┬──┐
+//  │ 1│ 2│ 3│ 4│ 5│ 6│ 7│ 8│ 9│10│11│12│
+//  └──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┴──┘
+//  Heading  : col 1  → span 7  | row 1
+//  Image    : col 8  → span 5  | row 1–2 (span 2 rows)
+//  Caption  : col 1  → span 2  | row 2
+//  Bio text : col 4  → span 4  | row 2
+//
+// ============================================================
+
+// ── Variables ────────────────────────────────────────────────
+//$bg-color: #f5f0e8;
+$color-ink: #1a1a18;
+$gap-col: 1.5rem; // gutter entre columnas
+$gap-row: 0; // sin gap entre filas (espacio gestionado con padding)
+
+// ── Breakpoints ──────────────────────────────────────────────
+$bp-md: 768px;
+$bp-lg: 1024px;
+
+// ── Sección wrapper ──────────────────────────────────────────
 .bio {
-  background-color: var(--c-white);
-  color: var(--c-black);
-  padding: var(--section-pad-y) var(--section-pad-x);
-}
-
-.inner {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6rem;
-  align-items: start;
-  max-width: 1400px;
-  margin: 0 auto;
-
-  @media (max-width: 767px) {
-    grid-template-columns: 1fr;
-    gap: 3rem;
-  }
-}
-
-.textCol {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.overline {
-  font-family: var(--ff-display);
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  color: var(--c-neon);
-  text-transform: uppercase;
-}
-
-.heading {
-  font-family: var(--ff-display);
-  font-weight: 800;
-  font-size: clamp(3rem, 6vw, 6rem);
-  line-height: 0.95;
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
-}
-
-.introBig {
-  font-family: var(--ff-serif);
-  font-size: clamp(1.1rem, 1.8vw, 1.4rem);
-  font-weight: 400;
-  font-style: italic;
-  line-height: 1.6;
-  color: #333;
-  border-left: 2px solid var(--c-neon);
-  padding-left: 1.2rem;
-}
-
-.bodyText {
-  font-family: var(--ff-body);
-  font-size: clamp(0.85rem, 1.1vw, 0.95rem);
-  font-weight: 300;
-  line-height: 1.8;
-  color: #444;
-}
-
-/* ── Image ── */
-.imageWrapper {
-  position: relative;
-  aspect-ratio: 3 / 4;
+  background-color: $bg-color;
+  padding-block: 4rem 5rem;
+  padding-inline: var(--container-pad);
   overflow: hidden;
+  color: $color-ink;
+  min-height: 80vh; // ← aquí
+}
 
-  @media (max-width: 767px) {
-    aspect-ratio: 4 / 5;
+// ── Grid container ───────────────────────────────────────────
+//
+//  Regla: siempre se declara la cantidad de columnas en el
+//  contenedor. Los hijos se posicionan con col-start / col-span
+//  (via Tailwind en el TSX). Esto hace el grid portable y
+//  fácilmente modificable por sección.
+//
+.grid {
+  display: grid;
+  column-gap: $gap-col;
+  row-gap: $gap-row;
+  align-items: start;
+
+  // ── Mobile — 4 columnas
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: auto auto auto auto;
+
+  // ── Tablet — 8 columnas
+  @media (min-width: $bp-md) {
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: auto auto;
+  }
+
+  // ── Desktop — 12 columnas
+  @media (min-width: $bp-lg) {
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: auto auto;
   }
 }
 
-.image {
-  object-fit: cover;
-  object-position: center;
+// ── Bloque: Heading ──────────────────────────────────────────
+.heading {
+  // Mobile: fila 1, ancho total
+  grid-column: 1 / span 4;
+  grid-row: 1;
+  padding-bottom: 2rem;
+
+  @media (min-width: $bp-md) {
+    grid-column: 1 / span 5;
+    padding-bottom: 3rem;
+  }
+
+  @media (min-width: $bp-lg) {
+    grid-column: 1 / span 5;
+    padding-bottom: 4rem;
+  }
+
+  p {
+    font-family: var(--ff-display);
+    font-size: clamp(1.6rem, 3.5vw, 1.7rem);
+    font-weight: 400;
+    //line-height: 1.12;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+
+    // Las palabras en itálica usan Lora (serif)
+    em {
+      font-family: var(--ff-serif);
+      font-style: italic;
+      font-weight: 400;
+      text-transform: none;
+    }
+  }
+}
+
+// ── Bloque: Imagen ────────────────────────────────────────────
+//
+//  La imagen ocupa 2 filas en tablet y desktop → row-span 2.
+//  En mobile ocupa solo 1 fila (ancho completo).
+//
+.imageWrapper {
+  // Mobile: fila 2, ancho total
+  grid-column: 1 / span 4;
+  grid-row: 2;
+  position: relative;
+
+  // Alto adaptado: en mobile la imagen es horizontal (aspect-ratio diferente)
+  aspect-ratio: 4 / 3;
+
+  @media (min-width: $bp-md) {
+    // Tablet: columnas 6→8, filas 1 y 2
+    grid-column: 6 / span 3;
+    grid-row: 1 / span 2;
+    aspect-ratio: 3 / 4;
+  }
+
+  @media (min-width: $bp-lg) {
+    // Desktop: columnas 8→12, filas 1 y 2
+    grid-column: 9 / span 4;
+    grid-row: 1 / span 2;
+    aspect-ratio: auto;
+    // La altura se define por el contenido vecino
+    min-height: 620px;
+  }
+
+  img {
+    object-fit: cover;
+    object-position: top center;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+// ── Bloque: Caption ───────────────────────────────────────────
+.caption {
+  // Mobile: fila 3
+  grid-column: 1 / span 4;
+  grid-row: 3;
+  padding-block: 1.5rem;
+
+  @media (min-width: $bp-md) {
+    grid-column: 1 / span 2;
+    grid-row: 2;
+    padding-block: 0;
+    align-self: end;
+    padding-top: 1rem;
+  }
+
+  @media (min-width: $bp-lg) {
+    grid-column: 1 / span 2;
+    grid-row: 2;
+    align-self: end;
+    padding-bottom: 0.5rem;
+  }
+
+  p {
+    font-family: var(--ff-extralight);
+    font-size: 0.72rem;
+    line-height: 1.5;
+    letter-spacing: 0.01em;
+    color: $color-ink;
+    opacity: 0.7;
+  }
+}
+
+// ── Bloque: Texto bio ─────────────────────────────────────────
+.bioText {
+  // Mobile: fila 4
+  grid-column: 1 / span 4;
+  grid-row: 4;
+  padding-block: 1rem 0;
+  line-height: var(--leading-tight);
+
+  @media (min-width: $bp-md) {
+    grid-column: 3 / span 3;
+    grid-row: 2;
+    align-self: end;
+    padding-top: 1rem;
+  }
+
+  @media (min-width: $bp-lg) {
+    grid-column: 6 / span 3;
+    grid-row: 2;
+    align-self: center;
+    padding-top: 0;
+  }
+
+  p {
+    font-family: var(--ff-body);
+    font-size: clamp(0.78rem, 1vw, 0.875rem);
+    line-height: 1.75;
+    color: $color-ink;
+  }
 }

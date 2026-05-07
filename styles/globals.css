@@ -100,7 +100,7 @@ h6 {
 }
 
 p {
-  line-height: var(--leading-normal);
+  line-height: var(--leading-tight);
 }
 
 /* ── ACCESSIBILITÉ ─────────────────────────────────────────── */

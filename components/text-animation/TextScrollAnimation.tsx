@@ -334,7 +334,7 @@ export default function TextScrollAnimation({
   return (
     <div
       ref={rootRef}
-      className={`relative flex min-h-screen w-full items-center px-(--container-pad) justify-center  py-20 ${className}`}
+      className={`relative flex min-h-[50vh] md:min-h-screen w-full items-center px-(--container-pad) justify-center  py-20 ${className}`}
     >
       <div className="mx-auto flex w-full flex-col items-center text-center">
         <div className="mb-4 inline-block">
