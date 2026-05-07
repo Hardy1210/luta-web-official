@@ -1,0 +1,30 @@
+// AnimatedText.module.scss
+
+// ── Root ─────────────────────────────────────────────────────
+// Empieza invisible; GSAP lo pone en opacity: 1 tras el split
+// para evitar el flash del texto sin animar.
+.root {
+  opacity: 0;
+}
+
+// ── Clip wrapper ──────────────────────────────────────────────
+// Contenedor generado por JS alrededor de cada línea.
+// overflow: hidden es lo que produce el efecto de reveal:
+// la línea sube desde y:110% pero nunca es visible fuera del clip.
+.lineClip {
+  display: block;
+  overflow: hidden;
+
+  // Compensa el descender de algunas fuentes (Lora, serif)
+  // para que no se corte la parte inferior de las letras.
+  // padding-bottom: 0.08em;
+}
+
+// ── Línea ─────────────────────────────────────────────────────
+// SplitText añade esta clase a cada línea que genera.
+// display: block necesario para que el translate funcione.
+.line {
+  display: block;
+  //line-height: 1;
+  will-change: transform; // hint al compositor — GSAP lo limpia al completar
+}

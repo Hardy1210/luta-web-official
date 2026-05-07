@@ -6,7 +6,7 @@
 @layer base {
   :root {
     /* ── COLORES PRINCIPALES DEL PROYECTO ───────────────────── */
-    --c-black: #0c0b0b;
+    --c-black: #1a1a18;
     --c-white: #f4f4ed;
     --c-neon: #772eb1;
     --c-muted: #7a7672;
@@ -45,6 +45,7 @@
     --ff-display: var(--font-inter), sans-serif;
     --ff-serif: var(--font-lora), serif;
     /*tiene qu eser para las letras engeneral*/
+    --ff-messiri: var(--font-messiri), serif;
     --ff-body: var(--font-inter-regular), sans-serif;
     --ff-light: var(--font-inter-light), sans-serif;
     --ff-extralight: var(--font-inter-extralight), sans-serif;
@@ -53,6 +54,7 @@
     --font-display: var(--ff-display);
     --font-serif: var(--ff-serif);
     --font-body: var(--ff-body);
+    --font-messiri: var(--ff-messiri);
     --font-light: var(--ff-light), sans-serif;
     --font-extralight: var(--ff-extralight), sans-serif;
     --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
@@ -69,7 +71,7 @@
     --text-4xl: 3.5rem;
     --text-5xl: clamp(3rem, 6vw, 5rem);
     --text-hero: clamp(3rem, 14vw, 16rem);
-    --text-section-p: clamp(1.4rem, 5vw, 5.8rem);
+    --text-section-p: clamp(1.4rem, 4.5vw, 5rem);
 
     /* ── LINE HEIGHT ───────────────────────────────────────── */
     --leading-none: 1;

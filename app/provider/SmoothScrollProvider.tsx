@@ -24,6 +24,15 @@ export default function SmoothScrollProvider({
   }, [introComplete]);
 
   useEffect(() => {
+    // Prevent browser from restoring scroll position on reload/back-forward.
+    // Without this, the page starts mid-scroll and the intro animation plays off-screen.
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
     const update = (time: number) => {

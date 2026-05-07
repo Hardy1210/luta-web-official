@@ -30,6 +30,11 @@ const interExtraLight = localFont({
   variable: '--font-inter-extralight',
 });
 
+const messiri = localFont({
+  src: '../public/fonts/ElMessiri-SemiBold.woff2',
+  variable: '--font-messiri',
+});
+
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
@@ -73,7 +78,7 @@ export default function RootLayout({
   return (
     <html
       lang="fr"
-      className={`${lora.variable} ${inter.variable} ${interRegular.variable} ${interLight.variable} ${interExtraLight.variable} h-full antialiased`}
+      className={`${lora.variable} ${inter.variable} ${interRegular.variable} ${interLight.variable} ${interExtraLight.variable} ${messiri.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <AnimationProvider>

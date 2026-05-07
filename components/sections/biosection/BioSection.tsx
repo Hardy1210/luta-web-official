@@ -29,6 +29,7 @@
 //  │  BIO TEXT[1–4]   │
 //  └──────────────────┘
 
+import { AnimatedText } from '@/components/Animated-text/AnimatedText';
 import Image from 'next/image';
 import styles from './BioSection.module.scss';
 
@@ -58,12 +59,20 @@ export default function BioSection({
           · CSS lo diferencia con `em` dentro del h1 en el SCSS
         */}
         <div className={styles.heading}>
-          <p>
+          <AnimatedText
+            as="p"
+            duration={0.9} // más lento por línea
+            stagger={0.1} // más separación entre líneas
+            ease="power4.out" // más suave al final
+            delay={0}
+          >
             Autrice, compositrice et&nbsp;interprète, Luta trace un parcours
-            musical guidé par la <em>sincérité.</em> Une musique née
-            du&nbsp;vécu, entre simplicité et <em>intensité.</em> Des chansons
-            qui parlent du <em>quotidien</em> et du lien aux&nbsp;autres.
-          </p>
+            musical guidé par la{' '}
+            <em style={{ fontFamily: 'var(--ff-serif)' }}>SINCÉRITÉ.</em> Une
+            musique née du&nbsp;vécu, entre simplicité et <em>INTENSITÉ.</em>{' '}
+            Des chansons qui parlent du <em>QUOTIDIEN</em> et du lien
+            aux&nbsp;autres.
+          </AnimatedText>
         </div>
 
         {/* ── IMAGE ───────────────────────────────────────── */}
@@ -98,16 +107,29 @@ export default function BioSection({
 
         {/* ── CAPTION ─────────────────────────────────────── */}
         <div className={styles.caption}>
-          <p>
+          <AnimatedText
+            as="p"
+            duration={0.9} // más lento por línea
+            stagger={0.05} // más separación entre líneas
+            ease="power4.out" // más suave al final
+            delay={0}
+          >
             Enfance au cœur du&nbsp;Morvan
             <br />
             entourée par la nature et les animaux.
-          </p>
+          </AnimatedText>
         </div>
 
         {/* ── BIO TEXT ────────────────────────────────────── */}
         <div className={styles.bioText}>
-          <p>
+          <AnimatedText
+            className={styles.bioTextP}
+            as="p"
+            duration={0.9} // más lento por línea
+            stagger={0.05} // más separación entre líneas
+            ease="power4.out" // más suave al final
+            delay={0}
+          >
             Luta est autrice, compositrice et interprète. Elle grandit au cœur
             du Morvan, entourée par la nature, qui façonne très tôt sa
             sensibilité. La musique l&apos;accompagne depuis
@@ -117,7 +139,7 @@ export default function BioSection({
             se consacrer pleinement à son projet artistique. Ses chansons
             racontent le quotidien, les émotions simples et le besoin de
             partage, portées par une écriture sincère et une voix intime.
-          </p>
+          </AnimatedText>
         </div>
       </div>
     </div>

@@ -45,7 +45,7 @@ $bp-lg: 1024px;
 
 // ── Sección wrapper ──────────────────────────────────────────
 .bio {
-  background-color: $bg-color;
+  background-color: var(--color-bg);
   padding-block: 4rem 5rem;
   padding-inline: var(--container-pad);
   overflow: hidden;
@@ -101,12 +101,13 @@ $bp-lg: 1024px;
   }
 
   p {
-    font-family: var(--ff-display);
-    font-size: clamp(1.6rem, 3.5vw, 1.7rem);
+    font-family: var(--ff-messiri);
+    font-size: clamp(1.6rem, 2.5vw, 2.9rem);
     font-weight: 400;
-    //line-height: 1.12;
+    line-height: 1;
     letter-spacing: -0.01em;
     text-transform: uppercase;
+    color: var(--color-text);
 
     // Las palabras en itálica usan Lora (serif)
     em {
@@ -145,7 +146,7 @@ $bp-lg: 1024px;
     grid-row: 1 / span 2;
     aspect-ratio: auto;
     // La altura se define por el contenido vecino
-    min-height: 620px;
+    min-height: 650px;
   }
 
   img {
@@ -179,9 +180,10 @@ $bp-lg: 1024px;
   }
 
   p {
-    font-family: var(--ff-extralight);
-    font-size: 0.72rem;
-    line-height: 1.5;
+    font-family: var(--font-messiri);
+    line-height: var(--leading-tight);
+    font-size: 0.75rem;
+
     letter-spacing: 0.01em;
     color: $color-ink;
     opacity: 0.7;
@@ -194,7 +196,7 @@ $bp-lg: 1024px;
   grid-column: 1 / span 4;
   grid-row: 4;
   padding-block: 1rem 0;
-  line-height: var(--leading-tight);
+  //
 
   @media (min-width: $bp-md) {
     grid-column: 3 / span 3;
@@ -206,14 +208,15 @@ $bp-lg: 1024px;
   @media (min-width: $bp-lg) {
     grid-column: 6 / span 3;
     grid-row: 2;
-    align-self: center;
+    align-self: end;
     padding-top: 0;
   }
 
-  p {
-    font-family: var(--ff-body);
+  .bioTextP {
+    font-family: var(--ff-messiri);
     font-size: clamp(0.78rem, 1vw, 0.875rem);
-    line-height: 1.75;
+    line-height: var(--leading-tight);
     color: $color-ink;
+    // line-height: var(--leading-tight);
   }
 }
