@@ -53,6 +53,11 @@ export default function ImageExpandDesktop() {
   const overlayRef = useRef<HTMLDivElement>(null);
   const labelRef = useRef<HTMLParagraphElement>(null);
 
+  //barra after
+  // barra after
+  const afterRef = useRef<HTMLDivElement>(null);
+  const afterBlocksRef = useRef<HTMLDivElement[]>([]);
+
   useGSAP(
     () => {
       const section = sectionRef.current;
@@ -64,6 +69,8 @@ export default function ImageExpandDesktop() {
       const overlay = overlayRef.current;
       const label = labelRef.current;
 
+      const after = afterRef.current;
+
       if (
         !section ||
         !imgBox ||
@@ -72,11 +79,15 @@ export default function ImageExpandDesktop() {
         !shadowLayer ||
         !subjectLayer ||
         !overlay ||
-        !label
+        !label ||
+        !after
       ) {
         return;
       }
 
+      const afterBlocks = afterBlocksRef.current.filter(Boolean);
+
+      if (!afterBlocks.length) return;
       const getCoverSize = () => {
         const viewportWidth = window.innerWidth;
         const viewportHeight = window.innerHeight;
@@ -145,6 +156,15 @@ export default function ImageExpandDesktop() {
         scale: HOVER_CONFIG.subjectScale,
       });
 
+      gsap.set(after, {
+        pointerEvents: 'none',
+      });
+
+      gsap.set(afterBlocks, {
+        autoAlpha: 0,
+        y: 12,
+        force3D: true,
+      });
       const backgroundXTo = gsap.quickTo(backgroundLayer, 'x', {
         duration: 0.8,
         ease: 'power3.out',
@@ -238,6 +258,25 @@ export default function ImageExpandDesktop() {
       );
 
       tl.to(overlay, { opacity: 1, duration: 0.3 }, 0.85);
+      tl.to(
+        afterBlocks,
+        {
+          autoAlpha: 1,
+          y: 0,
+          ease: 'power2.out',
+          duration: 0.22,
+          stagger: 0.04,
+        },
+        1.1,
+      );
+
+      tl.set(
+        after,
+        {
+          pointerEvents: 'auto',
+        },
+        1.1,
+      );
 
       return () => {
         window.removeEventListener('pointermove', handlePointerMove);
@@ -320,32 +359,46 @@ export default function ImageExpandDesktop() {
           <p ref={labelRef} className={styles.imgLabel}>
             una imagen
           </p>
-        </div>
-      </div>
+          <div ref={afterRef} className={styles.after}>
+            <div className={styles.afterInner}>
+              <div
+                ref={(el) => {
+                  if (el) afterBlocksRef.current[0] = el;
+                }}
+                className={`${styles.afterBlock} ${styles.afterBlockLeft}`}
+              >
+                <p className={styles.afterText}>
+                  SITE WEB CRÉÉ PAR KALÉ VIRTUAL STUDIO.
+                  <br />
+                  POUR UN MUSICIEN / AUTEUR COMPOSITEUR.
+                </p>
+              </div>
 
-      <div className={styles.after}>
-        <div className={styles.afterInner}>
-          <div className={`${styles.afterBlock} ${styles.afterBlockLeft}`}>
-            <p className={styles.afterText}>
-              SITE WEB CRÉÉ PAR KALÉ VIRTUAL STUDIO.
-              <br />
-              POUR UN MUSICIEN / AUTEUR COMPOSITEUR.
-            </p>
-          </div>
+              <div
+                ref={(el) => {
+                  if (el) afterBlocksRef.current[1] = el;
+                }}
+                className={`${styles.afterBlock} ${styles.afterBlockCenter}`}
+              >
+                <p className={styles.afterText}>
+                  WEB DESIGN
+                  <br />
+                  DIRECTION CRÉATIVE
+                </p>
+              </div>
 
-          <div className={`${styles.afterBlock} ${styles.afterBlockCenter}`}>
-            <p className={styles.afterText}>
-              WEB DESIGN
-              <br />
-              DIRECTION CRÉATIVE
-            </p>
-          </div>
-
-          <div className={`${styles.afterBlock} ${styles.afterBlockRight}`}>
-            <a href="#" className={styles.afterLink}>
-              <span className={styles.afterArrow}>→</span>
-              <span className={styles.afterLinkText}>VOIR LE SITE</span>
-            </a>
+              <div
+                ref={(el) => {
+                  if (el) afterBlocksRef.current[2] = el;
+                }}
+                className={`${styles.afterBlock} ${styles.afterBlockRight}`}
+              >
+                <a href="https://www.kalevs.com" className={styles.afterLink}>
+                  <span className={styles.afterArrow}>→</span>
+                  <span className={styles.afterLinkText}>VOIR LE SITE</span>
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </div>

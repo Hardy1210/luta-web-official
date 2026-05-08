@@ -112,7 +112,7 @@
   position: absolute;
   inset: 0;
   z-index: 4;
-  background: rgba(0, 0, 0, 0.415);
+  background: rgba(0, 0, 0, 0.318);
   opacity: 0;
   pointer-events: none;
 }
@@ -131,42 +131,69 @@
   pointer-events: none;
 }
 
+//BARRA QU ESE SUPERPONE A LA STICKT  donde est ala magen
+// ─────────────────────────────────────────────────────────────
+// AFTER BAR
+// ─────────────────────────────────────────────────────────────
+//
+// Esta barra vive dentro de .sticky desde el inicio.
+// No está fuera de la sección y no usa margin-top negativo.
+//
+// Objetivo:
+// - Existe desde que la imagen pequeña está centrada en el viewport.
+// - Permanece invisible durante la expansión de imgBox.
+// - Aparece solo cuando imgBox ya ocupa todo el viewport.
+// - GSAP controla su opacity/y.
+// ─────────────────────────────────────────────────────────────
+
 .after {
-  position: relative;
-  z-index: 10;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  //z-index: 20;
 
   width: 100%;
-  height: 150px;
-  margin-top: -150px;
+  height: 70px;
 
   display: flex;
   align-items: stretch;
 
-  // Importante:
-  // transparente para que siga viéndose lo que está debajo
-  // y el mix-blend-mode tenga sentido visualmente.
   background: transparent;
+  pointer-events: none;
 
-  // si quieres evitar problemas de interacción
-  // con la capa inferior, puedes dejarlo así
-  pointer-events: auto;
+  // No aislar, necesitamos que pueda mezclar con lo que hay debajo
+  isolation: auto;
 }
 
 .afterInner {
   width: 100%;
-  min-height: 100%;
+  height: 100%;
+
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   align-items: center;
   column-gap: 2rem;
 
   padding: 1.1rem 1.25rem;
+
+  // Importante:
+  // NO poner opacity aquí
+  // NO poner transform aquí
+  // NO poner will-change aquí
 }
 
 .afterBlock {
   min-width: 0;
   display: flex;
   align-items: center;
+
+  // Animaremos esto con GSAP
+  opacity: 0;
+  transform: translate3d(0, 12px, 0);
+  will-change: opacity, transform;
+
+  // El blend va aquí, en el elemento que contiene el texto
+  mix-blend-mode: difference;
 }
 
 .afterBlockLeft {
@@ -191,16 +218,11 @@
   font-size: clamp(0.72rem, 0.62rem + 0.2vw, 0.92rem);
   line-height: 1.05;
   letter-spacing: -0.02em;
-  font-weight: 700;
+  font-weight: 400;
 
-  // mix blend
-  mix-blend-mode: difference;
-
-  // importante para que quede encima visualmente
   position: relative;
   z-index: 2;
 }
-
 .afterLink {
   display: inline-flex;
   align-items: center;
