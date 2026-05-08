@@ -1,0 +1,278 @@
+.intro {
+  //height: 100vh;
+  // background: #0a0a0a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  display: none;
+}
+
+.introLabel {
+  color: #555;
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  font-family: monospace;
+  margin: 0;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.introTitle {
+  color: #f0ede8;
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-family: 'Georgia', serif;
+  font-weight: 300;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.section {
+  position: relative;
+  //background: #0a0a0a;
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  // background: #0a0a0a;
+}
+
+.imgBox {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+
+  // Width / height are controlled by GSAP.
+  // Do not put width: 100vw or height: 100vh here.
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 60px rgba(0, 0, 0, 0.6);
+  background: #0a0a0a;
+  will-change: transform, border-radius;
+  cursor: default;
+}
+
+.isHoverReady {
+  cursor: pointer;
+}
+
+.scene {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+
+.image {
+  object-fit: cover;
+  object-position: center center;
+  user-select: none;
+  pointer-events: none;
+}
+
+.backgroundLayer {
+  z-index: 1;
+  filter: blur(2px);
+}
+
+.shadowLayer {
+  z-index: 2;
+  opacity: 0.2;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  filter: blur(4px);
+}
+
+.subjectLayer {
+  z-index: 3;
+  pointer-events: none;
+  filter: drop-shadow(-52px 12px 22px rgba(0, 0, 0, 0.12));
+}
+//es solo para darle un poco menos de brillo que dura durante
+// toda la aniamcion
+.overlayInitial {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  background: rgba(0, 0, 0, 0.108);
+
+  pointer-events: none;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  background: rgba(0, 0, 0, 0.415);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.imgLabel {
+  position: absolute;
+  left: 50%;
+  top: calc(50% + 78px);
+  transform: translateX(-50%);
+  color: #444;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  font-family: monospace;
+  text-transform: uppercase;
+  margin: 0;
+  pointer-events: none;
+}
+
+.after {
+  position: relative;
+  z-index: 10;
+
+  width: 100%;
+  height: 150px;
+  margin-top: -150px;
+
+  display: flex;
+  align-items: stretch;
+
+  // Importante:
+  // transparente para que siga viéndose lo que está debajo
+  // y el mix-blend-mode tenga sentido visualmente.
+  background: transparent;
+
+  // si quieres evitar problemas de interacción
+  // con la capa inferior, puedes dejarlo así
+  pointer-events: auto;
+}
+
+.afterInner {
+  width: 100%;
+  min-height: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: center;
+  column-gap: 2rem;
+
+  padding: 1.1rem 1.25rem;
+}
+
+.afterBlock {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+}
+
+.afterBlockLeft {
+  justify-content: flex-start;
+}
+
+.afterBlockCenter {
+  justify-content: center;
+}
+
+.afterBlockRight {
+  justify-content: flex-end;
+}
+
+.afterText,
+.afterLink {
+  margin: 0;
+  color: #fff;
+  text-transform: uppercase;
+  text-decoration: none;
+
+  font-size: clamp(0.72rem, 0.62rem + 0.2vw, 0.92rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+
+  // mix blend
+  mix-blend-mode: difference;
+
+  // importante para que quede encima visualmente
+  position: relative;
+  z-index: 2;
+}
+
+.afterLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  white-space: nowrap;
+}
+
+.afterArrow {
+  display: inline-block;
+  transform: translateY(-1px);
+}
+
+.afterLinkText {
+  display: inline-block;
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  .after {
+    height: auto;
+    margin-top: -120px;
+    min-height: 120px;
+  }
+
+  .afterInner {
+    grid-template-columns: 1fr 1fr 1fr;
+    padding: 1rem;
+    column-gap: 1rem;
+  }
+
+  .afterText,
+  .afterLink {
+    font-size: 0.72rem;
+  }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .after {
+    height: auto;
+    margin-top: -100px;
+    min-height: 100px;
+  }
+
+  .afterInner {
+    grid-template-columns: 1fr;
+    row-gap: 0.85rem;
+    padding: 1rem;
+  }
+
+  .afterBlockLeft,
+  .afterBlockCenter,
+  .afterBlockRight {
+    justify-content: flex-start;
+  }
+
+  .afterText,
+  .afterLink {
+    font-size: 0.7rem;
+    line-height: 1.1;
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: translateY(0);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translateY(4px);
+  }
+}

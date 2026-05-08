@@ -121,13 +121,14 @@ export default function BioSection({
         </div>
 
         {/* ── BIO TEXT ────────────────────────────────────── */}
+        {/* ── BIO TEXT ────────────────────────────────────── */}
         <div className={styles.bioText}>
           <AnimatedText
             className={styles.bioTextP}
             as="p"
-            duration={0.9} // más lento por línea
-            stagger={0.05} // más separación entre líneas
-            ease="power4.out" // más suave al final
+            duration={0.9}
+            stagger={0.05}
+            ease="power4.out"
             delay={0}
           >
             Luta est autrice, compositrice et interprète. Elle grandit au cœur
@@ -135,10 +136,21 @@ export default function BioSection({
             sensibilité. La musique l&apos;accompagne depuis
             l&apos;enfance&nbsp;: piano, guitare, puis l&apos;écriture et le
             chant. Longtemps vécue comme un refuge personnel, la musique prend
-            une place centrale à partir de 2020. En 2025, Luta fait le choix de
-            se consacrer pleinement à son projet artistique. Ses chansons
-            racontent le quotidien, les émotions simples et le besoin de
-            partage, portées par une écriture sincère et une voix intime.
+            une place centrale à partir de 2020.
+          </AnimatedText>
+
+          <AnimatedText
+            className={`${styles.bioTextP} ${styles.bioTextSecond}`}
+            as="p"
+            duration={0.9}
+            stagger={0.05}
+            ease="power4.out"
+            delay={0.15}
+          >
+            En 2025, Luta fait le choix de se consacrer pleinement à son projet
+            artistique. Ses chansons racontent le quotidien, les émotions
+            simples et le besoin de partage, portées par une écriture sincère et
+            une voix intime.
           </AnimatedText>
         </div>
       </div>

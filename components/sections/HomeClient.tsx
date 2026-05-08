@@ -10,6 +10,7 @@ import Navbar from '../layout/navbar/Navbar';
 
 import { getImageProps } from 'next/image';
 import { Camino } from '../icons/dibujos/caminos/Camino';
+import ImageExpand from '../image-expand/ImageExpand';
 import TextScrollAnimation, {
   type TextLine,
 } from '../text-animation/TextScrollAnimation';
@@ -123,11 +124,16 @@ export function HomeClient({ name, description }: HomeClientProps) {
               <Camino size={100} />
             </div>
           </section>
-          <BioSection
-            imageSrc="/images/lu-gui.webp"
-            imageMobileSrc="/images/lu-gui.webp"
-            imageAlt="Luta en concert"
-          />
+          <section>
+            <BioSection
+              imageSrc="/images/lu-gui.webp"
+              imageMobileSrc="/images/lu-gui.webp"
+              imageAlt="Luta en concert"
+            />
+          </section>
+          <section>
+            <ImageExpand />
+          </section>
         </main>
       </div>
     </>

@@ -1,0 +1,57 @@
+// ─────────────────────────────────────────────────────────────
+// ImageExpandShell / fallback height
+// ─────────────────────────────────────────────────────────────
+//
+// Esta sección usa componentes cargados con dynamic() y animaciones
+// GSAP / ScrollTrigger con una altura grande para crear scroll.
+//
+// Problema que puede ocurrir:
+// Si el componente dinámico renderiza `null` al inicio, la sección no existe
+// todavía en el DOM. Entonces Lenis calcula mal la altura total de la página.
+// Después, cuando ImageExpand se monta y agrega por ejemplo 350vh, Lenis puede
+// quedarse con su límite de scroll antiguo.
+//
+// Síntoma:
+// - El scroll con la rueda se bloquea al llegar a esta sección.
+// - La barra lateral del navegador sí permite seguir bajando.
+// - Parece que la página “se frena” o que el wheel no responde.
+//
+// Solución:
+// Reservar desde el componente padre una altura mínima equivalente a la altura
+// real de la sección animada, incluso mientras el componente dinámico todavía
+// está cargando.
+//
+// Regla importante:
+// Si una sección animada necesita mucho scroll, por ejemplo 250vh, 300vh,
+// 350vh, etc., el padre debe reservar esa altura desde el inicio.
+// No dejar que renderice `null` si luego va a añadir mucha altura al documento.
+//
+// Esto evita que Lenis, ScrollTrigger o el navegador calculen una altura falsa
+// al cargar la página.
+
+.imageExpandShell {
+  position: relative;
+  width: 100%;
+  background: var(--c-white);
+}
+
+// Altura reservada para desktop.
+// Debe corresponder aproximadamente a la altura real usada por la animación,
+// por ejemplo SCROLL_HEIGHT = '350vh'.
+.imageExpandFallback {
+  min-height: 350vh;
+}
+
+// Altura reservada para mobile.
+// En mobile la animación/parallax es más simple y no necesita 350vh.
+.imageExpandFallbackMobile {
+  min-height: 90vh;
+}
+
+// En pantallas pequeñas, aunque se use el fallback desktop por un instante,
+// reducimos la altura para no crear un scroll gigante innecesario.
+@media (max-width: 767px) {
+  .imageExpandFallback {
+    min-height: 90vh;
+  }
+}
