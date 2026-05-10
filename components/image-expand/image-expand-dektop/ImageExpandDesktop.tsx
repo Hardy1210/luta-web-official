@@ -1,5 +1,6 @@
 'use client';
 
+import { LutaPath } from '@/components/icons/logo/luta-path/LutaPath';
 import gsap from '@/lib/gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -120,7 +121,7 @@ export default function ImageExpandDesktop() {
           xPercent: -50,
           yPercent: -50,
           scale: getInitialScale(),
-          borderRadius: 12,
+          // borderRadius: 12,
           transformOrigin: 'center center',
           force3D: true,
         });
@@ -233,11 +234,11 @@ export default function ImageExpandDesktop() {
         imgBox,
         {
           scale: () => getInitialScale(),
-          borderRadius: 12,
+          // borderRadius: 12,
         },
         {
           scale: 1,
-          borderRadius: 0,
+          //borderRadius: 0,
           ease: 'power2.inOut',
           duration: 1,
         },
@@ -354,6 +355,11 @@ export default function ImageExpandDesktop() {
             </div>
             <div className={styles.overlayInitial} />
             <div ref={overlayRef} className={styles.overlay} />
+            <div className={styles.logo}>
+              <div>
+                <LutaPath size={650} />
+              </div>
+            </div>
           </div>
 
           <p ref={labelRef} className={styles.imgLabel}>

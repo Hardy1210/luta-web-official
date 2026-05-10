@@ -10,6 +10,7 @@ import Navbar from '../layout/navbar/Navbar';
 
 import { getImageProps } from 'next/image';
 import { Camino } from '../icons/dibujos/caminos/Camino';
+import { LutaPath } from '../icons/logo/luta-path/LutaPath';
 import ImageExpand from '../image-expand/ImageExpand';
 import TextScrollAnimation, {
   type TextLine,
@@ -124,6 +125,9 @@ export function HomeClient({ name, description }: HomeClientProps) {
               <Camino size={100} />
             </div>
           </section>
+          <div>
+            <LutaPath size={900} />
+          </div>
           <section>
             <BioSection
               imageSrc="/images/lu-gui.webp"
