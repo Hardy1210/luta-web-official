@@ -1,91 +1,66 @@
 /**
- * VinylScrollMobile.module.scss
- * Même palette que VinylScroll desktop
+ * VinylScrollMobil.module.scss
  */
 
-/* ─── Tokens (identiques au desktop) ─── */
 $bg: #f4f4ed;
 $surface: #eceae2;
 $neon: #772eb1;
 $neon-dark: #5a1f8a;
 $neon-subtle: #c8aee0;
-$text-lo: #aeaea8;
 $radius-card: 4px;
 $radius-box: 6px;
+$card-size: min(78vw, 650px);
 
-/* ─── Wrapper ─── */
+/* ── Wrapper ─────────────────────────────────────────── */
 .wrapper {
-  width: 100%;
-  padding-block: clamp(48px, 8vh, 80px);
-  background-color: $bg;
-  overflow: hidden;
-
-  /* Grain — même que desktop */
   position: relative;
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    background-size: 256px 256px;
-    opacity: 0.4;
-    mix-blend-mode: multiply;
-    z-index: 0;
-  }
-}
-
-/* ─── Embla viewport ─── */
-.viewport {
-  overflow: hidden;
   width: 100%;
-}
-
-.container {
-  display: flex;
-  /* Embla gère le gap via margin sur les slides */
-  user-select: none;
-  -webkit-touch-callout: none;
-}
-
-/* ─── Slide ─── */
-.slide {
-  flex: 0 0 82vw; /* largeur visible + peek du suivant */
-  max-width: 380px;
-  min-width: 0;
-  padding-inline: 8px;
-}
-
-/* ─── Card ─── */
-.card {
+  padding-block: clamp(40px, 8vh, 72px);
+  background-color: $bg;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-
-  /* Rotation au repos — injectée via CSS custom property */
-  transform: rotate(var(--rest-rotation, 0deg));
-  transform-origin: center center;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-
-  /* La slide active revient légèrement plus droite */
-  .slide:has(article[data-selected='true']) & {
-    transform: rotate(calc(var(--rest-rotation, 0deg) * 0.4));
-  }
+  align-items: center;
+  gap: 34px;
+  /* overflow hidden solo en X para que las cards salgan del viewport */
+  overflow-x: hidden;
+  overflow-y: visible;
+  //overflow: visible;
 }
 
-/* Portada carrée */
+/* ── stackWrapper — agrupa zona visual + Embla invisible ─ */
+/* Embla queda contenido aquí → nunca tapa botones ni boxMusic */
+.stackWrapper {
+  position: relative;
+  width: $card-size;
+  height: $card-size;
+  flex-shrink: 0;
+}
+
+/* ── Cards visuales ──────────────────────────────────── */
+.stackZone {
+  position: absolute;
+  inset: 0;
+}
+
+.cardSlide {
+  position: absolute;
+  inset: 0;
+  transform-origin: center center;
+  will-change: transform;
+  /* sin transition: el tween de Embla es continuo durante el drag */
+}
+
 .cardCover {
   position: relative;
   width: 100%;
-  aspect-ratio: 1 / 1;
+  height: 100%;
   overflow: hidden;
   border-radius: $radius-card;
   background: $surface;
-
   box-shadow:
     0 1px 0 1px rgba($neon, 0.07),
-    0 12px 32px rgba(#1a1a18, 0.11),
-    0 32px 80px rgba(#1a1a18, 0.07);
+    0 10px 28px rgba(#1a1a18, 0.12),
+    0 28px 64px rgba(#1a1a18, 0.08);
 }
 
 .cardImage {
@@ -106,16 +81,54 @@ $radius-box: 6px;
   z-index: 1;
 }
 
-/* ─── BoxMusic ─── */
+/* ── Embla invisible — mismo tamaño que stackWrapper ─── */
+.emblaGesture {
+  position: absolute;
+  inset: 0; /* cubre solo stackWrapper */
+  overflow: hidden;
+  opacity: 0;
+  z-index: 10;
+  cursor: grab;
+  &:active {
+    cursor: grabbing;
+  }
+}
+
+.emblaTrack {
+  display: flex;
+  height: 100%;
+}
+
+.emblaSlide {
+  flex: 0 0 100%;
+  min-width: 0;
+  height: 100%;
+}
+
+/* ── BoxMusic ─────────────────────────────────────────── */
+.boxArea {
+  position: relative;
+  width: $card-size;
+  /* altura automática según contenido del iframe */
+  min-height: 108px;
+}
+
 .boxMusic {
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 12px;
-  border: 1px solid $neon-subtle;
+  //padding: 12px;
+  //border: 1px solid $neon-subtle;
   border-radius: $radius-box;
-  background: rgba($bg, 0.75);
+  background: rgba($bg, 0.8);
   backdrop-filter: blur(8px);
+  max-width: 400px;
+  margin: 0 auto;
+  opacity: 0; /* controlado por JS */
+  will-change: opacity;
+  transition: opacity 0.25s ease;
 }
 
 .boxLabel {
@@ -124,54 +137,53 @@ $radius-box: 6px;
   text-transform: uppercase;
   color: $neon-dark;
   margin: 0;
+  flex-shrink: 0;
 }
 
 .boxIframe {
   display: block;
   border: 0;
   border-radius: 4px;
-  flex-shrink: 0;
-  height: 80px;
   width: 100%;
+  height: 80px;
+  flex-shrink: 0;
 }
 
-/* ─── Contrôles ─── */
+/* ── Controles ───────────────────────────────────────── */
 .controls {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 20px;
-  margin-top: 28px;
-  padding-inline: 24px;
+  /* z-index explicit pour être sûr qu'ils sont cliquables */
+  position: relative;
+  z-index: 20;
 }
 
 .btnNav {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 46px;
+  height: 46px;
   border: 1px solid $neon-subtle;
   border-radius: 50%;
   background: transparent;
   color: $neon-dark;
   cursor: pointer;
   transition:
-    opacity 0.2s ease,
-    background 0.2s ease;
-  flex-shrink: 0;
+    opacity 0.2s,
+    background 0.2s;
 
   &:disabled {
     opacity: 0.25;
     cursor: not-allowed;
   }
-
   &:not(:disabled):hover {
     background: rgba($neon, 0.06);
   }
 }
 
-/* Dots */
 .dots {
   display: flex;
   gap: 8px;
@@ -199,9 +211,22 @@ $radius-box: 6px;
   }
 }
 
-/* ─── Reduce motion ─── */
+/* ── Accessibilité ───────────────────────────────────── */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Reduce motion ───────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-  .card {
+  .boxMusic {
     transition: none;
   }
 }

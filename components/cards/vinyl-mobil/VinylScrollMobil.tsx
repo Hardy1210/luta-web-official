@@ -1,18 +1,10 @@
 'use client';
 
-/**
- * VinylScrollMobile
- * Version mobile de VinylScroll — Embla Carousel.
- * Même palette, même cards carrées, même BoxMusic Spotify.
- * Swipe horizontal natif, dots de progression synchronisés.
- */
-
 import useEmblaCarousel from 'embla-carousel-react';
 import Image from 'next/image';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import styles from './VinylScrollMobil.module.scss';
 
-/* ─── Types & Data (identiques au desktop) ─── */
 interface CardData {
   id: number;
   albumTitle: string;
@@ -71,26 +63,65 @@ const CARDS: CardData[] = [
   },
 ];
 
-// Légères rotations au repos — même désordre naturel que le desktop
-const REST_ROTATIONS = [0, 0, 0, 0, 0] as const;
+const REST_ROTATIONS = [2, -3, 1, -2, 3] as const;
 
-function spotifyEmbedUrl(trackId: string): string {
-  return `https://open.spotify.com/embed/track/${trackId}?utm_source=generator`;
+function spotifyEmbedUrl(id: string) {
+  return `https://open.spotify.com/embed/track/${id}?utm_source=generator`;
 }
 
-/* ─── Composant ─── */
 export default function VinylScrollMobile() {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: false,
-    align: 'center',
+    align: 'start',
     dragFree: false,
+    watchDrag: true,
   });
+
+  const cardRefs = useRef<(HTMLDivElement | null)[]>(
+    Array(CARDS.length).fill(null),
+  );
+  const boxRefs = useRef<(HTMLDivElement | null)[]>(
+    Array(CARDS.length).fill(null),
+  );
 
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [canPrev, setCanPrev] = useState(false);
   const [canNext, setCanNext] = useState(true);
 
-  /* Sync état avec Embla */
+  // ── Tween ─────────────────────────────────────────────────────────
+  // diff >= 0 → card en la pila, inmóvil
+  // diff <  0 → card salida: translateX fuera del viewport, sin opacity
+  const applyTween = useCallback(() => {
+    if (!emblaApi) return;
+    const progress = emblaApi.scrollProgress();
+    const snapList = emblaApi.scrollSnapList();
+
+    cardRefs.current.forEach((card, i) => {
+      if (!card) return;
+      const diff = (snapList[i] ?? i / (CARDS.length - 1)) - progress;
+
+      if (diff >= 0) {
+        // Aún en la pila — posición de reposo
+        card.style.transform = `translateX(0%) rotate(${REST_ROTATIONS[i]}deg)`;
+      } else {
+        // Salida hacia la izquierda fuera del viewport
+        // diff va de 0 a -1 → translateX de 0 a -160vw
+        const tx = diff * 260;
+        const rotate = REST_ROTATIONS[i] + diff * 14;
+        card.style.transform = `translateX(${tx}vw) rotate(${rotate}deg)`;
+      }
+    });
+
+    // BoxMusic: visible sólo para la card activa
+    boxRefs.current.forEach((box, i) => {
+      if (!box) return;
+      const diff = (snapList[i] ?? 0) - progress;
+      const isClose = Math.abs(diff) < 0.15;
+      box.style.opacity = isClose ? '1' : '0';
+      box.style.pointerEvents = isClose ? 'auto' : 'none';
+    });
+  }, [emblaApi]);
+
   const onSelect = useCallback(() => {
     if (!emblaApi) return;
     setSelectedIndex(emblaApi.selectedScrollSnap());
@@ -100,12 +131,17 @@ export default function VinylScrollMobile() {
 
   useEffect(() => {
     if (!emblaApi) return;
+    emblaApi.on('scroll', applyTween);
     emblaApi.on('select', onSelect);
-    onSelect(); // état initial
+    emblaApi.on('reInit', applyTween);
+    applyTween();
+    onSelect();
     return () => {
+      emblaApi.off('scroll', applyTween);
       emblaApi.off('select', onSelect);
+      emblaApi.off('reInit', applyTween);
     };
-  }, [emblaApi, onSelect]);
+  }, [emblaApi, applyTween, onSelect]);
 
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
@@ -120,68 +156,76 @@ export default function VinylScrollMobile() {
       aria-roledescription="carrousel"
       aria-label="Portadas de vinilo"
     >
-      {/* Viewport Embla */}
-      <div className={styles.viewport} ref={emblaRef}>
-        <div className={styles.container}>
+      {/* stackWrapper agrupa la zona visual + Embla invisible
+          → Embla solo cubre las cards, nunca los botones */}
+      <div className={styles.stackWrapper}>
+        {/* Cards visuales apiladas */}
+        <div className={styles.stackZone} aria-hidden="true">
           {CARDS.map((card, i) => (
             <div
               key={card.id}
-              className={styles.slide}
-              role="group"
-              aria-roledescription="diapositiva"
-              aria-label={`${i + 1} de ${CARDS.length} : ${card.albumTitle}, ${card.artist}`}
+              ref={(el) => {
+                cardRefs.current[i] = el;
+              }}
+              className={styles.cardSlide}
+              style={{ zIndex: CARDS.length - i }}
             >
-              {/* Portada carrée */}
-              <article
-                className={styles.card}
-                style={
-                  {
-                    '--rest-rotation': `${REST_ROTATIONS[i]}deg`,
-                  } as React.CSSProperties
-                }
-                aria-label={`${card.albumTitle} — ${card.artist}`}
-              >
-                <div className={styles.cardCover}>
-                  <Image
-                    src={card.imageSrc}
-                    alt={card.imageAlt}
-                    fill
-                    sizes="(max-width: 1024px) 80vw, 40vw"
-                    priority={i === 0}
-                    draggable={false}
-                    className={styles.cardImage}
-                  />
-                  <span className={styles.cardVinylSheen} aria-hidden="true" />
-                </div>
-
-                {/* BoxMusic sous la carte */}
-                <div
-                  className={styles.boxMusic}
-                  aria-label={`Écouter : ${card.spotifyTrackTitle}`}
-                >
-                  <p className={styles.boxLabel} aria-hidden="true">
-                    Écouter maintenant
-                  </p>
-                  <iframe
-                    title={card.spotifyTrackTitle}
-                    src={spotifyEmbedUrl(card.spotifyTrackId)}
-                    width="100%"
-                    height="80"
-                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                    loading="lazy"
-                    referrerPolicy="no-referrer"
-                    className={styles.boxIframe}
-                  />
-                </div>
-              </article>
+              <div className={styles.cardCover}>
+                <Image
+                  src={card.imageSrc}
+                  alt={card.imageAlt}
+                  fill
+                  sizes="80vw"
+                  priority={i === 0}
+                  draggable={false}
+                  className={styles.cardImage}
+                />
+                <span className={styles.cardVinylSheen} aria-hidden="true" />
+              </div>
             </div>
           ))}
         </div>
+
+        {/* Embla invisible — SOLO sobre las cards, no cubre botones */}
+        <div className={styles.emblaGesture} ref={emblaRef}>
+          <div className={styles.emblaTrack}>
+            {CARDS.map((card) => (
+              <div key={card.id} className={styles.emblaSlide} />
+            ))}
+          </div>
+        </div>
       </div>
 
-      {/* Contrôles */}
-      <div className={styles.controls} aria-label="Contrôles du carrousel">
-        {/* Bouton précédent */}
+      {/* BoxMusic — todas apiladas, JS controla cuál es visible */}
+      <div className={styles.boxArea}>
+        {CARDS.map((card, i) => (
+          <div
+            key={card.id}
+            ref={(el) => {
+              boxRefs.current[i] = el;
+            }}
+            className={styles.boxMusic}
+            aria-label={`Écouter : ${card.spotifyTrackTitle}`}
+          >
+            <p className={styles.boxLabel} aria-hidden="true">
+              Écouter maintenant
+            </p>
+            <iframe
+              title={card.spotifyTrackTitle}
+              src={spotifyEmbedUrl(card.spotifyTrackId)}
+              width="100%"
+              height="80"
+              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+              loading="lazy"
+              referrerPolicy="no-referrer"
+              className={styles.boxIframe}
+            />
+          </div>
+        ))}
+      </div>
+
+      {/* Controles — completamente fuera del área Embla */}
+      <div className={styles.controls}>
         <button
           className={styles.btnNav}
           onClick={scrollPrev}
@@ -205,8 +249,7 @@ export default function VinylScrollMobile() {
           </svg>
         </button>
 
-        {/* Dots */}
-        <nav aria-label="Progression du carrousel">
+        <nav aria-label="Progression">
           <ol className={styles.dots}>
             {CARDS.map((card, i) => (
               <li key={card.id}>
@@ -222,7 +265,6 @@ export default function VinylScrollMobile() {
           </ol>
         </nav>
 
-        {/* Bouton suivant */}
         <button
           className={styles.btnNav}
           onClick={scrollNext}
@@ -245,6 +287,10 @@ export default function VinylScrollMobile() {
             />
           </svg>
         </button>
+      </div>
+
+      <div className={styles.srOnly} aria-live="polite" aria-atomic="true">
+        {CARDS[selectedIndex]?.albumTitle} — {CARDS[selectedIndex]?.artist}
       </div>
     </div>
   );

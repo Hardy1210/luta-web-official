@@ -1,103 +1,286 @@
-.poesie {
-  background-color: var(--c-white);
-  color: var(--c-black);
-  padding: var(--section-pad-y) var(--section-pad-x);
-}
+/**
+ * ArtistHero.module.scss
+ *
+ * Tokens à remplacer :
+ *   --c-black        couleur texte principal
+ *   --c-white        couleur fond / texte inversé
+ *   --c-neon         couleur accent (violet)
+ *   --font-display   police titre display
+ *   --font-serif     police titre serif
+ *   --font-body      police corps de texte
+ *   --text-hero      taille titre géant
+ *   --text-xl        taille titre intermédiaire
+ *   --text-sm        taille petit texte
+ *   --section-pad-x  padding horizontal global
+ *   --container-2xl  max-width du conteneur
+ */
 
-.inner {
-  max-width: 1400px;
-  margin: 0 auto;
+/* ── Section ─────────────────────────────────────────────────── */
+.section {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 5rem;
+  grid-template-columns: 2fr 1fr; /* 2 col partout, mobile inclus */
   align-items: center;
+  gap: clamp(16px, 4vw, 64px);
 
-  @media (max-width: 767px) {
-    grid-template-columns: 1fr;
-    gap: 2.5rem;
-  }
+  width: 100%;
+  // max-width: var(--container-lg);
+  margin: 0 auto;
+  max-width: var(--container-3xl);
+  height: 75svh;
+  padding: 0 var(--section-pad-x);
+  background: var(--c-white, #f4f4ed);
+
+  //overflow: hidden; /* clip les images flottantes hors champ */
 }
 
-/* ── Image pair ── */
-.imageRow {
-  display: grid;
-  grid-template-columns: 3fr 2fr;
-  gap: 1rem;
-  align-items: end;
-}
-
-.imageA,
-.imageB {
-  position: relative;
-  overflow: hidden;
-  will-change: transform;
-
-  img { object-fit: cover; }
-}
-
-.imageA {
-  aspect-ratio: 3 / 4;
-}
-
-.imageB {
-  aspect-ratio: 2 / 3;
-}
-
-.img {
-  object-fit: cover;
-}
-
-/* ── Text ── */
-.textBlock {
+/* ── Colonne gauche ──────────────────────────────────────────── */
+.leftCol {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: clamp(16px, 2.5vh, 32px);
+  align-self: center;
 }
 
-.heading {
-  font-family: var(--ff-display);
-  font-weight: 800;
-  font-size: clamp(2rem, 5vw, 5rem);
-  line-height: 1;
-  letter-spacing: -0.02em;
+.titleBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* "La poésie en musique" — taille intermédiaire, serif */
+.titleTop {
+  font-family: var(--font-display);
   text-transform: uppercase;
-
-  em {
-    font-family: var(--ff-serif);
-    font-style: italic;
-    font-weight: 300;
-    letter-spacing: 0;
-  }
+  font-size: clamp(1.4rem, 5vw, 3.9rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  color: var(--c-black);
+  margin: 0;
 }
 
-.body {
-  font-family: var(--ff-body);
-  font-size: clamp(0.85rem, 1.2vw, 1rem);
-  font-weight: 300;
-  line-height: 1.8;
-  color: #444;
-  max-width: 38ch;
+/* "Une génération" — très grand, display */
+.titleBottom {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 6vw, 5.5rem);
+
+  line-height: 0.9;
+  letter-spacing: -0.01em;
+  color: var(--c-black);
+  margin: 0;
+  text-transform: uppercase;
 }
 
-.spotifyBtn {
+.description {
+  font-family: var(--font-serif);
+  font-size: var(--text-sm, clamp(0.7rem, 1.2vw, 0.875rem));
+  line-height: 1.3;
+  color: color-mix(in srgb, var(--c-black, #1a1a18) 60%, transparent);
+  margin: 0;
+}
+
+/* Bouton Spotify */
+.ctaButton {
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
-  padding: 0.8rem 1.8rem;
-  border: 1.5px solid var(--c-black);
-  font-family: var(--ff-display);
-  font-weight: 700;
-  font-size: 0.72rem;
-  letter-spacing: 0.15em;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 7px;
+  background: var(--c-neon);
+  color: var(--c-white);
+  font-family: var(--font-display);
+  font-size: var(--text-sm, 0.75rem);
+  font-weight: 500;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--c-black);
+  text-decoration: none;
   width: fit-content;
-  transition: background 0.25s, color 0.25s;
-
-  svg { color: #1db954; }
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
 
   &:hover {
     background: var(--c-black);
-    color: var(--c-white);
+    transform: translateY(-1px);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--c-neon, #772eb1);
+    outline-offset: 3px;
+  }
+}
+
+/* ── Colonne droite ──────────────────────────────────────────── */
+.rightCol {
+  position: relative;
+  /* Hauteur pilotée par la grande image */
+  aspect-ratio: 3 / 4;
+  max-height: 90vh;
+}
+
+/* Grande image — conteneur clippé pour le parallax interne */
+.mainImageWrap {
+  position: absolute;
+  /* Occupe ~65% de la largeur de la col, alignée à gauche */
+  left: 0;
+  top: 0;
+  width: 100%;
+  //aspect-ratio: 2 / 4;
+  height: 100%;
+  overflow: hidden; /* clip l'image qui dépasse */
+  //border-radius: 4px;
+}
+
+/* L'image est plus haute (115%) pour avoir de la marge de mouvement */
+.mainImage {
+  object-fit: cover;
+  object-position: center -20%;
+  /* height légèrement supérieure au conteneur → permet le parallax */
+  transform: scale(1.15);
+  transform-origin: center top;
+  will-change: transform;
+}
+
+/* Icône cœur */
+.heartIcon {
+  position: absolute;
+  top: -30px;
+  left: -35px;
+  //right: -20px;
+  color: var(--c-black);
+  z-index: 2;
+}
+
+.heartSvg {
+  display: block;
+}
+
+/* Petite image haute droite */
+.floatTop {
+  position: absolute;
+  top: 30%;
+  right: -18%;
+  width: 36%;
+  aspect-ratio: 1 / 1;
+  //border-radius: 4px;
+  overflow: hidden;
+  will-change: transform;
+  box-shadow: 0 8px 32px rgba(#1a1a18, 0.12);
+}
+
+/* Petite image basse (pochette) */
+.floatBottom {
+  position: absolute;
+  bottom: -5%;
+  left: -18%;
+  width: 35%;
+  will-change: transform;
+  z-index: 2;
+}
+
+.floatBottomInner {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.floatBottomImg {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(#1a1a18, 0.14);
+}
+
+.floatImage {
+  object-fit: cover;
+}
+
+/* Label sous la pochette */
+.floatBottomLabel {
+  display: block;
+  text-align: center;
+  font-family: var(--font-body, sans-serif);
+  font-size: clamp(0.55rem, 0.9vw, 0.7rem);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--c-black, #1a1a18) 50%, transparent);
+  line-height: 1.4;
+}
+
+/* ── Responsive ───────────────────────────────────────────────── */
+/* 2 colonnes conservées partout — ajustements proportionnels */
+@media (max-width: 1200px) {
+  .section {
+    max-width: var(--container-lg);
+  }
+}
+
+@media (max-width: 768px) {
+  .section {
+    /* Légère inversion des proportions sur mobile :
+       images un peu plus larges que le texte */
+    //max-width: var(--container-sm);
+    grid-template-columns: 6fr 5fr;
+    gap: 12px;
+    align-items: start;
+    padding-block: clamp(32px, 6vh, 64px);
+  }
+
+  .titleBottom {
+    font-size: clamp(1.2rem, 5.5vw, 2.6rem);
+  }
+
+  .titleTop {
+    font-size: clamp(1.5rem, 3vw, 1.4rem);
+  }
+
+  .description {
+    //display: none; /* trop serré sur petit mobile, optionnel */
+    font-size: clamp(0.9rem, 2vw, 1.2rem);
+  }
+
+  .ctaButton {
+    font-size: 0.6rem;
+    padding: 8px 14px;
+    gap: 6px;
+  }
+
+  /* Cœur plus petit */
+  .heartIcon svg {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+@media (max-width: 480px) {
+  .section {
+    overflow: hidden;
+  }
+  .floatBottom {
+    //display: none; /* trop de surcharge sur très petit écran */
+    width: 34%;
+    top: 200px;
+    left: -3%;
+  }
+
+  .mainImageWrap {
+    width: 90%;
+  }
+
+  .floatTop {
+    width: 44%;
+    top: 8px;
+  }
+}
+
+/* ── Reduce motion ────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .mainImage,
+  .floatTop,
+  .floatBottom {
+    will-change: auto;
+    transform: none !important;
   }
 }

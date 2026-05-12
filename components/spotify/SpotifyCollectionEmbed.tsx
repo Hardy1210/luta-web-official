@@ -5,11 +5,11 @@ type SpotifyArtistEmbedProps = {
 
 export function SpotifyCollectionEmbed({
   artistId,
-  height = 352,
+  height = 452,
 }: SpotifyArtistEmbedProps) {
   return (
     <iframe
-      src={`https://open.spotify.com/embed/artist/${artistId}`}
+      src={`https://open.spotify.com/embed/artist/${artistId}?theme=0&`}
       width="100%"
       height={height}
       style={{
@@ -18,7 +18,7 @@ export function SpotifyCollectionEmbed({
       }}
       allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
       loading="lazy"
-      className="max-w-[40rem]"
+      className=" "
     />
   );
 }

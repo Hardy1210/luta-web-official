@@ -114,6 +114,7 @@
     --container-lg: 1024px;
     --container-xl: 1280px;
     --container-2xl: 1440px;
+    --container-3xl: 1920px;
     --container-pad: var(--section-pad-x);
 
     /* ── BORDER RADIUS ─────────────────────────────────────── */

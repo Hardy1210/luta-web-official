@@ -2,13 +2,16 @@
 
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
+import styles from './VinilWrapper.module.scss';
 
 const VinylScroll = dynamic(() => import('./vinyl-descktop/VinylScroll'), {
   ssr: false,
+  loading: () => <div className={styles.fallback} />,
 });
+
 const VinylScrollMobile = dynamic(
   () => import('./vinyl-mobil/VinylScrollMobil'),
-  { ssr: false },
+  { ssr: false, loading: () => <div className={styles.fallbackMobile} /> },
 );
 
 export default function VinylScrollWrapper() {
@@ -22,8 +25,15 @@ export default function VinylScrollWrapper() {
     return () => mq.removeEventListener('change', handler);
   }, []);
 
-  if (isMobile === null)
-    return <div style={{ minHeight: '100vh', background: '#f4f4ed' }} />;
-
-  return isMobile ? <VinylScrollMobile /> : <VinylScroll />;
+  return (
+    <div className={styles.shell}>
+      {isMobile === null ? (
+        <div className={styles.fallback} />
+      ) : isMobile ? (
+        <VinylScrollMobile />
+      ) : (
+        <VinylScroll />
+      )}
+    </div>
+  );
 }

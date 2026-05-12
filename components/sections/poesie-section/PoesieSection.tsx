@@ -1,86 +1,230 @@
-'use client'
-import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect'
-import { gsap } from 'gsap'
-import Image from 'next/image'
-import { useRef } from 'react'
-import styles from './PoesieSection.module.scss'
+'use client';
 
-export default function PoesieSection() {
-  const sectionRef = useRef<HTMLElement>(null)
+/**
+ * ArtistHero
+ *
+ * Section deux colonnes — typographie + images en parallax.
+ *
+ * Col gauche  : titre animé (slot), description, CTA Spotify
+ * Col droite  : grande image (parallax interne) + 2 petites
+ *               images flottantes (vitesses différentes au scroll)
+ *
+ * Tokens CSS à remplacer par les vôtres :
+ *   --c-black, --c-white, --c-neon
+ *   --font-display, --font-serif, --font-body
+ *   --text-hero, --text-xl, --text-sm
+ *   --section-pad-x, --container-2xl
+ */
+
+import { AnimatedChars } from '@/components/Animated-text/AnimatedChars';
+import { Heart } from '@/components/icons/dibujos/Heart';
+import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect';
+import gsap from '@/lib/gsap';
+import Image from 'next/image';
+import type { ReactNode } from 'react';
+import { useRef } from 'react';
+import styles from './PoesieSection.module.scss';
+
+/* ─── Types ─────────────────────────────────────────────────── */
+interface ArtistHeroProps {
+  /**
+   * Slot pour le titre — utilisez AnimatedChars ou un élément
+   * statique. Rendu tel quel dans la colonne gauche.
+   */
+  titleSlot?: ReactNode;
+  description?: string;
+  ctaLabel?: string;
+  ctaHref?: string;
+  /** Grande image portrait (colonne droite) */
+  mainImage: { src: string; alt: string };
+  /** Petite image flottante haute droite */
+  floatImageTop: { src: string; alt: string };
+  /** Petite image flottante basse (style pochette) */
+  floatImageBottom: { src: string; alt: string };
+}
+
+/* ─── Icône Spotify SVG ─────────────────────────────────────── */
+function SpotifyIcon() {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z" />
+    </svg>
+  );
+}
+
+/* ─── Icône cœur SVG ────────────────────────────────────────── */
+function HeartIcon() {
+  return (
+    <svg
+      width="32"
+      height="32"
+      viewBox="0 0 32 32"
+      fill="none"
+      aria-hidden="true"
+      className={styles.heartSvg}
+    >
+      <path
+        d="M16 27S4 19.5 4 11.5A7.5 7.5 0 0 1 16 6.3 7.5 7.5 0 0 1 28 11.5C28 19.5 16 27 16 27Z"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+/* ─── Composant ──────────────────────────────────────────────── */
+export function PoesieSection({
+  titleSlot,
+  description = "Poétique, moderne et sincère, son univers musical invite à l'écoute et à l'émotion.\nDes chansons qui résonnent longtemps après la dernière note.",
+  ctaLabel = 'Écouter sur Spotify',
+  ctaHref = '#',
+  mainImage,
+  floatImageTop,
+  floatImageBottom,
+}: ArtistHeroProps) {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const mainImgRef = useRef<HTMLImageElement>(null);
+  const floatTopRef = useRef<HTMLDivElement>(null);
+  const floatBottomRef = useRef<HTMLDivElement>(null);
 
   useIsomorphicLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      const mm = gsap.matchMedia()
+      const trigger = {
+        trigger: sectionRef.current,
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: true,
+      };
 
-      mm.add('(min-width: 768px)', () => {
-        // Simple fade-in for images (no scroll response needed per annotation)
-        gsap.from(`.${styles.imageA}, .${styles.imageB}`, {
-          opacity: 0, y: 30, duration: 1.2, ease: 'power2.out', stagger: 0.2,
-          scrollTrigger: {
-            trigger: `.${styles.imageRow}`,
-            start: 'top 80%',
-          },
-        })
+      // Grande image — parallax interne (image plus grande que son conteneur)
+      // Elle monte doucement à l'intérieur du clip
+      gsap.to(mainImgRef.current, {
+        y: '-19%',
+        ease: 'none',
+        scrollTrigger: trigger,
+      });
 
-        gsap.from(`.${styles.textBlock}`, {
-          opacity: 0, y: 40, duration: 1, ease: 'power3.out',
-          scrollTrigger: {
-            trigger: `.${styles.textBlock}`,
-            start: 'top 80%',
-          },
-        })
+      // Petite image haute droite — monte vite (vitesse ×1.8)
+      gsap.to(floatTopRef.current, {
+        y: '-80px',
+        ease: 'none',
+        scrollTrigger: { ...trigger, scrub: 0.8 },
+      });
 
-        gsap.from(`.${styles.spotifyBtn}`, {
-          opacity: 0, y: 20, duration: 0.8, ease: 'power2.out',
-          scrollTrigger: {
-            trigger: `.${styles.spotifyBtn}`,
-            start: 'top 85%',
-          },
-        })
-      })
-    }, sectionRef)
+      // Petite image basse — monte moins vite (vitesse ×0.9)
+      gsap.to(floatBottomRef.current, {
+        y: '-190px',
+        ease: 'none',
+        scrollTrigger: { ...trigger, scrub: 1.6 },
+      });
+    }, sectionRef);
 
-    return () => ctx.revert()
-  }, [])
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <section ref={sectionRef} className={styles.poesie}>
-      <div className={styles.inner}>
-
-        <div className={styles.imageRow}>
-          <div className={styles.imageA}>
-            <Image src="/images/poesie-1.jpg" alt="Luta poésie" fill sizes="40vw" className={styles.img} />
-          </div>
-          <div className={styles.imageB}>
-            <Image src="/images/poesie-2.jpg" alt="Luta performance" fill sizes="30vw" className={styles.img} />
-          </div>
+    <div
+      ref={sectionRef}
+      className={styles.section}
+      aria-label="Présentation artiste"
+    >
+      {/* ── Colonne gauche ──────────────────────────────── */}
+      <div className={styles.leftCol}>
+        <div className={styles.titleBlock}>
+          {titleSlot ?? (
+            <>
+              <p className={styles.titleTop}>
+                La poésie
+                <br />
+                en musique
+              </p>
+              <AnimatedChars
+                markers={true}
+                segments={[
+                  { text: 'La poésie en musique', className: styles.titleTop },
+                ]}
+              />
+              <p className={styles.titleBottom}>Une génération</p>
+            </>
+          )}
         </div>
 
-        <div className={styles.textBlock}>
-          <h2 className={styles.heading}>
-            LA POÉSIE<br />
-            <em>EN MUSIQUE,</em><br />
-            UNE GÉNÉRATION
-          </h2>
-          <p className={styles.body}>
-            Poétique, moderne et sincère, son univers musical invite à
-            l&apos;écoute et à l&apos;émotion. Des chansons qui résonnent
-            longtemps après la dernière note.
-          </p>
-          <a
-            href="https://open.spotify.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.spotifyBtn}
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.371-.721.49-1.101.24-3.021-1.858-6.832-2.267-11.322-1.241-.418.1-.851-.159-.949-.577-.1-.418.16-.851.578-.949 4.911-1.121 9.122-.641 12.502 1.43.37.241.49.721.24 1.1l.052-.003z" />
-            </svg>
-            Écouter sur Spotify
-          </a>
-        </div>
+        <p className={styles.description}>
+          {description.split('\n').map((line, i) => (
+            <span key={i}>
+              {line}
+              <br />
+            </span>
+          ))}
+        </p>
 
+        <a
+          href={ctaHref}
+          className={styles.ctaButton}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`${ctaLabel} (ouvre dans un nouvel onglet)`}
+        >
+          <SpotifyIcon />
+          <span>{ctaLabel}</span>
+        </a>
       </div>
-    </section>
-  )
+
+      {/* ── Colonne droite ──────────────────────────────── */}
+      <div className={styles.rightCol} aria-hidden="true">
+        {/* Grande image avec parallax interne */}
+        <div className={styles.mainImageWrap}>
+          <Image
+            ref={mainImgRef}
+            src={mainImage.src}
+            alt={mainImage.alt}
+            width={1265}
+            height={1898}
+            className={styles.mainImage}
+            priority
+            draggable={false}
+          />
+        </div>
+        {/* Icône cœur positionnée en haut de l'image */}
+        <span className={styles.heartIcon}>
+          <Heart size={60} />
+        </span>
+        {/* Petite image haute droite — vitesse rapide */}
+        <div ref={floatTopRef} className={styles.floatTop}>
+          <Image
+            src={floatImageTop.src}
+            alt={floatImageTop.alt}
+            fill
+            sizes="20vw"
+            className={styles.floatImage}
+            draggable={false}
+          />
+        </div>
+
+        {/* Petite image basse — vitesse lente */}
+        <div ref={floatBottomRef} className={styles.floatBottom}>
+          <div className={styles.floatBottomInner}>
+            <div className={styles.floatBottomImg}>
+              <Image
+                src={floatImageBottom.src}
+                alt={floatImageBottom.alt}
+                fill
+                sizes="18vw"
+                className={styles.floatImage}
+                draggable={false}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }

@@ -1,0 +1,53 @@
+// ─────────────────────────────────────────────────────────────
+// VinilWrapper / fallback height
+// ─────────────────────────────────────────────────────────────
+//
+// Esta sección usa componentes cargados con dynamic() y animaciones
+// GSAP / ScrollTrigger con una altura grande para crear scroll.
+//
+// Problema que puede ocurrir:
+// Si el componente dinámico renderiza `null` al inicio, la sección no existe
+// todavía en el DOM. Entonces Lenis calcula mal la altura total de la página.
+// Después, cuando ImageExpand se monta y agrega por ejemplo 350vh, Lenis puede
+// quedarse con su límite de scroll antiguo.
+//
+// Síntoma:
+// - El scroll con la rueda se bloquea al llegar a esta sección.
+// - La barra lateral del navegador sí permite seguir bajando.
+// - Parece que la página “se frena” o que el wheel no responde.
+//
+// Solución:
+// Reservar desde el componente padre una altura mínima equivalente a la altura
+// real de la sección animada, incluso mientras el componente dinámico todavía
+// está cargando.
+//
+// Regla importante:
+// Si una sección animada necesita mucho scroll, por ejemplo 250vh, 300vh,
+// 350vh, etc., el padre debe reservar esa altura desde el inicio.
+// No dejar que renderice `null` si luego va a añadir mucha altura al documento.
+//
+// Esto evita que Lenis, ScrollTrigger o el navegador calculen una altura falsa
+// al cargar la página.
+
+.shell {
+  position: relative;
+  width: 100%;
+  background: var(--c-white);
+}
+
+// Desktop — réserve la vraie hauteur de l'animation dès le chargement
+// Doit correspondre à height: 800vh dans VinylScroll.module.scss
+.fallback {
+  min-height: 800vh;
+}
+
+// Mobile — Embla Carousel, pas de grand scroll nécessaire
+.fallbackMobile {
+  min-height: 100vh;
+}
+
+@media (max-width: 1024px) {
+  .fallback {
+    min-height: 100vh;
+  }
+}

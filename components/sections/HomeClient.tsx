@@ -12,10 +12,12 @@ import { getImageProps } from 'next/image';
 import VinylScrollWrapper from '../cards/VinylWrapper';
 import { Camino } from '../icons/dibujos/caminos/Camino';
 import ImageExpand from '../image-expand/ImageExpand';
+import { SpotifyCollectionEmbed } from '../spotify/SpotifyCollectionEmbed';
 import TextScrollAnimation, {
   type TextLine,
 } from '../text-animation/TextScrollAnimation';
 import BioSection from './biosection/BioSection';
+import { PoesieSection } from './poesie-section/PoesieSection';
 
 type HomeClientProps = {
   name: string;
@@ -171,6 +173,27 @@ export function HomeClient({ name, description }: HomeClientProps) {
 
           <section>
             <VinylScrollWrapper />
+          </section>
+          <section className="w-full h-[70svh] flex justify-center items-center px-(--container-pad)">
+            <div className="flex-1 min-w-40 max-w-240">
+              <SpotifyCollectionEmbed artistId="7lIbxiBTO3ycZCiD0JLjWD" />
+            </div>
+          </section>
+          <section>
+            <PoesieSection
+              mainImage={{
+                src: '/images/poesie-section/main-image.webp',
+                alt: 'Main image',
+              }}
+              floatImageTop={{
+                src: '/images/vinyl/v3.webp',
+                alt: 'Top image',
+              }}
+              floatImageBottom={{
+                src: '/images/vinyl/v4.webp',
+                alt: 'Bottom image',
+              }}
+            />
           </section>
         </main>
       </div>

@@ -1,0 +1,29 @@
+/**
+ * AnimatedChars.module.scss
+ * Classes structurelles uniquement — les styles visuels
+ * (font, taille, couleur) viennent du className prop.
+ */
+
+/* Groupe flex row */
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+}
+
+/* Classes injectées par SplitText */
+.line {
+  display: block;
+  transform-style: preserve-3d;
+}
+
+.word {
+  display: inline-block;
+  white-space: nowrap;
+  transform-style: preserve-3d;
+}
+
+.char {
+  display: inline-block;
+  transform-style: preserve-3d;
+}
