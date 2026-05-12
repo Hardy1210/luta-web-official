@@ -19,7 +19,7 @@ export const LutaPath = ({
   size,
   strokeWidth = 13, // grosor del trazo encubridor — ajusta hasta cubrir bien tu firma
   duration = 1.3,
-  triggerStart = 'top 55%',
+  triggerStart = 'top -130%',
   once = true,
   ...props
 }: LutaPathProps) => {
@@ -72,11 +72,11 @@ export const LutaPath = ({
         scrollTrigger: {
           trigger: svg,
           start: triggerStart,
-          toggleActions: once
-            ? 'play none none none'
-            : 'play reverse play reverse',
-          once,
-          markers: true,
+          end: 'bottom -175%',
+          //end: 'bottom -125%',
+          scrub: 0.45,
+          //markers: true,
+          invalidateOnRefresh: true,
         },
       });
 
@@ -97,13 +97,12 @@ export const LutaPath = ({
 
         // Evita que los paths cortos salgan disparados.
         const partDuration = Math.max(baseDuration * speedFactor, 0.9);
-
         tl.to(
           targets,
           {
             strokeDashoffset: 0,
             duration: partDuration,
-            ease: 'power2.inOut',
+            ease: 'none',
           },
           cursor,
         );
@@ -218,3 +217,131 @@ export const LutaPath = ({
     </svg>
   );
 };
+
+{
+  /**
+/////////////////////////////////////////////////////
+VERSION DE LA ANIMACION SOLO PARA QUE SE LANCE LA ANIMACION SIN QUE
+LO HAGA AL MISMO TIEMPO QU ESE ESCROLLEA
+
+    'use client';
+
+import gsap from '@/lib/gsap';
+import { DrawSVGPlugin } from 'gsap/DrawSVGPlugin';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ComponentPropsWithoutRef, useEffect, useId, useRef } from 'react';
+
+gsap.registerPlugin(DrawSVGPlugin, ScrollTrigger);
+
+type LutaPathProps = ComponentPropsWithoutRef<'svg'> & {
+  size?: number;
+  strokeWidth?: number;
+  duration?: number;
+  triggerStart?: string;
+  once?: boolean;
+};
+
+export const LutaPath = ({
+  size,
+  strokeWidth = 13, // grosor del trazo encubridor — ajusta hasta cubrir bien tu firma
+  duration = 1.3,
+  triggerStart = 'top 55%',
+  once = true,
+  ...props
+}: LutaPathProps) => {
+  const MASK_PATH_IDS = ['path1', 'path2', 'path3', 'path4', 'path5', 'path6'];
+  const svgRef = useRef<SVGSVGElement>(null);
+
+  const maskGroupRef = useRef<SVGGElement>(null);
+  const debugMaskGroupRef = useRef<SVGGElement>(null);
+
+  const uid = useId().replace(/:/g, '');
+  const maskId = `luta-reveal-${uid}`; // "r0" en vez de ":r0:"// evita colisiones si renderizas varias instancias / SSR
+
+  useEffect(() => {
+    const svg = svgRef.current;
+    const maskGroup = maskGroupRef.current;
+    const debugMaskGroup = debugMaskGroupRef.current;
+
+    if (!svg || !maskGroup) return;
+
+    const maskPaths = MASK_PATH_IDS.map((id) =>
+      maskGroup.querySelector<SVGPathElement>(`#${id}`),
+    ).filter(Boolean) as SVGPathElement[];
+
+    const debugPaths = MASK_PATH_IDS.map((id) =>
+      debugMaskGroup?.querySelector<SVGPathElement>(`#debug-${id}`),
+    ).filter(Boolean) as SVGPathElement[];
+
+    if (!maskPaths.length) return;
+
+    const allPaths = [...maskPaths, ...debugPaths];
+
+    const ctx = gsap.context(() => {
+      const lengths = maskPaths.map((path) => path.getTotalLength());
+      const totalLength = lengths.reduce((acc, len) => acc + len, 0);
+
+      allPaths.forEach((path) => {
+        const length = path.getTotalLength();
+
+        // Ya no uses 80. Eso crea tiempo muerto.
+        const safeGap = 4;
+
+        gsap.set(path, {
+          strokeDasharray: `${length + safeGap} ${length + safeGap}`,
+          strokeDashoffset: length + safeGap,
+          autoAlpha: 1,
+        });
+      });
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: svg,
+          start: triggerStart,
+          toggleActions: once
+            ? 'play none none none'
+            : 'play reverse play reverse',
+          once,
+          markers: true,
+        },
+      });
+
+      let cursor = 0;
+
+      // Aumenta esto si quieres que se sienta más lento.
+      const speedFactor = 1.35;
+
+      // Superposición entre paths.
+      // Esto evita que se sienta cortado entre path y path.
+      const overlap = 0.45;
+
+      maskPaths.forEach((path, index) => {
+        const debugPath = debugPaths[index];
+        const targets = [path, debugPath].filter(Boolean);
+
+        const baseDuration = (lengths[index] / totalLength) * duration;
+
+        // Evita que los paths cortos salgan disparados.
+        const partDuration = Math.max(baseDuration * speedFactor, 0.9);
+
+        tl.to(
+          targets,
+          {
+            strokeDashoffset: 0,
+            duration: partDuration,
+            ease: 'power2.inOut',
+          },
+          cursor,
+        );
+
+        // En vez de esperar a que termine completamente,
+        // el siguiente empieza un poco antes.
+        cursor += partDuration * (1 - overlap);
+      });
+    }, svg);
+
+    return () => ctx.revert();
+  }, [duration, triggerStart, once]);
+    
+    */
+}

@@ -24,7 +24,14 @@ export function useIntroOrchestration({
     const images = imageRefs.current;
     if (!container || !images?.length) return;
 
-    gsap.set(container.parentElement, { opacity: 1 }); // ← aqu
+    // Reset phase on every mount. In Next.js App Router the layout (and its
+    // AnimationProvider) persists across client-side navigations, so phase can
+    // be 'complete' when the user navigates back to this page. Resetting to
+    // 'idle' here guarantees the intro always plays. When phase is already
+    // 'idle' (first load), React bails out (same state → no re-render).
+    setPhase('idle');
+
+    gsap.set(container.parentElement, { opacity: 1 });
     gsap.set(images[0], { scale: 1, opacity: 1 });
     gsap.set(images.slice(1), { scale: 0 });
     gsap.set(container, { y: '100svh', scale: 0.5 });

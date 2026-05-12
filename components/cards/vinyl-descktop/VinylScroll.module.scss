@@ -1,0 +1,254 @@
+/**
+ * VinylScroll.module.scss
+ * Fondo claro — 5 cards — stacking — sin salida
+ */
+
+/* ─────────────────────────────────────────────
+   Tokens
+───────────────────────────────────────────── */
+$bg: #f4f4ed;
+$surface: #eceae2;
+$neon: #772eb1;
+$neon-dark: #5a1f8a;
+$neon-subtle: #c8aee0;
+$text-lo: #aeaea8;
+$radius-card: 4px;
+$radius-box: 6px;
+$card-size: clamp(260px, 36vw, 460px);
+$box-width: clamp(350px, 26vw, 320px);
+
+/* ─────────────────────────────────────────────
+   Wrapper
+   800vh pour 5 cards sans sortie → ~36vh/unité
+───────────────────────────────────────────── */
+.wrapper {
+  position: relative;
+  height: 800vh;
+  overflow: visible;
+  max-width: var(--container-2xl);
+  margin: 0 auto;
+}
+
+/* ─────────────────────────────────────────────
+   Stage — pinned par GSAP
+   overflow: hidden → masque les cards hors viewport
+   (celles en attente en-dessous ne sont pas visibles)
+───────────────────────────────────────────── */
+.stage {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: clamp(24px, 5vw, 80px);
+
+  width: 100%;
+  height: 100vh;
+  padding-inline: clamp(24px, 6vw, 100px);
+
+  background-color: $bg;
+  overflow: hidden; /* ← masque les cards sous le viewport */
+
+  &::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    background-size: 256px 256px;
+    opacity: 0.4;
+    mix-blend-mode: multiply;
+    z-index: 100;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   Colonne gauche — Cards
+───────────────────────────────────────────── */
+.cardsCol {
+  position: relative;
+  width: $card-size;
+  aspect-ratio: 1 / 1;
+  flex-shrink: 0;
+  align-self: center;
+}
+
+/* ─────────────────────────────────────────────
+   Card
+   Toutes à la même position absolue.
+   Z-index géré par l'ordre DOM :
+     card[0] = fond de pile (premier dans le DOM)
+     card[4] = dessus      (dernier dans le DOM)
+───────────────────────────────────────────── */
+.card {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+}
+
+.cardCover {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: $radius-card;
+  background: $surface;
+
+  box-shadow:
+    0 1px 0 1px rgba($neon, 0.07),
+    0 12px 32px rgba(#1a1a18, 0.11),
+    0 32px 80px rgba(#1a1a18, 0.07);
+}
+
+.cardImage {
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+
+  .card:hover & {
+    transform: scale(1.03);
+  }
+}
+
+.cardVinylSheen {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 55% 45% at 18% 14%,
+    rgba($neon, 0.07) 0%,
+    transparent 60%
+  );
+  z-index: 1;
+}
+
+/* ─────────────────────────────────────────────
+   Colonne droite — BoxMusic
+───────────────────────────────────────────── */
+.boxesCol {
+  position: relative;
+  justify-self: center;
+  width: $box-width;
+  min-height: 140px;
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.boxMusic {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+  //border: 1px solid $neon-subtle;
+  border-radius: $radius-box;
+  background: rgba($bg, 0.75);
+  backdrop-filter: blur(8px);
+}
+
+.boxLabel {
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: $neon-dark;
+  margin: 0;
+}
+
+.boxIframe {
+  display: block;
+  border: 0;
+  border-radius: 4px;
+  flex-shrink: 0;
+  height: 80px;
+}
+
+.boxTrack {
+  display: none;
+  font-size: 11px;
+  color: $text-lo;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ─────────────────────────────────────────────
+   Indicateur de progression
+───────────────────────────────────────────── */
+.progressNav {
+  position: absolute;
+  bottom: clamp(20px, 3vh, 40px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+.progressList {
+  display: flex;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.progressItem {
+  display: flex;
+  align-items: center;
+}
+
+.progressDot {
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: $neon-subtle;
+  transition:
+    background 0.3s ease,
+    transform 0.3s ease;
+  cursor: default;
+
+  &[data-active='true'] {
+    background: $neon;
+    transform: scale(1.4);
+  }
+}
+
+/* ─────────────────────────────────────────────
+   Reduce motion
+───────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .cardImage {
+    transition: none;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   Responsive
+───────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .stage {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 24px;
+    padding-inline: 20px;
+  }
+
+  .cardsCol {
+    width: min(80vw, 340px);
+  }
+
+  .boxesCol {
+    width: min(80vw, 340px);
+    position: relative;
+    min-height: 130px;
+  }
+
+  .boxMusic {
+    position: absolute;
+    inset: 0;
+  }
+
+  .progressNav {
+    bottom: 12px;
+  }
+}

@@ -35,9 +35,13 @@ const HOVER_CONFIG = {
   subjectX: 10,
   subjectY: 7,
 
+  signatureX: 18,
+  signatureY: 13,
+
   backgroundScale: 1.04,
   shadowScale: 1.01,
   subjectScale: 1.01,
+  signatureScale: 1.015,
 };
 // ───────────────────────────────────────────────────────────────────────────
 
@@ -50,6 +54,7 @@ export default function ImageExpandDesktop() {
   const backgroundLayerRef = useRef<HTMLDivElement>(null);
   const shadowLayerRef = useRef<HTMLDivElement>(null);
   const subjectLayerRef = useRef<HTMLDivElement>(null);
+  const signatureLayerRef = useRef<HTMLDivElement>(null);
 
   const overlayRef = useRef<HTMLDivElement>(null);
   const labelRef = useRef<HTMLParagraphElement>(null);
@@ -67,6 +72,7 @@ export default function ImageExpandDesktop() {
       const backgroundLayer = backgroundLayerRef.current;
       const shadowLayer = shadowLayerRef.current;
       const subjectLayer = subjectLayerRef.current;
+      const signatureLayer = signatureLayerRef.current;
       const overlay = overlayRef.current;
       const label = labelRef.current;
 
@@ -79,6 +85,7 @@ export default function ImageExpandDesktop() {
         !backgroundLayer ||
         !shadowLayer ||
         !subjectLayer ||
+        !signatureLayer ||
         !overlay ||
         !label ||
         !after
@@ -134,7 +141,7 @@ export default function ImageExpandDesktop() {
         height: '100%',
       });
 
-      gsap.set([backgroundLayer, shadowLayer, subjectLayer], {
+      gsap.set([backgroundLayer, shadowLayer, subjectLayer, signatureLayer], {
         x: 0,
         y: 0,
         rotationX: 0,
@@ -155,6 +162,9 @@ export default function ImageExpandDesktop() {
 
       gsap.set(subjectLayer, {
         scale: HOVER_CONFIG.subjectScale,
+      });
+      gsap.set(signatureLayer, {
+        scale: HOVER_CONFIG.signatureScale,
       });
 
       gsap.set(after, {
@@ -195,6 +205,15 @@ export default function ImageExpandDesktop() {
         duration: 0.65,
         ease: 'power3.out',
       });
+      const signatureXTo = gsap.quickTo(signatureLayer, 'x', {
+        duration: 0.58,
+        ease: 'power3.out',
+      });
+
+      const signatureYTo = gsap.quickTo(signatureLayer, 'y', {
+        duration: 0.58,
+        ease: 'power3.out',
+      });
 
       const handlePointerMove = (event: PointerEvent) => {
         const x = (event.clientX / window.innerWidth - 0.5) * 2;
@@ -208,6 +227,8 @@ export default function ImageExpandDesktop() {
 
         subjectXTo(x * HOVER_CONFIG.subjectX);
         subjectYTo(y * HOVER_CONFIG.subjectY);
+        signatureXTo(x * HOVER_CONFIG.signatureX);
+        signatureYTo(y * HOVER_CONFIG.signatureY);
       };
 
       imgBox.classList.add(styles.isHoverReady);
@@ -356,8 +377,12 @@ export default function ImageExpandDesktop() {
             <div className={styles.overlayInitial} />
             <div ref={overlayRef} className={styles.overlay} />
             <div className={styles.logo}>
-              <div>
-                <LutaPath size={650} />
+              <div
+                ref={signatureLayerRef}
+                className={`${styles.layer} ${styles.signatureLayer}`}
+                aria-hidden="true"
+              >
+                <LutaPath size={950} />
               </div>
             </div>
           </div>

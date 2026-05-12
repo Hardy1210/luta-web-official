@@ -118,12 +118,13 @@
 }
 
 .logo {
-  position: relative;
+  position: absolute;
   display: flex;
   align-items: center;
   justify-content: center;
   //top: 50%;
   //left: 50%;
+  inset: 0;
   width: 100%;
   height: auto;
   margin: 0;
@@ -132,7 +133,25 @@
   z-index: 10;
 }
 
+.signatureLayer {
+  z-index: 4;
+  pointer-events: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  filter: drop-shadow(-18px 8px 14px rgba(0, 0, 0, 0.12));
+}
+
+.signatureSvg {
+  //  width: clamp(260px, 34vw, 560px);
+  //height: auto;
+  display: block;
+  overflow: visible;
+}
 .imgLabel {
+  display: none;
   position: absolute;
   left: 50%;
   top: calc(50% + 78px);

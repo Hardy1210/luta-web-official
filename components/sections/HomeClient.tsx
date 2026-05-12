@@ -9,8 +9,8 @@ import { SubText } from '../intro-split-text/SubText';
 import Navbar from '../layout/navbar/Navbar';
 
 import { getImageProps } from 'next/image';
+import VinylScrollWrapper from '../cards/VinylWrapper';
 import { Camino } from '../icons/dibujos/caminos/Camino';
-import { LutaPath } from '../icons/logo/luta-path/LutaPath';
 import ImageExpand from '../image-expand/ImageExpand';
 import TextScrollAnimation, {
   type TextLine,
@@ -21,7 +21,8 @@ type HomeClientProps = {
   name: string;
   description: string;
 };
-
+//////////////
+//TEXT EXPANDTEXT COMPONENT
 const defaultLines: TextLine[] = [
   {
     parts: [
@@ -46,12 +47,37 @@ const defaultLines: TextLine[] = [
     ],
   },
   {
-    parts: [{ text: 'SÈME UN PEU DE LUMIÈRE' }],
+    parts: [{ text: 'SON OBJETIF SEMER DE LUMIÈRE' }],
   },
   {
     parts: [{ text: 'AUTOUR D’ELLE.' }],
   },
 ];
+
+//////////////
+//TEXT EXPANDTEXT COMPONENT
+const defaultSecondLines: TextLine[] = [
+  {
+    parts: [
+      { text: 'DES MOTS, DES NOTES, DES ' },
+      { text: 'ÉMOTIONS.', className: 'font-serif italic font-normal' },
+    ],
+  },
+  { parts: [{ text: 'J’ÉCRIS ET JE COMPOSE AU FIL DE CE ' }] },
+  {
+    parts: [{ text: 'QUE JE RESSENS.' }],
+  },
+  {
+    parts: [
+      { text: 'LA ' },
+      { text: 'MUSIQUE', className: 'font-serif italic font-normal' },
+      { text: ' EST MON ' },
+      { text: 'REFUGE', className: 'font-serif italic font-normal' },
+    ],
+  },
+];
+///////////////////////////////
+
 const { props: revealProps } = getImageProps({
   src: '/images/reveal-luta.webp',
   width: 1500,
@@ -125,9 +151,7 @@ export function HomeClient({ name, description }: HomeClientProps) {
               <Camino size={100} />
             </div>
           </section>
-          <div>
-            <LutaPath size={900} />
-          </div>
+
           <section>
             <BioSection
               imageSrc="/images/lu-gui.webp"
@@ -137,6 +161,16 @@ export function HomeClient({ name, description }: HomeClientProps) {
           </section>
           <section>
             <ImageExpand />
+          </section>
+          <section id="music">
+            <TextScrollAnimation
+              eyebrow="(MUSIQUE)"
+              lines={defaultSecondLines}
+            />
+          </section>
+
+          <section>
+            <VinylScrollWrapper />
           </section>
         </main>
       </div>

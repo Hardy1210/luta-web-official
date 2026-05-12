@@ -45,13 +45,29 @@ export default function SmoothScrollProvider({
     const lenis = lenisRef.current?.lenis;
     lenis?.on('scroll', ScrollTrigger.update);
 
-    // Cap time gaps >500ms to 33ms — prevents GSAP dumping accumulated time
-    // on tab-return and breaking the intro timeline
     gsap.ticker.lagSmoothing(500, 33);
+
+    // ── Ajouts ──────────────────────────────────────────────────
+
+    // Recalcule après que images + fonts + iframes sont chargés
+    window.addEventListener('load', () => ScrollTrigger.refresh(), {
+      once: true,
+    });
+    document.fonts?.ready.then(() => ScrollTrigger.refresh());
+
+    // bfcache : back/forward restaure la page avec le scroll précédent
+    const handlePageShow = (e: PageTransitionEvent) => {
+      if (e.persisted) {
+        window.scrollTo(0, 0);
+        ScrollTrigger.refresh();
+      }
+    };
+    window.addEventListener('pageshow', handlePageShow);
 
     return () => {
       gsap.ticker.remove(update);
       lenis?.off('scroll', ScrollTrigger.update);
+      window.removeEventListener('pageshow', handlePageShow); // ← cleanup
     };
   }, []);
 

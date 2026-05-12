@@ -1,3 +1,5 @@
+//ESTE COMPONENTE EXPORTA LA ANIMACION DE EXPANCION EN DOS VERSIONES PARA
+//MOBIL Y DESKTOP
 'use client';
 
 import dynamic from 'next/dynamic';
