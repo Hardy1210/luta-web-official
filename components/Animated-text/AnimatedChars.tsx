@@ -90,8 +90,8 @@ export function AnimatedChars({
       });
 
       const isMobile = window.matchMedia('(max-width: 767px)').matches;
-      const initialY = isMobile ? 5 : 7;
-      const initialRotX = isMobile ? -100 : -80;
+      const initialY = isMobile ? 5 : 9;
+      const initialRotX = isMobile ? -100 : -90;
       const initialZ = isMobile ? -35 : -80;
 
       gsap.set(allChars, {

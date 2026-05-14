@@ -1,0 +1,334 @@
+.contactSection {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+
+  //min-height: 60svh;
+
+  background: var(--c-white, #f5f5f0);
+  color: var(--c-black, #1d252b);
+
+  padding-inline: var(--section-pad-x);
+  padding-block: clamp(4rem, 8vh, 7rem);
+  margin-block: clamp(4rem, 8vh, 7rem);
+
+  display: flex;
+  flex-direction: column;
+}
+
+/* SVG detrás de todo, sin afectar el layout */
+.signatureLayer {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+
+  left: 105%;
+  top: 70%;
+  transform: translate(-50%, -50%) rotate(-7deg);
+
+  width: clamp(30rem, 125vw, 58rem);
+  height: clamp(18rem, 68vw, 34rem);
+
+  opacity: 0.92;
+}
+
+/*signature descktop*/
+.signatureLayer2 {
+  display: none;
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+
+  left: 60%;
+  top: -1%;
+  transform: translate(-50%, -50%) rotate(-7deg);
+
+  width: clamp(30rem, 125vw, 58rem);
+  height: clamp(18rem, 68vw, 34rem);
+
+  opacity: 0.92;
+}
+
+.signatureSvg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Todo el contenido real pasa por encima */
+.eyebrow,
+.content,
+.ctaWrap {
+  position: relative;
+  z-index: 2;
+}
+
+.eyebrow {
+  width: max-content;
+  margin: 0 auto;
+
+  font-family: var(--font-serif, var(--ff-serif, serif));
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(0.68rem, 0.6rem + 0.25vw, 0.9rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.content {
+  flex: 1;
+
+  display: grid;
+  align-content: center;
+  gap: clamp(1.5rem, 4vw, 3rem);
+
+  // padding-bottom: clamp(7rem, 14vh, 10rem);
+}
+
+.textButtonWrapper {
+  display: grid;
+  align-content: center;
+  gap: clamp(1.5rem, 3vw, 3rem);
+}
+
+.title {
+  margin: 0;
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  text-transform: uppercase;
+  letter-spacing: -0.085em;
+  line-height: 0.88;
+}
+
+.titleMask {
+  display: block;
+  overflow: hidden;
+}
+
+.titleLine {
+  display: block;
+  will-change: transform, opacity;
+}
+
+.titleLineSans {
+  font-family: var(--font-display, var(--ff-display, sans-serif));
+  //font-weight: 800;
+  font-size: clamp(2rem, 10vw, 8rem);
+}
+
+.titleLineSerif {
+  font-family: var(--font-serif);
+  //font-style: italic;
+  font-weight: 500;
+  font-size: clamp(2.3rem, 11vw, 8.2rem);
+}
+
+.text {
+  max-width: 34ch;
+  margin: 0;
+
+  font-family: var(--font-body, var(--ff-body, sans-serif));
+  font-size: clamp(0.78rem, 0.72rem + 0.35vw, 1rem);
+  line-height: 1.05;
+  letter-spacing: -0.045em;
+
+  color: currentColor;
+}
+
+/* Bouton contact */
+.ctaButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 7px;
+  background: var(--c-neon);
+  color: var(--c-white);
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  width: fit-content;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+
+  &:hover {
+    background: var(--c-black);
+    transform: translateY(-1px);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--c-neon, #772eb1);
+    outline-offset: 3px;
+  }
+}
+/* Botón siempre en la base */
+.ctaWrap {
+  display: none;
+  position: absolute;
+  left: 50%;
+  bottom: clamp(2.25rem, 6vh, 5rem);
+  transform: translateX(-50%);
+
+  width: min(100% - 2rem, 26rem);
+  z-index: 3;
+}
+
+.cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  min-height: clamp(3.8rem, 7vw, 5.1rem);
+
+  border: 2px solid var(--c-violet, #7b35a4);
+  border-radius: 1rem;
+
+  font-family: var(--font-serif, var(--ff-serif, serif));
+  font-size: clamp(1.45rem, 5.8vw, 2.35rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
+  text-decoration: none;
+
+  color: var(--c-violet, #7b35a4);
+  background: transparent;
+
+  transition:
+    background-color 0.35s ease,
+    color 0.35s ease,
+    transform 0.35s ease;
+
+  &:hover {
+    background: var(--c-violet, #7b35a4);
+    color: var(--c-white, #f5f5f0);
+    transform: translateY(-2px);
+  }
+
+  &:focus-visible {
+    outline: 3px solid currentColor;
+    outline-offset: 4px;
+  }
+}
+
+/* md como Tailwind */
+@media (min-width: 760px) {
+  .contactSection {
+    min-height: 100vh;
+    padding-block: clamp(4rem, 8vh, 6rem);
+  }
+
+  .signatureLayer {
+    display: none;
+  }
+  /*signature descktop*/
+  .signatureLayer2 {
+    display: block;
+    position: absolute;
+    z-index: 0;
+    pointer-events: none;
+
+    left: 64%;
+    top: 40%;
+    transform: translate(-50%, -50%) rotate(-7deg);
+
+    width: clamp(45rem, 68vw, 74rem);
+    height: clamp(24rem, 39vw, 42rem);
+
+    opacity: 0.92;
+  }
+
+  .content {
+    grid-template-columns: minmax(1fr, 1fr) minmax(18rem, 28rem);
+    //align-items: center;
+    gap: clamp(2rem, 3vw, 6rem);
+
+    //padding-bottom: clamp(6rem, 14vh, 9rem);
+  }
+
+  .title {
+    //max-width: 100ch;
+  }
+
+  .titleLineSans {
+    font-size: clamp(3rem, 5vw, 7rem);
+  }
+
+  .titleLineSerif {
+    font-size: clamp(4.4rem, 6vw, 8rem);
+  }
+
+  .text {
+    align-self: flex-start;
+    justify-self: start;
+
+    //margin-top: clamp(1rem, 8vh, 5rem);
+    max-width: 39ch;
+
+    font-size: clamp(0.72rem, 0.72vw, 0.95rem);
+  }
+
+  .ctaWrap {
+    width: clamp(22rem, 31vw, 32rem);
+    bottom: clamp(3rem, 8vh, 5.8rem);
+  }
+}
+
+/* lg */
+@media (min-width: 1024px) {
+  .content {
+    grid-template-columns: 1.15fr 0.85fr;
+  }
+  .titleLineSerif {
+    font-size: clamp(4rem, 6vw, 8rem);
+  }
+
+  .signatureLayer {
+    left: 65%;
+    top: 35%;
+  }
+
+  .text {
+    //margin-top: clamp(0rem, 5vh, 3rem);
+  }
+}
+
+/* xl */
+@media (min-width: 1280px) {
+  .signatureLayer {
+    width: clamp(56rem, 64vw, 82rem);
+    height: clamp(30rem, 38vw, 45rem);
+  }
+
+  .titleLineSans {
+    //font-size: clamp(5rem, 6.6vw, 9rem);
+  }
+
+  .titleLineSerif {
+    //font-size: clamp(5.2rem, 6.9vw, 9.4rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .signatureSvg,
+  .titleLine,
+  .text,
+  .eyebrow,
+  .cta {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  .cta {
+    transition: none;
+  }
+}

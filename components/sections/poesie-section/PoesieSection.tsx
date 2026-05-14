@@ -16,7 +16,7 @@
  *   --section-pad-x, --container-2xl
  */
 
-import { AnimatedChars } from '@/components/Animated-text/AnimatedChars';
+import { AnimatedText } from '@/components/Animated-text/AnimatedText';
 import { Heart } from '@/components/icons/dibujos/Heart';
 import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect';
 import gsap from '@/lib/gsap';
@@ -58,34 +58,12 @@ function SpotifyIcon() {
   );
 }
 
-/* ─── Icône cœur SVG ────────────────────────────────────────── */
-function HeartIcon() {
-  return (
-    <svg
-      width="32"
-      height="32"
-      viewBox="0 0 32 32"
-      fill="none"
-      aria-hidden="true"
-      className={styles.heartSvg}
-    >
-      <path
-        d="M16 27S4 19.5 4 11.5A7.5 7.5 0 0 1 16 6.3 7.5 7.5 0 0 1 28 11.5C28 19.5 16 27 16 27Z"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
 /* ─── Composant ──────────────────────────────────────────────── */
 export function PoesieSection({
   titleSlot,
   description = "Poétique, moderne et sincère, son univers musical invite à l'écoute et à l'émotion.\nDes chansons qui résonnent longtemps après la dernière note.",
   ctaLabel = 'Écouter sur Spotify',
-  ctaHref = '#',
+  ctaHref = 'https://open.spotify.com/intl-es/artist/7lIbxiBTO3ycZCiD0JLjWD?si=oalXqSCsQy-zpp87A7Z0Kg',
   mainImage,
   floatImageTop,
   floatImageBottom,
@@ -141,30 +119,32 @@ export function PoesieSection({
         <div className={styles.titleBlock}>
           {titleSlot ?? (
             <>
-              <p className={styles.titleTop}>
+              <p className="sr-only">La poésie en musique</p>
+              <AnimatedText aria-hidden="true" className={styles.titleTop}>
                 La poésie
-                <br />
+              </AnimatedText>
+              <AnimatedText aria-hidden="true" className={styles.titleTop}>
                 en musique
-              </p>
-              <AnimatedChars
-                markers={true}
-                segments={[
-                  { text: 'La poésie en musique', className: styles.titleTop },
-                ]}
-              />
-              <p className={styles.titleBottom}>Une génération</p>
+              </AnimatedText>
+              <p className="sr-only">Une génération</p>
+              <AnimatedText
+                aria-hidden="true"
+                as="p"
+                className={styles.titleBottom}
+              >
+                Une génération
+              </AnimatedText>
             </>
           )}
         </div>
 
-        <p className={styles.description}>
-          {description.split('\n').map((line, i) => (
-            <span key={i}>
-              {line}
-              <br />
-            </span>
-          ))}
-        </p>
+        <div className={styles.description}>
+          <AnimatedText as="p" aria-hidden="true">
+            Poétique, moderne et sincère, son univers musical invite à l'écoute
+            et à l'émotion. <br /> Des chansons qui résonnent longtemps après la
+            dernière note.
+          </AnimatedText>
+        </div>
 
         <a
           href={ctaHref}

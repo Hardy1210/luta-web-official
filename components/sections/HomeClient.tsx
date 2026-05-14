@@ -12,11 +12,13 @@ import { getImageProps } from 'next/image';
 import VinylScrollWrapper from '../cards/VinylWrapper';
 import { Camino } from '../icons/dibujos/caminos/Camino';
 import ImageExpand from '../image-expand/ImageExpand';
+import FooterSection from '../layout/footer/FooterSection';
 import { SpotifyCollectionEmbed } from '../spotify/SpotifyCollectionEmbed';
 import TextScrollAnimation, {
   type TextLine,
 } from '../text-animation/TextScrollAnimation';
 import BioSection from './biosection/BioSection';
+import ContactSection from './contact-section/ContactSection';
 import { PoesieSection } from './poesie-section/PoesieSection';
 
 type HomeClientProps = {
@@ -174,7 +176,7 @@ export function HomeClient({ name, description }: HomeClientProps) {
           <section>
             <VinylScrollWrapper />
           </section>
-          <section className="w-full h-[70svh] flex justify-center items-center px-(--container-pad)">
+          <section className="w-full py-10 md:py-50 flex justify-center items-center px-(--container-pad)">
             <div className="flex-1 min-w-40 max-w-240">
               <SpotifyCollectionEmbed artistId="7lIbxiBTO3ycZCiD0JLjWD" />
             </div>
@@ -195,7 +197,11 @@ export function HomeClient({ name, description }: HomeClientProps) {
               }}
             />
           </section>
+          <section>
+            <ContactSection />
+          </section>
         </main>
+        <FooterSection />
       </div>
     </>
   );

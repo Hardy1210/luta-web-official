@@ -1,0 +1,17 @@
+.root {
+  opacity: 0; // oculto hasta que GSAP lo activa
+}
+
+// Contenedor clip por char: overflow hidden para el reveal
+.charClip {
+  display: inline-block;
+  overflow: hidden;
+  // vertical-align evita que el clip recorte descendentes (g, p, y…)
+  vertical-align: bottom;
+}
+
+// El span del char generado por SplitText
+.char {
+  display: inline-block;
+  will-change: transform;
+}
