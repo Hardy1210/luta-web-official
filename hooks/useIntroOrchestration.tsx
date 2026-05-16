@@ -15,7 +15,8 @@ export function useIntroOrchestration({
   containerRef,
   imageRefs,
 }: UseIntroOrchestrationParams) {
-  const { setPhase, triggerNavbar, resetNavbar, introComplete } = useAnimation();
+  const { setPhase, triggerNavbar, resetNavbar, introComplete } =
+    useAnimation();
   const tlRef = useRef<gsap.core.Timeline | null>(null);
 
   // ─── Estado inicial — corre ANTES del paint para evitar el flash ──
@@ -101,7 +102,7 @@ export function useIntroOrchestration({
 
       // ─── FASE 6: Completo ─────────────────────────────────────────
       tl.add(() => setPhase('overlayOut'), '-=1.5'); // ← cortina sale
-      tl.add(() => setPhase('dibujo'), '+=1.8'); // ← DibujoLuta aparece
+      // tl.add(() => setPhase('dibujo'), '+=1.8'); ← DibujoLuta aparece
       tl.add(() => setPhase('complete'), '+=0.5'); // ← scroll libre
     });
 

@@ -18,7 +18,7 @@ export type AnimationPhase =
   | 'subText'
   | 'navbar'
   | 'overlayOut'
-  | 'dibujo'
+  //| 'dibujo'
   | 'complete';
 
 interface AnimationContextType {

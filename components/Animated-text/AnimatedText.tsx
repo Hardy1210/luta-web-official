@@ -77,7 +77,7 @@ export function AnimatedText({
           gsap.set(lines, { clearProps: 'transform,willChange' }),
         scrollTrigger: {
           trigger: ref.current,
-          start: 'top 95%', // top del elemento llega al 85% del viewport
+          start: 'top 90%', // top del elemento llega al 85% del viewport
           markers,
         },
       });

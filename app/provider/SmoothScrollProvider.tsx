@@ -20,7 +20,15 @@ export default function SmoothScrollProvider({
     introCompleteRef.current = introComplete;
     const lenis = lenisRef.current?.lenis;
     if (!lenis) return;
-    introComplete ? lenis.start() : lenis.stop();
+    if (introComplete) {
+      lenis.start();
+      // Recalculate all trigger positions now that Lenis is active and the
+      // final page layout is settled. The window.load / fonts.ready refreshes
+      // fire during the intro (Lenis stopped), so their positions are stale.
+      requestAnimationFrame(() => ScrollTrigger.refresh());
+    } else {
+      lenis.stop();
+    }
   }, [introComplete]);
 
   useEffect(() => {

@@ -1,5 +1,8 @@
+import { AnimatedText } from '@/components/Animated-text/AnimatedText';
+import gsap, { SplitText } from '@/lib/gsap';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useEffect, useRef } from 'react';
 import styles from './FooterSection.module.scss';
 
 type FooterSectionProps = {
@@ -20,20 +23,68 @@ export default function FooterSection({
   imageAlt = 'Luta avec une guitare',
   className,
 }: FooterSectionProps) {
+  const socialInstaRef = useRef<HTMLParagraphElement>(null);
+  const socialFaceRef = useRef<HTMLParagraphElement>(null);
+  const legalRef = useRef<HTMLParagraphElement>(null);
+  const mentionsRef = useRef<HTMLParagraphElement>(null);
+  const creditsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const els = [
+      socialInstaRef.current,
+      socialFaceRef.current,
+      legalRef.current,
+      mentionsRef.current,
+      creditsRef.current,
+    ].filter(Boolean) as HTMLElement[];
+
+    const ctx = gsap.context(() => {
+      els.forEach((el) => {
+        const split = new SplitText(el, {
+          type: 'lines',
+          linesClass: styles.line,
+        });
+        const lines = split.lines as HTMLElement[];
+
+        lines.forEach((line) => {
+          const clip = document.createElement('div');
+          clip.className = styles.lineClip;
+          line.parentNode!.insertBefore(clip, line);
+          clip.appendChild(line);
+        });
+
+        gsap.set(el, { opacity: 1 });
+        gsap.set(lines, { y: '110%' });
+
+        gsap.to(lines, {
+          y: '0%',
+          duration: 0.85,
+          stagger: { each: 0.12 },
+          ease: 'power3.out',
+          scrollTrigger: { trigger: el, start: 'top 100%' },
+        });
+      });
+    });
+
+    return () => ctx.revert();
+  }, []);
   return (
     <div className={`${styles.footerSection} ${className ?? ''}`}>
       <div className={styles.top}>
         <div className={styles.heading}>
-          <h2 className={styles.title}>MA DERNIÈRE CHANSON</h2>
+          <AnimatedText as="h2" className={styles.title}>
+            MA DERNIÈRE CHANSON
+          </AnimatedText>
 
-          <p className={styles.subtitle}>
+          <AnimatedText as="p" className={styles.subtitle}>
             ÊTRE AUTHENTIQUE AVEC QUI NOUS SOMMES
-          </p>
+          </AnimatedText>
         </div>
 
         <Link href="/musique" className={styles.listenLink}>
-          <span aria-hidden="true">→</span>
-          ÉCOUTER
+          <AnimatedText as="span" aria-hidden="true">
+            → ÉCOUTER
+          </AnimatedText>
         </Link>
       </div>
 
@@ -52,23 +103,44 @@ export default function FooterSection({
 
         <nav className={styles.nav} aria-label="Navigation principale">
           {navItems.map((item) => (
-            <Link key={item.href} href={item.href} className={styles.navLink}>
-              {item.label}
+            <Link key={item.href} href={item.href}>
+              <AnimatedText as="span" className={styles.navLink}>
+                {item.label}
+              </AnimatedText>
             </Link>
           ))}
         </nav>
         <div className={styles.social}>
-          <p className={styles.socialInsta}>INSTAGRAM </p>
-          <p className={styles.socialFace}> FACEBOOK</p>
-        </div>
-        <div className={styles.legal}>
-          <p>© 2026 LUTA</p>
-          <p>MENTIONS LÉGALES</p>
+          <Link href="" target="_blank" rel="noopener noreferrer">
+            <p ref={socialInstaRef} className={styles.socialInsta}>
+              INSTAGRAM
+            </p>
+          </Link>
+          <Link href="" target="_blank" rel="noopener noreferrer">
+            <p ref={socialFaceRef} className={styles.socialFace}>
+              FACEBOOK
+            </p>
+          </Link>
         </div>
 
-        <div className={styles.credits}>
+        <div className={styles.legal}>
+          <p ref={legalRef}>© 2026 LUTA</p>
+          <Link href="/mentions-legales">
+            <p ref={mentionsRef} className={styles.mentionsLegales}>
+              MENTIONS LÉGALES
+            </p>
+          </Link>
+        </div>
+
+        <div ref={creditsRef} className={styles.credits}>
           <p>DESIGN &amp;</p>
-          <p>DÉVELOPPEMENT KALÉ STUDIO</p>
+          <a
+            href="https://www.kalevs.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            DÉVELOPPEMENT KALÉ STUDIO
+          </a>
         </div>
       </div>
     </div>

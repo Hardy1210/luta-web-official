@@ -181,7 +181,7 @@
   position: absolute;
   //display: none; /* trop de surcharge sur très petit écran */
   bottom: -5%;
-  top: 290px;
+  top: 190px;
   left: -3%;
   width: 34%;
   will-change: transform;
@@ -263,6 +263,7 @@
 
   .titleBottom {
     font-size: clamp(4rem, 6vw, 8rem);
+    top: 290px;
   }
 
   .description {

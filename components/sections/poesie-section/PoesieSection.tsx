@@ -92,14 +92,14 @@ export function PoesieSection({
 
       // Petite image haute droite — monte vite (vitesse ×1.8)
       gsap.to(floatTopRef.current, {
-        y: '-80px',
+        y: '-50px',
         ease: 'none',
         scrollTrigger: { ...trigger, scrub: 0.8 },
       });
 
       // Petite image basse — monte moins vite (vitesse ×0.9)
       gsap.to(floatBottomRef.current, {
-        y: '-190px',
+        y: '-100px',
         ease: 'none',
         scrollTrigger: { ...trigger, scrub: 1.6 },
       });
