@@ -4,6 +4,7 @@ import gsap from '@/lib/gsap';
 import { useGSAP } from '@gsap/react';
 import { useRef } from 'react';
 //import { ContactSignature } from './ContactSignature';
+import { AnimatedText } from '@/components/Animated-text/AnimatedText';
 import { SignatureContact } from '@/components/icons/signature-contact/SgnatureContact';
 import styles from './ContactSection.module.scss';
 
@@ -79,7 +80,7 @@ export default function ContactSection({
   );
 
   return (
-    <div ref={sectionRef} className={styles.contactSection}>
+    <div className={styles.contactSection}>
       {/* SVG real en el DOM, detrás del contenido, sin ocupar espacio  <ContactSignature className={styles.signatureSvg} />*/}
       {/**mobil */}
       <div className={styles.signatureLayer} aria-hidden="true">
@@ -90,10 +91,11 @@ export default function ContactSection({
         <SignatureContact size={850} />
       </div>
 
-      <p className={styles.eyebrow}>(CONTACT)</p>
+      <h2 className={styles.eyebrow}>(CONTACT)</h2>
 
       <div className={styles.content}>
-        <h2
+        <div
+          ref={sectionRef}
           className={styles.title}
           aria-label="Se dire. Se lier. Se rencontrer."
         >
@@ -108,13 +110,13 @@ export default function ContactSection({
               SE RENCONTRER.
             </span>
           </span>
-        </h2>
+        </div>
         <div className={styles.textButtonWrapper}>
-          <p className={styles.text}>
+          <AnimatedText as="p" className={styles.text}>
             Chaque message est une rencontre possible. N’hésitez pas à me
             contacter pour toute collaboration ou projet. Je prends le temps de
             lire et de répondre à chaque échange.
-          </p>
+          </AnimatedText>
           <a
             href={ctaHref}
             className={styles.ctaButton}

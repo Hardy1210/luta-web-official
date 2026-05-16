@@ -61,7 +61,7 @@
   gap: 0.15rem;
   font-family: var(--footer-body);
   font-size: clamp(0.75rem, 3.5vw, 0.95rem);
-  font-weight: 700;
+  //font-weight: 700;
   line-height: 1;
   color: currentColor;
   text-decoration: none;
@@ -109,7 +109,7 @@
   max-width: 10ch;
   font-family: var(--font-display);
   font-size: clamp(1rem, 2.8vw, 0.8rem);
-  font-weight: 700;
+  //font-weight: 700;
   line-height: 0.95;
   text-transform: uppercase;
 }
@@ -152,7 +152,7 @@
   margin: 0;
   font-family: var(--font-display);
   font-size: clamp(0.75rem, 2.1vw, 0.72rem);
-  font-weight: 700;
+  //font-weight: 700;
   line-height: 0.85;
   text-transform: uppercase;
   display: flex;
@@ -223,7 +223,7 @@
     align-self: start; /* evita que se estire */
     position: relative;
     width: 100%;
-    aspect-ratio: 1.72 / 1; /* funciona bien con align-self: start */
+    aspect-ratio: 1.4 / 1; /* funciona bien con align-self: start */
   }
 
   .year {
@@ -243,7 +243,7 @@
   }
 
   .navLink {
-    font-size: clamp(3.2rem, 4.8vw, 5.6rem);
+    font-size: clamp(2.4rem, 4.8vw, 5.6rem);
     line-height: 0.98;
     letter-spacing: -0.055em;
   }
@@ -282,6 +282,9 @@
 @media (min-width: 1024px) {
   .bottom {
     grid-template-columns: 1fr 1fr 1fr;
+  }
+  .imageWrapper {
+    aspect-ratio: 1.7 / 1; /* funciona bien con align-self: start */
   }
 
   .navLink {

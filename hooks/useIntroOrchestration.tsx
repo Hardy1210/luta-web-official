@@ -15,7 +15,7 @@ export function useIntroOrchestration({
   containerRef,
   imageRefs,
 }: UseIntroOrchestrationParams) {
-  const { setPhase, triggerNavbar, introComplete } = useAnimation();
+  const { setPhase, triggerNavbar, resetNavbar, introComplete } = useAnimation();
   const tlRef = useRef<gsap.core.Timeline | null>(null);
 
   // ─── Estado inicial — corre ANTES del paint para evitar el flash ──
@@ -24,12 +24,12 @@ export function useIntroOrchestration({
     const images = imageRefs.current;
     if (!container || !images?.length) return;
 
-    // Reset phase on every mount. In Next.js App Router the layout (and its
-    // AnimationProvider) persists across client-side navigations, so phase can
-    // be 'complete' when the user navigates back to this page. Resetting to
-    // 'idle' here guarantees the intro always plays. When phase is already
-    // 'idle' (first load), React bails out (same state → no re-render).
+    // Reset phase and navbarReady on every mount. AnimationProvider persists
+    // across client-side navigations, so both can be stale when the user
+    // returns to this page. Resetting here guarantees the intro always plays
+    // from scratch and the navbar animation fires at the correct moment.
     setPhase('idle');
+    resetNavbar();
 
     gsap.set(container.parentElement, { opacity: 1 });
     gsap.set(images[0], { scale: 1, opacity: 1 });

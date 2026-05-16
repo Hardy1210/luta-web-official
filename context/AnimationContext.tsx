@@ -27,6 +27,7 @@ interface AnimationContextType {
   introComplete: boolean;
   navbarReady: boolean;
   triggerNavbar: () => void;
+  resetNavbar: () => void;
 }
 
 const AnimationContext = createContext<AnimationContextType | null>(null);
@@ -36,6 +37,7 @@ export function AnimationProvider({ children }: { children: ReactNode }) {
   const [navbarReady, setNavbarReady] = useState(false);
 
   const triggerNavbar = useCallback(() => setNavbarReady(true), []);
+  const resetNavbar = useCallback(() => setNavbarReady(false), []);
   useEffect(() => {
     document.body.style.pointerEvents = phase === 'complete' ? '' : 'none';
     return () => {
@@ -51,6 +53,7 @@ export function AnimationProvider({ children }: { children: ReactNode }) {
         introComplete: phase === 'complete',
         navbarReady,
         triggerNavbar,
+        resetNavbar,
       }}
     >
       {children}

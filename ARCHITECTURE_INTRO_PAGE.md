@@ -48,7 +48,7 @@ Componentes que aplican este patrón:
 ### `context/AnimationContext.tsx`
 **Responsabilidad:** fuente única de verdad de la fase actual.
 
-- Expone `phase`, `setPhase`, `introComplete`, `navbarReady`, `triggerNavbar`.
+- Expone `phase`, `setPhase`, `introComplete`, `navbarReady`, `triggerNavbar`, `resetNavbar`.
 - Bloquea `overflow` y `pointerEvents` en `body` mientras `phase !== 'complete'`.
 - `AnimationProvider` se monta en `app/layout.tsx` — envuelve toda la app.
 
@@ -103,8 +103,8 @@ Consume `containerRef` e `imageRefs` desde `IntroImage`. No renderiza nada.
 
 - Siempre renderiza `<div className="intro-overlay">` (sin return null condicional).
 - Escucha `phase === 'overlayOut'`: ejecuta `gsap.to(opacity: 0, duration: 0.6)` y al completar pone `display: none`.
-- Se monta en `layout.tsx` como **primer hijo** de `AnimationProvider`, antes del Navbar y el contenido.
-- **No duplicar** en páginas individuales — solo en `layout.tsx`.
+- Se monta en `HomeClient.tsx` (no en `layout.tsx`): así remonta en cada navegación client-side y parte siempre visible.
+- **No mover a `layout.tsx`**: si viviera ahí (persistido), el `display: none` que GSAP aplica quedaría entre navegaciones y la cortina no cubriría la siguiente visita.
 
 ### `styles/globals.css` — `.intro-overlay`
 ```css
@@ -147,7 +147,7 @@ Tapa toda la página desde el primer HTML del servidor hasta que la animación l
 
 - Marcado `'use client'`.
 - No gestiona estado propio de la animación.
-- No incluir `<IntroOverlay />` aquí — ya está en `layout.tsx`.
+- Incluye `<IntroOverlay />` aquí (no en `layout.tsx`) para que la cortina remonte limpia en cada navegación.
 
 ---
 

@@ -21,14 +21,14 @@ export default function ImageExpandMobile() {
 
     const ctx = gsap.context(() => {
       gsap.set(image, {
-        yPercent: -3,
+        yPercent: 5,
         scale: 1.12,
         transformOrigin: 'center center',
         force3D: true,
       });
 
       gsap.to(image, {
-        yPercent: 3,
+        yPercent: -5,
         scale: 1.06,
         ease: 'power2.out',
         scrollTrigger: {
@@ -79,9 +79,27 @@ export default function ImageExpandMobile() {
         </div>
       </div>
 
-      {/*<div className={styles.after}>
-        <h2 className={styles.afterTitle}>Y así llenó el mundo.</h2>
-      </div> */}
+      <div className={styles.after}>
+        <div className={styles.afterWrapper}>
+          <div className={styles.box}>
+            <div className={styles.afterTitle}>
+              SITE WEB CRÉÉ PAR KALÉ VIRTUAL STUDIO. <br />
+              POUR UN MUSICIEN / AUTEUR COMPOSITEUR.
+            </div>
+            <div className={styles.link}>
+              <span className={styles.afterArrow}>→</span>
+              <span className={styles.afterLinkText}>VOIR LE SITE</span>
+            </div>
+          </div>
+          <div className={styles.afterText}>
+            <p>
+              WEB DESIGN
+              <br />
+              DIRECTION CRÉATIVE
+            </p>
+          </div>
+        </div>
+      </div>
     </>
   );
 }

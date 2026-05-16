@@ -26,7 +26,7 @@ export default function ImageExpand() {
   const [isDesktop, setIsDesktop] = useState<boolean | null>(null);
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(min-width: 768px)');
+    const mediaQuery = window.matchMedia('(min-width: 1024px)');
 
     const update = () => {
       setIsDesktop(mediaQuery.matches);

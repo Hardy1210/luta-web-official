@@ -67,6 +67,7 @@
 .eyebrow {
   width: max-content;
   margin: 0 auto;
+  padding-bottom: 3rem;
 
   font-family: var(--font-serif, var(--ff-serif, serif));
   font-style: italic;
@@ -226,7 +227,9 @@
     min-height: 100vh;
     padding-block: clamp(4rem, 8vh, 6rem);
   }
-
+  .eyebrow {
+    padding-bottom: 0;
+  }
   .signatureLayer {
     display: none;
   }

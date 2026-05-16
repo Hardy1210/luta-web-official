@@ -72,7 +72,7 @@ export const LutaPathMobil = ({
           end: 'bottom 45%',
 
           scrub: 0.45,
-          markers: true,
+          //markers: true,
           invalidateOnRefresh: true,
         },
       });

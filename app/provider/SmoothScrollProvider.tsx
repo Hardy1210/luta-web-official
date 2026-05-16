@@ -55,11 +55,13 @@ export default function SmoothScrollProvider({
     });
     document.fonts?.ready.then(() => ScrollTrigger.refresh());
 
-    // bfcache : back/forward restaure la page avec le scroll précédent
+    // bfcache: when the browser restores the page from cache (back/forward),
+    // React state is frozen at 'complete' and the intro overlay is already
+    // display:none — the animation cannot replay. A full reload is the only
+    // reliable fix; it destroys the bfcache entry and forces a clean load.
     const handlePageShow = (e: PageTransitionEvent) => {
       if (e.persisted) {
-        window.scrollTo(0, 0);
-        ScrollTrigger.refresh();
+        window.location.reload();
       }
     };
     window.addEventListener('pageshow', handlePageShow);

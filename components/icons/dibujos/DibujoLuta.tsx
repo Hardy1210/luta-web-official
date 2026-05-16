@@ -1,13 +1,8 @@
 'use client';
 
-import { useAnimation } from '@/context/AnimationContext';
 import gsap from '@/lib/gsap';
-import { DrawSVGPlugin } from 'gsap/DrawSVGPlugin';
 import { useEffect, useRef } from 'react';
 import styles from './DibujoLuta.module.scss';
-
-// ─── Registrar UNA sola vez, fuera del componente ────────────────────────────
-gsap.registerPlugin(DrawSVGPlugin);
 
 const DRAW_ORDER = ['p-l1', 'p-l2', 'p-diag', 'p-t', 'p-bar', 'p-o'];
 
@@ -21,7 +16,7 @@ interface DibujoLutaProps {
 }
 
 export default function DibujoLuta({
-  play,
+  play = true,
   strokeWidth = 3.2,
   stroke = 'currentColor',
   duration = 3,
@@ -30,43 +25,25 @@ export default function DibujoLuta({
 }: DibujoLutaProps) {
   const svgRef = useRef<SVGSVGElement>(null);
   const tlRef = useRef<gsap.core.Timeline | null>(null);
-  const { phase } = useAnimation();
 
-  // ── 1. Setup inicial — immediateRender evita el flash ────────────────────
+  // ── 1. Setup inicial ──────────────────────────────────────────────────────
   useEffect(() => {
     const svg = svgRef.current;
     if (!svg) return;
 
     DRAW_ORDER.forEach((id) => {
       const path = svg.getElementById(id) as SVGPathElement | null;
-      if (path) {
-        gsap.set(path, { drawSVG: '0%', immediateRender: true });
-      }
+      if (path) gsap.set(path, { drawSVG: '0%', immediateRender: true });
     });
   }, []);
 
   // ── 2. Animación ──────────────────────────────────────────────────────────
   useEffect(() => {
     const svg = svgRef.current;
-    if (!svg) return;
-
-    if (phase === 'complete') {
-      if (!tlRef.current?.isActive()) {
-        gsap.set(svg, { opacity: 1 });
-        DRAW_ORDER.forEach((id) => {
-          const path = svg.getElementById(id) as SVGPathElement | null;
-          if (path) gsap.set(path, { drawSVG: '100%', immediateRender: true });
-        });
-      }
-      return;
-    }
-
-    const shouldPlay = phase === 'dibujo' || play === true;
-    if (!shouldPlay) return;
+    if (!svg || !play) return;
 
     tlRef.current?.kill();
 
-    // ── Leer todos los lengths ANTES de crear el timeline (evita reflow) ──
     const lengths = DRAW_ORDER.map((id) => {
       const path = svg.getElementById(id) as SVGPathElement | null;
       return path?.getTotalLength() ?? 0;
@@ -75,13 +52,12 @@ export default function DibujoLuta({
     const totalLength = lengths.reduce((a, b) => a + b, 0);
     const speed = totalLength / duration;
 
-    // ── Construir timeline con posiciones absolutas ───────────────────────
-    const tl = gsap.timeline({ onComplete });
+    const tl = gsap.timeline({ onComplete, delay: 5 });
     tlRef.current = tl;
 
     tl.set(svg, { opacity: 1, immediateRender: true });
 
-    let cursor = 0; // posición absoluta en el timeline
+    let cursor = 0;
     const EASES: Record<string, string> = {
       'p-l1': 'power1.out',
       'p-l2': 'power1.out',
@@ -98,7 +74,7 @@ export default function DibujoLuta({
       tl.to(path, { drawSVG: '100%', duration: pathDuration, ease }, cursor);
       cursor += pathDuration;
     });
-  }, [phase, play, duration, onComplete]);
+  }, [play, duration, onComplete]);
 
   // ── 3. Cleanup ────────────────────────────────────────────────────────────
   useEffect(
