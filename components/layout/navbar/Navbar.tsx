@@ -128,7 +128,7 @@ export default function Navbar() {
       style={{ mixBlendMode: 'difference' }}
     >
       {/* Logo — extremo izquierdo */}
-      <div ref={logoRef} className={styles.logo}>
+      <div ref={logoRef} className={styles.logo} style={{ opacity: 0 }}>
         <Link href="/" aria-label="Accueil">
           <LogoMark />
         </Link>
@@ -146,6 +146,7 @@ export default function Navbar() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label={label}
+            style={{ opacity: 0 }}
           >
             {icon}
           </a>
@@ -162,6 +163,7 @@ export default function Navbar() {
               }}
               href={href}
               className={styles.link}
+              style={{ opacity: 0 }}
             >
               {label}
             </Link>

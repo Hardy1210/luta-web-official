@@ -131,7 +131,7 @@
   max-width: 34ch;
   margin: 0;
 
-  font-family: var(--font-body, var(--ff-body, sans-serif));
+  font-family: var(--font-display);
   font-size: clamp(0.78rem, 0.72rem + 0.35vw, 1rem);
   line-height: 1.05;
   letter-spacing: -0.045em;

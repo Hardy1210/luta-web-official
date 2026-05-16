@@ -1,7 +1,7 @@
-import type { SiteConfig } from '@/types/seo'
+import type { SiteConfig } from '@/types/seo';
 
 export const siteConfig = {
-  name: 'NOM_DU_CLIENT pendejo',
+  name: 'Luta Musique',
   tagline: 'TAGLINE_CLIENT',
   description: 'DESCRIPTION_CLIENT',
   url: 'https://www.NOM_DU_CLIENT.fr',
@@ -18,4 +18,4 @@ export const siteConfig = {
     { label: 'À propos', href: '/a-propos' },
     { label: 'Contact', href: '/contact' },
   ],
-} satisfies SiteConfig
+} satisfies SiteConfig;

@@ -16,7 +16,9 @@
 
 .top {
   min-height: 190px;
-  padding: 1rem 0.65rem 0.9rem;
+  padding-top: 1rem;
+  padding-bottom: 0.9rem;
+  padding-inline: var(--section-pad-x);
   border-top: 1px solid var(--footer-border);
   display: flex;
   flex-direction: column;
@@ -68,7 +70,9 @@
 
 .bottom {
   border-top: 1px solid var(--footer-border);
-  padding: 1rem 0.65rem 0.65rem;
+  padding-top: 1rem;
+  padding-bottom: 0.65rem;
+  padding-inline: var(--section-pad-x);
   display: grid;
   grid-template-columns: 1fr auto;
   grid-template-rows: minmax(9.5rem, auto) auto auto;
@@ -130,8 +134,8 @@
 
 .year {
   position: absolute;
-  right: 0.55rem;
-  bottom: -0.15rem;
+  right: 1.1rem;
+  bottom: 0.15rem;
   z-index: 2;
   font-family: var(--font-serif);
   font-size: clamp(3.6rem, 16vw, 5rem);
@@ -173,7 +177,9 @@
 /* md: 760px */
 @media (min-width: 760px) {
   .top {
-    padding: 1.35rem 1.45rem 1.25rem;
+    padding-top: 1.35rem;
+    padding-bottom: 1.25rem;
+    padding-inline: var(--section-pad-x);
   }
 
   .heading {
@@ -206,7 +212,9 @@
     grid-template-areas:
       'image nav nav'
       'legal social credits';
-    padding: 2rem 1.45rem 1rem;
+    padding-top: 2rem;
+    padding-bottom: 1rem;
+    padding-inline: var(--section-pad-x);
     gap: 1.5rem 1rem;
   }
 
@@ -246,7 +254,7 @@
     align-self: end;
     justify-self: center;
     max-width: none;
-    text-align: center;
+    text-align: start;
     white-space: nowrap;
     font-size: clamp(0.68rem, 0.85vw, 0.8rem);
     line-height: 1;

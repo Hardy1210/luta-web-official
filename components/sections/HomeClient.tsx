@@ -201,7 +201,9 @@ export function HomeClient({ name, description }: HomeClientProps) {
             <ContactSection />
           </section>
         </main>
-        <FooterSection />
+        <footer>
+          <FooterSection />
+        </footer>
       </div>
     </>
   );

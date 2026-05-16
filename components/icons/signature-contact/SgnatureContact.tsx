@@ -70,7 +70,7 @@ export const SignatureContact = ({
         scrollTrigger: {
           trigger: svg,
           start: triggerStart,
-          end: 'bottom 35%',
+          end: 'bottom 75%',
           //end: 'bottom -125%',
           scrub: 0.45,
           //markers: true,

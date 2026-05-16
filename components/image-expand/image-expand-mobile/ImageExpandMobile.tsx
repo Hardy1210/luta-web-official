@@ -1,5 +1,6 @@
 'use client';
 
+import { LutaPathMobil } from '@/components/icons/logo/luta-path/LutaPathMobil';
 import gsap from '@/lib/gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Image from 'next/image';
@@ -58,11 +59,12 @@ export default function ImageExpandMobile() {
   return (
     <>
       <div className={styles.mobileIntro}>
-        <p className={styles.introLabel}>↓ scroll</p>
-        <h1 className={styles.mobileTitle}>Antes de la magia</h1>
+        {/*<p className={styles.introLabel}>↓ scroll</p>
+        <h1 className={styles.mobileTitle}>Antes de la magia</h1> */}
       </div>
 
       <div ref={sectionRef} className={styles.mobileSection}>
+        <LutaPathMobil size={140} className={styles.lutaPath} />
         <div className={styles.mobileImageWrapper}>
           <div ref={imageRef} className={styles.mobileImageInner}>
             <Image
@@ -77,9 +79,9 @@ export default function ImageExpandMobile() {
         </div>
       </div>
 
-      <div className={styles.after}>
+      {/*<div className={styles.after}>
         <h2 className={styles.afterTitle}>Y así llenó el mundo.</h2>
-      </div>
+      </div> */}
     </>
   );
 }
