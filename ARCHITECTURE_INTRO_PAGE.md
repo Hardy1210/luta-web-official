@@ -49,7 +49,7 @@ Componentes que aplican este patrón:
 **Responsabilidad:** fuente única de verdad de la fase actual.
 
 - Expone `phase`, `setPhase`, `introComplete`, `navbarReady`, `triggerNavbar`, `resetNavbar`.
-- Bloquea `overflow` y `pointerEvents` en `body` mientras `phase !== 'complete'`.
+- Bloquea el scroll y los `pointerEvents` en `body` mientras `phase !== 'complete'` **vía event listeners** (`wheel`, `touchmove`, `keydown`) — no via `overflow: hidden` (ver decisión abajo).
 - `AnimationProvider` se monta en `app/layout.tsx` — envuelve toda la app.
 
 Fases declaradas:
@@ -83,6 +83,16 @@ gsap.set(images.slice(1), { scale: 0 });
 gsap.set(container, { y: '100svh', scale: 0.5 }); // fuera del viewport por abajo
 ```
 
+**Gate de `window.load`:**
+La timeline no arranca hasta que todos los recursos de la página estén cargados. El `useEffect` usa `startTimeline` como función nombrada para poder removerla del listener si el componente desmonta antes de que `load` dispare:
+```ts
+if (document.readyState === 'complete') {
+  startTimeline();           // ya cargó (navegación client-side)
+} else {
+  window.addEventListener('load', startTimeline, { once: true });
+}
+```
+
 **Timeline con timings actuales:**
 ```
 delay: 0.5s    → espera antes de que todo arranque (overlay solo, sin animación)
@@ -93,7 +103,7 @@ FASE 2: imágenes revelan  scale/opacity stagger  duration: 0.65s  ease: power2.
 +=0.7s → subText
 +=0.5s → navbar  (+ triggerNavbar)
 -=1.5s → overlayOut  (cortina sale mientras navbar entra)
-+=1.0s → complete    (scroll libre)
++=0.5s → complete    (scroll libre)
 ```
 
 Consume `containerRef` e `imageRefs` desde `IntroImage`. No renderiza nada.
@@ -167,6 +177,12 @@ El overlay no sale cuando el navbar entra — sale `-=1.5s` después (overlap in
 
 **`IntroOverlay` en el layout, no en la página**
 Montarlo en `app/layout.tsx` garantiza que cubra el flash en cualquier ruta. Se retira vía GSAP (fade out + `display: none`) y no vía unmount de React para evitar un re-render visible durante la animación.
+
+**Bloqueo de scroll via eventos, no `overflow: hidden`**
+`overflow: hidden` oculta la barra de scroll. Al restaurarla en `complete` el scrollbar reaparece y desplaza el layout (≈17px en Windows), causando un salto visual al final de la animación. La solución es bloquear scroll con `preventDefault()` en `wheel`, `touchmove` y `keydown` — el scrollbar permanece visible en todo momento y no hay ningún shift. El cleanup del `useEffect` remueve los tres listeners cuando `phase` llega a `complete`.
+
+**Bloqueo de scroll con `window.load` antes de arrancar**
+La timeline no parte hasta que `document.readyState === 'complete'`. Sin este gate la animación puede arrancar antes de que las imágenes estén cargadas, produciendo saltos de layout o frames vacíos al inicio. En navegaciones client-side Next.js el `useEffect` ya corre después de `load`, por lo que el check de `readyState` garantiza que nunca se pierda la señal.
 
 **Una máquina de estados, no props drilling**
 `AnimationContext` centraliza la coordinación. Cada componente escucha solo la fase que le importa. Añadir una nueva fase o componente animado no requiere modificar los existentes.

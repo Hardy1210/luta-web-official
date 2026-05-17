@@ -39,8 +39,23 @@ export function AnimationProvider({ children }: { children: ReactNode }) {
   const triggerNavbar = useCallback(() => setNavbarReady(true), []);
   const resetNavbar = useCallback(() => setNavbarReady(false), []);
   useEffect(() => {
-    document.body.style.pointerEvents = phase === 'complete' ? '' : 'none';
+    if (phase === 'complete') return;
+
+    const stopScroll = (e: Event) => e.preventDefault();
+    const stopKeyScroll = (e: KeyboardEvent) => {
+      if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' '].includes(e.key))
+        e.preventDefault();
+    };
+
+    document.addEventListener('wheel', stopScroll, { passive: false });
+    document.addEventListener('touchmove', stopScroll, { passive: false });
+    document.addEventListener('keydown', stopKeyScroll);
+    document.body.style.pointerEvents = 'none';
+
     return () => {
+      document.removeEventListener('wheel', stopScroll);
+      document.removeEventListener('touchmove', stopScroll);
+      document.removeEventListener('keydown', stopKeyScroll);
       document.body.style.pointerEvents = '';
     };
   }, [phase]);

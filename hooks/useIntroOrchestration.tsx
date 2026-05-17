@@ -44,71 +44,81 @@ export function useIntroOrchestration({
     const images = imageRefs.current;
     if (!container || !images?.length) return;
 
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-      tlRef.current = tl;
+    let ctx: gsap.Context | undefined;
 
-      // ─── FASE 1: Imagen sube desde abajo al centro del viewport ───
-      setPhase('imageRising');
+    const startTimeline = () => {
+      ctx = gsap.context(() => {
+        const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+        tlRef.current = tl;
 
-      tl.to(container, {
-        y: 0,
-        duration: 1.2,
-        delay: 0.5, //retrasa la entrada de la imagen
-        ease: 'power4.out',
-        onComplete: () => setPhase('imagesRevealing'),
-      });
+        // ─── FASE 1: Imagen sube desde abajo al centro del viewport ───
+        setPhase('imageRising');
 
-      // ─── FASE 2: Imágenes aparecen dentro del contenedor ──────────
-      images.forEach((img, i) => {
-        if (!img || i === 0) return;
-        const isLast = i === images.length - 1;
+        tl.to(container, {
+          y: 0,
+          duration: 1.2,
+          delay: 0.5, //retrasa la entrada de la imagen
+          ease: 'power4.out',
+          onComplete: () => setPhase('imagesRevealing'),
+        });
 
-        tl.to(
-          img,
-          {
-            scale: 1,
-            opacity: 1,
-            duration: 0.65,
-            ease: 'power2.inOut',
-          },
-          i === 0 ? '+=0.15' : '-=0.25',
-        );
+        // ─── FASE 2: Imágenes aparecen dentro del contenedor ──────────
+        images.forEach((img, i) => {
+          if (!img || i === 0) return;
+          const isLast = i === images.length - 1;
 
-        if (isLast) {
           tl.to(
-            container,
+            img,
             {
-              scale: 1.08,
-              duration: 1.2,
-              ease: 'power3.inOut',
+              scale: 1,
+              opacity: 1,
+              duration: 0.65,
+              ease: 'power2.inOut',
             },
-            '+=0.1', // controla el tiempo de espera antes de que la imagen se agrande
+            i === 0 ? '+=0.15' : '-=0.25',
           );
-        }
+
+          if (isLast) {
+            tl.to(
+              container,
+              {
+                scale: 1.08,
+                duration: 1.2,
+                ease: 'power3.inOut',
+              },
+              '+=0.1', // controla el tiempo de espera antes de que la imagen se agrande
+            );
+          }
+        });
+
+        // ─── FASE 3: HeroText ─────────────────────────────────────────
+        tl.add(() => setPhase('heroText'), '-=0.3');
+
+        // ─── FASE 4: SubText ──────────────────────────────────────────
+        tl.add(() => setPhase('subText'), '+=0.9');
+
+        // ─── FASE 5: cortina sale ─────────────────────────────────────────
+        tl.add(() => setPhase('overlayOut'), '-=1.5'); // ← cortina sale
+        // tl.add(() => setPhase('dibujo'), '+=1.8'); ← DibujoLuta aparece
+        // ─── FASE 6: Navbar ───────────────────────────────────────────
+        tl.add(() => {
+          setPhase('navbar');
+          triggerNavbar();
+        }, '+=0.5');
+        tl.add(() => setPhase('complete'), '+=0.5'); // ← scroll libre
       });
+    };
 
-      // ─── FASE 3: HeroText ─────────────────────────────────────────
-      tl.add(() => setPhase('heroText'), '-=0.3');
-
-      // ─── FASE 4: SubText ──────────────────────────────────────────
-      tl.add(() => setPhase('subText'), '+=0.7');
-
-      // ─── FASE 5: Navbar ───────────────────────────────────────────
-      tl.add(() => {
-        setPhase('navbar');
-        triggerNavbar();
-      }, '-=0.3');
-
-      // ─── FASE 6: Completo ─────────────────────────────────────────
-      tl.add(() => setPhase('overlayOut'), '-=1.5'); // ← cortina sale
-      // tl.add(() => setPhase('dibujo'), '+=1.8'); ← DibujoLuta aparece
-      tl.add(() => setPhase('complete'), '+=0.5'); // ← scroll libre
-    });
+    if (document.readyState === 'complete') {
+      startTimeline();
+    } else {
+      window.addEventListener('load', startTimeline, { once: true });
+    }
 
     return () => {
+      window.removeEventListener('load', startTimeline);
       tlRef.current = null;
-      ctx.revert();
+      ctx?.revert();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

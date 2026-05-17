@@ -89,17 +89,17 @@ export default function Navbar() {
     // 1. Logo (izq) y links (der) entran simultáneos
     tl.fromTo(
       logoRef.current,
-      { xPercent: -110, opacity: 0 },
-      { xPercent: 0, opacity: 1, duration: 1.5, ease: 'power4.out' },
+      { xPercent: -20, opacity: 0 },
+      { xPercent: 0, opacity: 1, duration: 1.5, ease: 'power2.out' },
     ).fromTo(
       links,
-      { x: 110, opacity: 0 },
+      { x: 20, opacity: 0 },
       {
         x: 0,
         opacity: 1,
         duration: 1.5,
         ease: 'power4.out',
-        stagger: 0.08,
+        stagger: 0.095,
         clearProps: 'transform,opacity',
       },
       '<', // simultáneo
@@ -163,7 +163,6 @@ export default function Navbar() {
               }}
               href={href}
               className={styles.link}
-              style={{ opacity: 0 }}
             >
               {label}
             </Link>
