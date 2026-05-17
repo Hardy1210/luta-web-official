@@ -9,8 +9,10 @@
     --c-black: #1a1a18;
     --c-white: #f4f4ed;
     --c-neon: #772eb1;
+    --c-neon2: #ffb7ff;
     --c-muted: #7a7672;
     --c-warm: #e8c49a;
+    --c-red: #ff0555;
 
     /* ── COLORES MARCA ─────────────────────────────────────── */
     --color-brand: var(--c-black);
@@ -71,7 +73,7 @@
     --text-4xl: 3.5rem;
     --text-5xl: clamp(3rem, 6vw, 5rem);
     --text-hero: clamp(3rem, 14vw, 16rem);
-    --text-section-p: clamp(1.4rem, 4.5vw, 5rem);
+    --text-section-p: clamp(1.2rem, 5vw, 4.3rem);
 
     /* ── LINE HEIGHT ───────────────────────────────────────── */
     --leading-none: 1;
@@ -140,6 +142,7 @@
     --z-navbar: 51; /* Navbar — encima de todo el intro       */
     --z-hero-text: 51; /* HeroText — encima de la imagen        */
     --z-dibujo: 51; /* DibujoLuta — mismo nivel que navbar    */
+    --z-button-spotify: 52;
 
     --z-overlay: 200;
     --z-modal: 300;

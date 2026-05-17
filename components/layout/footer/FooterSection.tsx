@@ -80,8 +80,11 @@ export default function FooterSection({
             ÊTRE AUTHENTIQUE AVEC QUI NOUS SOMMES
           </AnimatedText>
         </div>
-
-        <Link href="/musique" className={styles.listenLink}>
+        {/* Dernier chanson */}
+        <Link
+          href="https://open.spotify.com/intl-fr/track/6tjF22SjD2M73DsKHQevw8?si=cbc9067aeafd4461"
+          className={styles.listenLink}
+        >
           <AnimatedText as="span" aria-hidden="true">
             → ÉCOUTER
           </AnimatedText>
@@ -111,12 +114,20 @@ export default function FooterSection({
           ))}
         </nav>
         <div className={styles.social}>
-          <Link href="" target="_blank" rel="noopener noreferrer">
+          <Link
+            href="https://www.instagram.com/luta_musique/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <p ref={socialInstaRef} className={styles.socialInsta}>
               INSTAGRAM
             </p>
           </Link>
-          <Link href="" target="_blank" rel="noopener noreferrer">
+          <Link
+            href="https://www.facebook.com/profile.php?id=61565333910877"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <p ref={socialFaceRef} className={styles.socialFace}>
               FACEBOOK
             </p>

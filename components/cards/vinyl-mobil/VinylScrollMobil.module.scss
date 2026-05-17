@@ -9,13 +9,13 @@ $neon-dark: #5a1f8a;
 $neon-subtle: #c8aee0;
 $radius-card: 4px;
 $radius-box: 6px;
-$card-size: min(78vw, 650px);
+$card-size: min(330px, 650px);
 
 /* ── Wrapper ─────────────────────────────────────────── */
 .wrapper {
   position: relative;
   width: 100%;
-  padding-block: clamp(40px, 8vh, 72px);
+  padding-block: clamp(40px, 8vw, 72px);
   background-color: $bg;
   display: flex;
   flex-direction: column;

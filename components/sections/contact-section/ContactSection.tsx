@@ -4,6 +4,7 @@ import gsap from '@/lib/gsap';
 import { useGSAP } from '@gsap/react';
 import { useRef } from 'react';
 //import { ContactSignature } from './ContactSignature';
+import { AnimatedBackgroundLineText } from '@/components/Animated-text/AnimatedBackgroundLineText';
 import { AnimatedText } from '@/components/Animated-text/AnimatedText';
 import { SignatureContact } from '@/components/icons/signature-contact/SgnatureContact';
 import styles from './ContactSection.module.scss';
@@ -16,6 +17,9 @@ export default function ContactSection({
   ctaHref = 'https://open.spotify.com/intl-es/artist/7lIbxiBTO3ycZCiD0JLjWD?si=oalXqSCsQy-zpp87A7Z0Kg',
 }: ContactSectionProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const titleRef = AnimatedBackgroundLineText<HTMLDivElement>({
+    triggerStart: 'top 90%',
+  });
 
   useGSAP(
     () => {
@@ -91,7 +95,9 @@ export default function ContactSection({
         <SignatureContact size={850} />
       </div>
 
-      <h2 className={styles.eyebrow}>(CONTACT)</h2>
+      <h2 ref={titleRef} className={styles.eyebrow}>
+        (CONTACT)
+      </h2>
 
       <div className={styles.content}>
         <div

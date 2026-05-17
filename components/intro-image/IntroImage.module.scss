@@ -18,7 +18,7 @@
   width: clamp(270px, 20vw, 350px);
   aspect-ratio: 3 / 4;
   will-change: transform, opacity;
-  overflow: hidden;
+  overflow: visible;
   border-radius: 0px;
 }
 
@@ -30,6 +30,24 @@
 
   img {
     object-fit: cover;
+  }
+}
+//buton spotify
+.spotifyWrap {
+  position: absolute;
+  bottom: 1rem; // base del contenedor, ajusta
+  left: 1rem;
+  pointer-events: auto;
+  z-index: var(--z-button-spotify);
+
+  opacity: 0;
+  animation: fadeIn 0.4s ease forwards;
+  animation-delay: 5s; // ← los 4 segundos
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
   }
 }
 

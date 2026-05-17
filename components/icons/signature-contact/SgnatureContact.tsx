@@ -16,7 +16,7 @@ export const SignatureContact = ({
   size,
   strokeWidth = 30, // grosor del trazo encubridor — ajusta hasta cubrir bien tu firma
   duration = 9.3,
-  triggerStart = 'top 40%',
+  triggerStart = 'top 10%',
   once = true,
   ...props
 }: SignatureContactProps) => {
@@ -70,7 +70,7 @@ export const SignatureContact = ({
         scrollTrigger: {
           trigger: svg,
           start: triggerStart,
-          end: 'bottom 75%',
+          end: 'bottom 95%',
           //end: 'bottom -125%',
           scrub: 0.45,
           //markers: true,

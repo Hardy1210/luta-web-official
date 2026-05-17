@@ -9,7 +9,7 @@
   color: var(--c-black, #1d252b);
 
   padding-inline: var(--section-pad-x);
-  padding-block: clamp(4rem, 8vh, 7rem);
+  padding-block: clamp(6rem, 8vh, 7rem);
   margin-block: clamp(4rem, 8vh, 7rem);
 
   display: flex;
@@ -67,7 +67,7 @@
 .eyebrow {
   width: max-content;
   margin: 0 auto;
-  padding-bottom: 3rem;
+  margin-bottom: 3rem;
 
   font-family: var(--font-serif, var(--ff-serif, serif));
   font-style: italic;
@@ -228,7 +228,7 @@
     padding-block: clamp(4rem, 8vh, 6rem);
   }
   .eyebrow {
-    padding-bottom: 0;
+    margin-bottom: 0;
   }
   .signatureLayer {
     display: none;

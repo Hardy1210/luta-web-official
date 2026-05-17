@@ -26,7 +26,7 @@ export default function TextScrollAnimation({
   lines,
   className = '',
   once = true,
-  triggerStart = 'top 90%',
+  triggerStart = 'top 97%',
   barClassName = 'bg-[var(--c-neon)]',
 }: TextScrollAnimationProps) {
   const rootRef = useRef<HTMLDivElement | null>(null);
@@ -76,7 +76,7 @@ export default function TextScrollAnimation({
       // ─────────────────────────────────────────────
 
       // SCROLLTRIGGERS SEPARADOS
-      const titleTriggerStart = 'top 90%'; // titulito
+      const titleTriggerStart = 'top 97%'; // titulito
       const textTriggerStart = triggerStart; // texto grande
 
       // TITULITO "(BIO)"
@@ -334,7 +334,7 @@ export default function TextScrollAnimation({
   return (
     <div
       ref={rootRef}
-      className={`relative flex min-h-[50vh] md:min-h-screen w-full items-center px-(--container-pad) text-(--color-text) justify-center  py-20 ${className}`}
+      className={`relative flex min-h-120 md:min-h-screen w-full items-center px-(--container-pad) text-(--color-text) justify-center  py-20 ${className}`}
     >
       <div className="mx-auto flex w-full flex-col items-center text-center">
         <div className="mb-4 inline-block">

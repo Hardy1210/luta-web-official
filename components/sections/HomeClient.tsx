@@ -11,6 +11,7 @@ import Navbar from '../layout/navbar/Navbar';
 import { getImageProps } from 'next/image';
 import VinylScrollWrapper from '../cards/VinylWrapper';
 import { Camino } from '../icons/dibujos/caminos/Camino';
+import { Nota } from '../icons/dibujos/Nota';
 import ImageExpand from '../image-expand/ImageExpand';
 import FooterSection from '../layout/footer/FooterSection';
 import { SpotifyCollectionEmbed } from '../spotify/SpotifyCollectionEmbed';
@@ -99,6 +100,7 @@ const { props: revealProps } = getImageProps({
         </h2>
         */
 }
+
 export function HomeClient({ name, description }: HomeClientProps) {
   return (
     <>
@@ -110,7 +112,7 @@ export function HomeClient({ name, description }: HomeClientProps) {
         </header>
 
         <main className="">
-          <section id="hero" className=" h-screen">
+          <section id="hero" className=" h-186 sm:h-screen">
             <div className="w-full h-full">
               <div className="relative w-full h-full flex flex-col items-center justify-center ">
                 {/* contenedor en full */}
@@ -128,11 +130,11 @@ export function HomeClient({ name, description }: HomeClientProps) {
                         stroke="currentColor"
                       />
                     </div>
-
+                    {/* Marco absoluto centrado */}
                     <div className="absolute inset-0 m-auto translate-y-55 w-[clamp(270px,23.5vw,350px)] pointer-events-none hidden sm:block">
                       <SubText className="absolute left-full top-1/2 ml-[35px] -translate-y-48 " />
                     </div>
-                    {/* Marco absoluto centrado */}
+
                     {/* IntroImage queda libre con su clase original */}
                     <IntroImage
                       className="absolute inset-0 m-auto translate-y-15 sm:translate-y-55"
@@ -151,8 +153,9 @@ export function HomeClient({ name, description }: HomeClientProps) {
           </section>
           <section id="bio">
             <TextScrollAnimation eyebrow="(BIO)" lines={defaultLines} />
-            <div className="flex w-full h-auto justify-center  sm:hidden">
-              <Camino size={100} />
+            {/* SVG Camino para movil */}
+            <div className="flex w-full h-10 justify-center  sm:hidden">
+              <Camino size={100} className="-mt-20" />
             </div>
           </section>
 
@@ -165,8 +168,15 @@ export function HomeClient({ name, description }: HomeClientProps) {
           </section>
           <section>
             <ImageExpand />
+            {/* SVG  para movil */}
+            <div className="relative flex w-full h-24 justify  sm:hidden">
+              <Nota
+                size={70}
+                className="absolute left-1/2 -translate-x-1/2 mt-20"
+              />
+            </div>
           </section>
-          <section id="music">
+          <section id="music" className="relative">
             <TextScrollAnimation
               eyebrow="(MUSIQUE)"
               lines={defaultSecondLines}
@@ -196,6 +206,13 @@ export function HomeClient({ name, description }: HomeClientProps) {
                 alt: 'Bottom image',
               }}
             />
+            {/** SVG para movil */}
+            <div className="relative flex w-full h-24 justify  sm:hidden">
+              <Camino
+                size={100}
+                className="absolute left-1/2 -translate-x-1/2 mt-20"
+              />
+            </div>
           </section>
           <section>
             <ContactSection />

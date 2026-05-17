@@ -1,4 +1,3 @@
-//orquestacion intro
 'use client';
 
 import { useAnimation } from '@/context/AnimationContext';
@@ -6,6 +5,7 @@ import { introImages } from '@/data/IntroImages';
 import { useIntroOrchestration } from '@/hooks/useIntroOrchestration';
 import Image from 'next/image';
 import { useRef } from 'react';
+import ButtonSpotify from '../button-spotify/ButtonSpotify';
 import styles from './IntroImage.module.scss';
 import { IntroImageCursorReveal } from './IntroImageCursorReveal';
 
@@ -25,10 +25,7 @@ export function IntroImage({
   smoothness,
 }: IntroImageProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-
-  // Un único ref que contiene el array de elementos DOM
   const imageRefs = useRef<(HTMLDivElement | null)[]>([]);
-
   const { introComplete } = useAnimation();
 
   useIntroOrchestration({ containerRef, imageRefs });
@@ -64,6 +61,14 @@ export function IntroImage({
             liquidMotion={0.22}
           />
         )}
+
+        {/*BUTTONSPOTIFY SI LO QUITAS NO PASA NADA Fuera del imageLayer, dentro del container — solidario al movimiento */}
+        <div className={`${styles.spotifyWrap} block sm:hidden`}>
+          <ButtonSpotify
+            ctaHref="https://open.spotify.com/intl-es/artist/7lIbxiBTO3ycZCiD0JLjWD?si=oalXqSCsQy-zpp87A7Z0Kg"
+            ctaLabel="Écouter sur Spotify"
+          />
+        </div>
       </div>
     </div>
   );
