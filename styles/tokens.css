@@ -105,7 +105,7 @@
 
     /* ── SECCIONES ─────────────────────────────────────────── */
     --section-pad-x: clamp(0.5rem, 1.5vw, 6rem);
-    --section-pad-y: clamp(5rem, 10vh, 10rem);
+    --section-pad-y: clamp(5rem, 10vw, 10rem);
 
     --section-sm: clamp(3rem, 6vw, 5rem);
     --section-md: clamp(5rem, 9vw, 8rem);

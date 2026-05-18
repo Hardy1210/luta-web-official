@@ -1,0 +1,156 @@
+@use '@/styles/abstracts/breakpoints' as *;
+@use '@/styles/abstracts/bio-grid' as *;
+
+/* ── SECTION / GRID ─────────────────────────────────── */
+.section {
+  @include bio-grid;
+  align-items: start;
+  padding-block: var(--section-pad-y);
+}
+
+/* ── TITLE ──────────────────────────────────────────── */
+.title {
+  grid-column: 1 / -1;
+
+  font-family: var(--font-body);
+  font-size: var(--text-xl);
+  text-transform: uppercase;
+  margin: 0;
+
+  em {
+    font-family: var(--font-serif);
+    font-style: italic;
+    text-transform: none;
+  }
+
+  @include lg {
+    grid-column: 1 / 5;
+  }
+}
+
+/* ── BOX BORDEADO ───────────────────────────────────── */
+.box {
+  grid-column: 1 / -1;
+
+  display: grid;
+  grid-template-columns: subgrid; // hereda las cols del padre
+  //border: 1px solid var(--c-black);
+  //padding: var(--space-8);
+
+  @include md {
+    grid-column: 1 / 9;
+  }
+  @include lg {
+    grid-column: 2 / 13;
+  }
+}
+
+/* Derecha: singles + concerts + icon (se apilan en flex) */
+.boxRight {
+  grid-column: 1 / -1; // mobile: full width
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+
+  font-family: var(--font-messiri);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  text-align: left;
+
+  p {
+    margin: 0;
+  }
+
+  @include md {
+    grid-column: 5 / 9;
+  }
+  @include lg {
+    grid-column: 5 / 11;
+  }
+}
+
+/* Izquierda: festivals — se ancla al fondo de su celda */
+.boxLeft {
+  grid-column: 1 / -1; // mobile: full width
+  //align-self: end; // pegado al fondo del box
+
+  font-family: var(--font-messiri);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+
+  p {
+    margin: 0;
+  }
+
+  @include md {
+    grid-column: 1 / 5;
+  }
+  @include lg {
+    grid-column: 1 / 6;
+  }
+}
+
+/* Music notes */
+.musicIcon {
+  width: 3rem;
+  align-self: flex-end;
+  margin-block: 2.5rem;
+  margin-right: var(--space-8);
+
+  @include lg {
+    margin-block: 2rem;
+  }
+}
+
+/* ── PROJETS BLOCK ──────────────────────────────────── */
+.projetsBlock {
+  grid-column: 1 / -1;
+  text-align: center;
+  margin-top: 3rem;
+
+  @include md {
+    grid-column: 2 / 8;
+  }
+  @include lg {
+    grid-column: 3 / 11;
+  }
+}
+
+.projetsTitle {
+  font-family: var(--font-messiri);
+  font-size: var(--text-xl);
+  text-transform: uppercase;
+  margin: 0 0 var(--space-6);
+
+  em {
+    font-family: var(--font-serif);
+    font-style: italic;
+    text-transform: none;
+  }
+}
+
+.projetsList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  // gap: 0.1rem;
+
+  li {
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    line-height: var(--leading-normal);
+  }
+}
+
+/* ── WAVE SVG ───────────────────────────────────────── */
+.wave {
+  grid-column: 1 / -1;
+  justify-self: center;
+  width: 4rem;
+
+  @include lg {
+    grid-column: 1 / -1;
+  }
+}

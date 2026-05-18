@@ -1,15 +1,11 @@
+'use client';
+
 import BioIntro from '@/components/a-propos-components/bio-intro/BioIntro';
+import BioProjects from '@/components/a-propos-components/bio-projects/BioProjects';
 import BioStory from '@/components/a-propos-components/bio-story/BioStory';
 import BioUnivers from '@/components/a-propos-components/bio-universe/BioUnivers';
+import FooterSection from '@/components/layout/footer/FooterSection';
 import Navbar from '@/components/layout/navbar/Navbar';
-import { generateMetadata } from '@/lib/metadata';
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = generateMetadata({
-  title: 'TITRE_A_PROPOS',
-  description: 'DESCRIPTION_A_PROPOS',
-  slug: 'a-propos',
-});
 
 export default function AProposPage() {
   return (
@@ -21,7 +17,11 @@ export default function AProposPage() {
         <BioIntro />
         <BioStory />
         <BioUnivers />
+        <BioProjects />
       </main>
+      <footer>
+        <FooterSection />
+      </footer>
     </>
   );
 }

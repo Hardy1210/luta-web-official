@@ -86,8 +86,8 @@
 
 /* ── INFLUENCES TITLE ───────────────────────────────── */
 .influencesTitle {
-  font-family: var(--font-body);
-  font-size: var(--text-p-clamp);
+  font-family: var(--font-serif);
+  font-size: var(--text-2xl);
   text-transform: uppercase;
   letter-spacing: var(--tracking-wide);
   margin: 0;
@@ -108,7 +108,7 @@
   flex-direction: column;
   gap: var(--space-3);
   font-family: var(--font-messiri);
-  font-size: var(--text-p-clamp);
+  font-size: var(--text-base);
   line-height: var(--leading-normal);
   width: 68%;
 
