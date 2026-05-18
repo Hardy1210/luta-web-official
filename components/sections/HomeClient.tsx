@@ -214,7 +214,7 @@ export function HomeClient({ name, description }: HomeClientProps) {
               />
             </div>
           </section>
-          <section>
+          <section id="contact">
             <ContactSection />
           </section>
         </main>

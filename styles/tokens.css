@@ -71,7 +71,8 @@
     --text-2xl: 2rem;
     --text-3xl: 2.5rem;
     --text-4xl: 3.5rem;
-    --text-5xl: clamp(3rem, 6vw, 5rem);
+    --text-p-clamp: clamp(1rem, 1.4vw, 1.4rem);
+    --text-5xl: clamp(3rem, 9vw, 9rem);
     --text-hero: clamp(3rem, 14vw, 16rem);
     --text-section-p: clamp(1.2rem, 5vw, 4.3rem);
 

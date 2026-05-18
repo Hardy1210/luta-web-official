@@ -1,0 +1,120 @@
+@use '@/styles/abstracts/breakpoints' as *;
+@use '@/styles/abstracts/bio-grid' as *;
+
+/* ── SECTION / GRID ─────────────────────────────────── */
+.section {
+  @include bio-grid;
+  align-items: stretch; // foto y content se igualan en altura
+  padding-block: var(--section-pad-y);
+}
+
+/* ── FOTO ───────────────────────────────────────────── */
+.photo {
+  grid-column: 1 / -1;
+  position: relative;
+  aspect-ratio: 3 / 4; // mobile: ratio fijo
+  margin: 0;
+
+  @include md {
+    grid-column: 1 / 5;
+    aspect-ratio: unset; // tablet+: se estira al alto del content
+  }
+
+  @include lg {
+    grid-column: 1 / 6;
+  }
+}
+
+.img {
+  object-fit: cover;
+  object-position: center top;
+}
+
+/* ── CONTENT WRAPPER (derecha) ──────────────────────── */
+.content {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+
+  @include md {
+    grid-column: 5 / 9;
+  }
+  @include lg {
+    grid-column: 7 / 13;
+  }
+}
+
+/* ── TÍTULO ─────────────────────────────────────────── */
+.title {
+  font-family: var(--font-body);
+  font-size: var(--text-2xl);
+  text-transform: uppercase;
+  text-align: right;
+  margin: 0;
+
+  em {
+    font-family: var(--font-serif);
+    font-style: italic;
+    text-transform: none;
+  }
+}
+
+/* ── SUN SVG ────────────────────────────────────────── */
+.sun {
+  width: 4rem;
+  margin-block: 1rem;
+  align-self: flex-end; // pegado a la derecha del wrapper
+  margin-right: var(--space-8);
+}
+
+/* ── COPY ───────────────────────────────────────────── */
+.copy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  font-family: var(--font-messiri);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  width: 70%; // ocupa izquierda del wrapper
+  align-self: flex-start;
+
+  p {
+    margin: 0;
+  }
+}
+
+/* ── INFLUENCES TITLE ───────────────────────────────── */
+.influencesTitle {
+  font-family: var(--font-body);
+  font-size: var(--text-p-clamp);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  margin: 0;
+  margin-top: 2rem;
+}
+
+/* ── MOON SVG ───────────────────────────────────────── */
+.moon {
+  width: 4rem;
+  align-self: flex-start;
+  margin-left: var(--space-8);
+  margin-block: 1rem;
+}
+
+/* ── INFLUENCES COPY (indentado derecha) ────────────── */
+.influencesCopy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  font-family: var(--font-messiri);
+  font-size: var(--text-p-clamp);
+  line-height: var(--leading-normal);
+  width: 68%;
+
+  align-self: flex-end; // empujado a la derecha
+
+  p {
+    margin: 0;
+  }
+}

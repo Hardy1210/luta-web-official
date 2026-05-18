@@ -1,0 +1,113 @@
+@use '@/styles/abstracts/breakpoints' as *;
+@use '@/styles/abstracts/bio-grid' as *;
+
+/* ── SECTION / GRID ─────────────────────────────────── */
+.section {
+  @include bio-grid;
+  //align-items: start;
+  padding-block: var(--section-pad-y);
+}
+
+/* ── CONTENT WRAPPER (heading + cursor + copy) ───────── */
+.content {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-6);
+
+  @include md {
+    grid-column: 1 / 5;
+  }
+  @include lg {
+    grid-column: 1 / 7;
+  }
+}
+
+/* ── HEADING ────────────────────────────────────────── */
+.heading {
+  font-family: var(--font-serif);
+  font-size: var(--text-2xl);
+  text-transform: uppercase;
+  line-height: var(--leading-none);
+  margin: 0;
+}
+
+/* ── CURSOR SVG ─────────────────────────────────────── */
+.cursor {
+  width: 3.5rem;
+  align-self: flex-start;
+  margin-left: var(--space-8);
+
+  margin-block: 1rem;
+  @include lg {
+  }
+}
+
+/* ── COPY ───────────────────────────────────────────── */
+.copy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  font-family: var(--font-messiri);
+  font-size: var(--text-p-clamp);
+  line-height: var(--leading-normal);
+
+  p {
+    margin: 0;
+  }
+}
+
+/* ── PHOTOS WRAPPER ─────────────────────────────────── */
+.photos {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  //md=768px
+  @include md {
+    grid-column: 5 / 9;
+  }
+  //lg=1024px
+  @include lg {
+    grid-column: 8 / 13;
+  }
+}
+
+/* ── LIVE PHOTO ─────────────────────────────────────── */
+.live {
+  position: relative;
+  width: 82%;
+  aspect-ratio: 3 / 4;
+  align-self: flex-start;
+  margin: 0;
+
+  @include md {
+    width: 48%;
+  }
+  @include lg {
+    width: 48%;
+  }
+}
+
+/* ── PORTRAIT ───────────────────────────────────────── */
+.portrait {
+  position: relative;
+  width: 75%;
+  aspect-ratio: 1 / 1;
+  align-self: flex-end;
+  margin: 0;
+
+  @include md {
+    width: 48%;
+  }
+  @include lg {
+    width: 48%;
+  }
+}
+
+/* ── IMAGE ──────────────────────────────────────────── */
+.img {
+  object-fit: cover;
+  object-position: center top;
+}

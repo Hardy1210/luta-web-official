@@ -6,6 +6,8 @@ import { useIsomorphicLayoutEffect } from '@/hooks/useIsomorphicLayoutEffect';
 import gsap from '@/lib/gsap';
 import { useEffect, useRef } from 'react';
 
+import { usePathname } from 'next/navigation';
+
 import { AppleMusic } from '@/components/icons/AppleMusic';
 import { Facebook } from '@/components/icons/Facebook';
 import { Instagram } from '@/components/icons/Instagram';
@@ -17,9 +19,9 @@ import Link from 'next/link';
 import styles from './Navbar.module.scss';
 
 const navLinks = [
-  { href: '#accueil', label: 'ACCUEIL' },
-  { href: '/bio', label: 'BIO' },
-  { href: '#musique', label: 'MUSIQUE' },
+  { href: '/', label: 'ACCUEIL' },
+  { href: '/a-propos', label: 'BIO' },
+  { href: '#music', label: 'MUSIQUE' },
   { href: '#contact', label: 'CONTACT' },
 ];
 
@@ -62,6 +64,9 @@ function LogoMark() {
 
 export default function Navbar() {
   const { navbarReady } = useAnimation();
+  //CONDICIONAMOS LA ANIMACION DE NAVBAR SOLO PARA LA HOME
+  const pathname = usePathname();
+  const isHome = pathname === '/';
 
   // Refs para los tres bloques del navbar
   const logoRef = useRef<HTMLDivElement>(null);
@@ -70,6 +75,8 @@ export default function Navbar() {
 
   // ─── Ocultar ANTES del paint — evita flash del navbar ────────
   useIsomorphicLayoutEffect(() => {
+    //si no estamos en home, no hacemos nada de animacion
+    if (!isHome) return;
     gsap.set(
       [
         logoRef.current,
@@ -81,7 +88,7 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    if (!navbarReady) return;
+    if (!isHome || !navbarReady) return;
     const links = linksRef.current.filter(Boolean);
     const socialIcons = socialIconsRef.current.filter(Boolean);
     const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
@@ -118,7 +125,7 @@ export default function Navbar() {
       },
       '-=0.55',
     );
-  }, [navbarReady]);
+  }, [navbarReady, isHome]);
 
   return (
     <nav
@@ -128,7 +135,11 @@ export default function Navbar() {
       style={{ mixBlendMode: 'difference' }}
     >
       {/* Logo — extremo izquierdo */}
-      <div ref={logoRef} className={styles.logo} style={{ opacity: 0 }}>
+      <div
+        ref={logoRef}
+        className={styles.logo}
+        style={isHome ? { opacity: 0 } : undefined}
+      >
         <Link href="/" aria-label="Accueil">
           <LogoMark />
         </Link>
@@ -146,7 +157,7 @@ export default function Navbar() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label={label}
-            style={{ opacity: 0 }}
+            style={isHome ? { opacity: 0 } : undefined}
           >
             {icon}
           </a>
@@ -163,6 +174,7 @@ export default function Navbar() {
               }}
               href={href}
               className={styles.link}
+              style={isHome ? { opacity: 0 } : undefined}
             >
               {label}
             </Link>

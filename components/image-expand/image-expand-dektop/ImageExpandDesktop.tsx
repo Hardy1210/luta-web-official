@@ -424,8 +424,14 @@ export default function ImageExpandDesktop() {
                 }}
                 className={`${styles.afterBlock} ${styles.afterBlockRight}`}
               >
-                <a href="https://www.kalevs.com" className={styles.afterLink}>
+                <a
+                  href="https://www.kalevs.com"
+                  className={styles.afterLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <span className={styles.afterArrow}>→</span>
+
                   <span className={styles.afterLinkText}>VOIR LE SITE</span>
                 </a>
               </div>

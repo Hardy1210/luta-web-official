@@ -1,0 +1,24 @@
+@use '@/styles/abstracts/breakpoints' as *;
+
+// Mixin aplicable a cualquier <section> de la bio
+@mixin bio-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: var(--space-4);
+  row-gap: var(--space-8);
+
+  width: 100%;
+  max-width: var(--container-2xl); // 1440px
+  margin-inline: auto;
+  padding-inline: var(--container-pad);
+
+  @include md {
+    grid-template-columns: repeat(8, 1fr);
+    column-gap: var(--space-4);
+  }
+
+  @include lg {
+    grid-template-columns: repeat(12, 1fr);
+    column-gap: var(--space-4);
+  }
+}

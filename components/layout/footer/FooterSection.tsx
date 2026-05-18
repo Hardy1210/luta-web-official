@@ -13,9 +13,9 @@ type FooterSectionProps = {
 
 const navItems = [
   { label: 'ACCUEIL', href: '/' },
-  { label: 'BIO', href: '/bio' },
-  { label: 'MUSIQUE', href: '/musique' },
-  { label: 'CONTACT', href: '/contact' },
+  { label: 'BIO', href: '/a-propos' },
+  { label: 'MUSIQUE', href: '#music' },
+  { label: 'CONTACT', href: '#contact' },
 ];
 
 export default function FooterSection({
@@ -77,7 +77,7 @@ export default function FooterSection({
           </AnimatedText>
 
           <AnimatedText as="p" className={styles.subtitle}>
-            ÊTRE AUTHENTIQUE AVEC QUI NOUS SOMMES
+            "Larme en plein coeur"
           </AnimatedText>
         </div>
         {/* Dernier chanson */}
