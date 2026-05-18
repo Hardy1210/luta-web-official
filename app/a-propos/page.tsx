@@ -5,13 +5,13 @@ import BioProjects from '@/components/a-propos-components/bio-projects/BioProjec
 import BioStory from '@/components/a-propos-components/bio-story/BioStory';
 import BioUnivers from '@/components/a-propos-components/bio-universe/BioUnivers';
 import FooterSection from '@/components/layout/footer/FooterSection';
-import Navbar from '@/components/layout/navbar/Navbar';
+import NavbarStatic from '@/components/layout/navbar-static/NavbarStatic';
 
 export default function AProposPage() {
   return (
     <>
       <header>
-        <Navbar />
+        <NavbarStatic />
       </header>
       <main>
         <BioIntro />

@@ -1,6 +1,7 @@
 //orquestacion intro
 'use client';
 
+import { AnimationProvider } from '@/context/AnimationContext';
 import DibujoLuta from '../icons/dibujos/DibujoLuta';
 import { IntroImage } from '../intro-image/IntroImage';
 import { IntroOverlay } from '../intro-overlay/IntroOverlay';
@@ -103,7 +104,7 @@ const { props: revealProps } = getImageProps({
 
 export function HomeClient({ name, description }: HomeClientProps) {
   return (
-    <>
+    <AnimationProvider>
       <div className="relative w-full h-full">
         <IntroOverlay />
 
@@ -222,6 +223,6 @@ export function HomeClient({ name, description }: HomeClientProps) {
           <FooterSection />
         </footer>
       </div>
-    </>
+    </AnimationProvider>
   );
 }

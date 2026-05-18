@@ -1,5 +1,4 @@
 import { siteConfig } from '@/config/site';
-import { AnimationProvider } from '@/context/AnimationContext';
 import type { Metadata, Viewport } from 'next';
 import localFont from 'next/font/local';
 import '../styles/globals.css';
@@ -81,10 +80,7 @@ export default function RootLayout({
       className={`${lora.variable} ${inter.variable} ${interRegular.variable} ${interLight.variable} ${interExtraLight.variable} ${messiri.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <AnimationProvider>
-          <SmoothScrollProvider>{children}</SmoothScrollProvider>
-          {/*  <Footer /> */}
-        </AnimationProvider>
+        <SmoothScrollProvider>{children}</SmoothScrollProvider>
       </body>
     </html>
   );

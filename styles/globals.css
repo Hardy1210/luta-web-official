@@ -58,6 +58,13 @@ ol {
   list-style: none;
 }
 
+/* ── SELECCIÓN DE TEXTO ────────────────────────────────────── */
+
+::selection {
+  background-color: var(--c-neon);
+  color: var(--c-white);
+}
+
 /* ── TIPOGRAFÍA BASE ───────────────────────────────────────── */
 
 h1,

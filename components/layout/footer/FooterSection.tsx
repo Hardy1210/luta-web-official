@@ -14,8 +14,8 @@ type FooterSectionProps = {
 const navItems = [
   { label: 'ACCUEIL', href: '/' },
   { label: 'BIO', href: '/a-propos' },
-  { label: 'MUSIQUE', href: '#music' },
-  { label: 'CONTACT', href: '#contact' },
+  { label: 'MUSIQUE', href: '/#music' },
+  { label: 'CONTACT', href: '/#contact' },
 ];
 
 export default function FooterSection({

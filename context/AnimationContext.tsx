@@ -38,6 +38,7 @@ export function AnimationProvider({ children }: { children: ReactNode }) {
 
   const triggerNavbar = useCallback(() => setNavbarReady(true), []);
   const resetNavbar = useCallback(() => setNavbarReady(false), []);
+
   useEffect(() => {
     if (phase === 'complete') return;
 

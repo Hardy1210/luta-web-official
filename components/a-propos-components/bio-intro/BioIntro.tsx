@@ -16,6 +16,7 @@ export default function BioIntro() {
               src="/images/bio-section/luta.webp"
               alt="Luta assise sur les rails"
               fill
+              loading="eager"
               className={styles.photo}
               sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 40vw"
             />
