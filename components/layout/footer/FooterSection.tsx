@@ -23,10 +23,10 @@ export default function FooterSection({
   imageAlt = 'Luta avec une guitare',
   className,
 }: FooterSectionProps) {
-  const socialInstaRef = useRef<HTMLParagraphElement>(null);
-  const socialFaceRef = useRef<HTMLParagraphElement>(null);
-  const legalRef = useRef<HTMLParagraphElement>(null);
-  const mentionsRef = useRef<HTMLParagraphElement>(null);
+  const socialInstaRef = useRef<HTMLSpanElement>(null);
+  const socialFaceRef = useRef<HTMLSpanElement>(null);
+  const legalRef = useRef<HTMLSpanElement>(null);
+  const mentionsRef = useRef<HTMLSpanElement>(null);
   const creditsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -84,8 +84,10 @@ export default function FooterSection({
         <Link
           href="https://open.spotify.com/intl-fr/track/6tjF22SjD2M73DsKHQevw8?si=cbc9067aeafd4461"
           className={styles.listenLink}
+          target="_blank"
+          rel="noopener noreferrer"
         >
-          <AnimatedText as="span" aria-hidden="true">
+          <AnimatedText as="span" aria-label="Écouter la dernière chanson">
             → ÉCOUTER
           </AnimatedText>
         </Link>
@@ -104,7 +106,7 @@ export default function FooterSection({
           <span className={styles.year}>2026</span>
         </div>
 
-        <nav className={styles.nav} aria-label="Navigation principale">
+        <nav className={styles.nav} aria-label="Navigation secondaire">
           {navItems.map((item) => (
             <Link key={item.href} href={item.href}>
               <AnimatedText as="span" className={styles.navLink}>
@@ -119,32 +121,32 @@ export default function FooterSection({
             target="_blank"
             rel="noopener noreferrer"
           >
-            <p ref={socialInstaRef} className={styles.socialInsta}>
+            <span ref={socialInstaRef} className={styles.socialInsta}>
               INSTAGRAM
-            </p>
+            </span>
           </Link>
           <Link
             href="https://www.facebook.com/profile.php?id=61565333910877"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <p ref={socialFaceRef} className={styles.socialFace}>
+            <span ref={socialFaceRef} className={styles.socialFace}>
               FACEBOOK
-            </p>
+            </span>
           </Link>
         </div>
 
         <div className={styles.legal}>
-          <p ref={legalRef}>© 2026 LUTA</p>
+          <span ref={legalRef}>© 2026 LUTA</span>
           <Link href="/mentions-legales">
-            <p ref={mentionsRef} className={styles.mentionsLegales}>
+            <span ref={mentionsRef} className={styles.mentionsLegales}>
               MENTIONS LÉGALES
-            </p>
+            </span>
           </Link>
         </div>
 
         <div ref={creditsRef} className={styles.credits}>
-          <p>DESIGN &amp;</p>
+          <span>DESIGN &amp;</span>
           <a
             href="https://www.kalevs.com/"
             target="_blank"
