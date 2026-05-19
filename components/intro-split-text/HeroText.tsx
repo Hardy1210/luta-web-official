@@ -22,11 +22,17 @@ export function HeroText({
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
   const splitsRef = useRef<SplitText[]>([]);
 
-  const { phase } = useAnimation();
+  const { phase, introComplete } = useAnimation();
 
   useIsomorphicLayoutEffect(() => {
     const refs = [line1Ref, line2ARef, line2BRef];
     if (refs.some((r) => !r.current)) return;
+
+    // ✅ Si intro ya fue vista, mostrar directamente
+    if (introComplete) {
+      refs.forEach((r) => gsap.set(r.current, { opacity: 1 }));
+      return;
+    }
 
     const ctx = gsap.context(() => {
       const allChars: Element[] = [];
@@ -112,13 +118,16 @@ export function HeroText({
   }, []);
 
   useEffect(() => {
+    // Si la intro ya fue vista, el layout effect dejó los chars en su estado
+    // final y nunca creó el timeline. No hay nada que animar.
+    if (introComplete) return;
     if (phase === 'complete') {
       timelineRef.current?.progress(1, false);
       return;
     }
     if (phase !== 'heroText') return;
     timelineRef.current?.restart();
-  }, [phase]);
+  }, [phase, introComplete]);
 
   return (
     <div className={className} aria-hidden={ariaHidden}>

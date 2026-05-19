@@ -140,9 +140,9 @@ export function PoesieSection({
 
         <div className={styles.description}>
           <AnimatedText as="p" aria-hidden="true">
-            Poétique, moderne et sincère, son univers musical invite à l'écoute
-            et à l'émotion. <br /> Des chansons qui résonnent longtemps après la
-            dernière note.
+            Poétique, moderne et sincère, son univers musical invite à
+            l&apos;écoute et à l&apos;émotion. <br /> Des chansons qui résonnent
+            longtemps après la dernière note.
           </AnimatedText>
         </div>
 

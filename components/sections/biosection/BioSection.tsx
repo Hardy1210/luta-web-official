@@ -88,7 +88,7 @@ export default function BioSection({
               src={imageMobileSrc}
               alt={imageAlt}
               fill
-              sizes="100vw"
+              sizes="(max-width: 767px) 100vw, 0vw"
               className="object-cover object-top md:hidden"
               priority
             />

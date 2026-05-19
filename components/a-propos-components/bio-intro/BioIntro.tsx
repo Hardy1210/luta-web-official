@@ -13,7 +13,7 @@ export default function BioIntro() {
         <div className={styles.polaroidFrame}>
           <div className={styles.photoWrapper}>
             <Image
-              src="/images/bio-section/luta.webp"
+              src="/images/bio-section/rail-luta.webp"
               alt="Luta assise sur les rails"
               fill
               loading="eager"

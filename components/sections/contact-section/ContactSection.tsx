@@ -17,12 +17,24 @@ export default function ContactSection({
   ctaHref = 'https://open.spotify.com/intl-es/artist/7lIbxiBTO3ycZCiD0JLjWD?si=oalXqSCsQy-zpp87A7Z0Kg',
 }: ContactSectionProps) {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const titleLine1Ref = useRef<HTMLSpanElement>(null);
+  const titleLine2Ref = useRef<HTMLSpanElement>(null);
+
+  const ctaRef = useRef<HTMLAnchorElement>(null);
+
   const titleRef = AnimatedBackgroundLineText<HTMLDivElement>({
     triggerStart: 'top 90%',
   });
 
   useGSAP(
     () => {
+      if (
+        !sectionRef.current ||
+        !titleLine1Ref.current ||
+        !titleLine2Ref.current ||
+        !ctaRef.current
+      )
+        return;
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -31,46 +43,16 @@ export default function ContactSection({
         },
       });
 
-      tl.from(`.${styles.eyebrow}`, {
-        y: 14,
+      tl.from([titleLine1Ref.current, titleLine2Ref.current], {
+        yPercent: 110,
         opacity: 0,
-        duration: 0.7,
-        ease: 'power3.out',
+        duration: 0.9,
+        stagger: 0.12,
+        ease: 'power4.out',
       })
+
         .from(
-          `.${styles.titleLine}`,
-          {
-            yPercent: 110,
-            opacity: 0,
-            duration: 0.9,
-            stagger: 0.12,
-            ease: 'power4.out',
-          },
-          '-=0.25',
-        )
-        .from(
-          `.${styles.signatureSvg}`,
-          {
-            opacity: 0,
-            scale: 0.92,
-            rotate: -5,
-            duration: 1.2,
-            ease: 'power3.out',
-          },
-          '-=0.65',
-        )
-        .from(
-          `.${styles.text}`,
-          {
-            y: 18,
-            opacity: 0,
-            duration: 0.75,
-            ease: 'power3.out',
-          },
-          '-=0.45',
-        )
-        .from(
-          `.${styles.cta}`,
+          ctaRef.current,
           {
             y: 22,
             opacity: 0,
@@ -84,46 +66,54 @@ export default function ContactSection({
   );
 
   return (
-    <div className={styles.contactSection}>
+    <div ref={sectionRef} className={styles.contactSection}>
       {/* SVG real en el DOM, detrás del contenido, sin ocupar espacio  <ContactSignature className={styles.signatureSvg} />*/}
       {/**mobil */}
       <div className={styles.signatureLayer} aria-hidden="true">
         <SignatureContact size={250} />
       </div>
-      {/**descktop*/}
+      {/**desktop*/}
       <div className={styles.signatureLayer2} aria-hidden="true">
         <SignatureContact size={850} />
       </div>
 
+      {/* eyebrow gestionado por AnimatedBackgroundLineText — no tocar */}
       <h2 ref={titleRef} className={styles.eyebrow}>
         (CONTACT)
       </h2>
 
       <div className={styles.content}>
         <div
-          ref={sectionRef}
           className={styles.title}
           aria-label="Se dire. Se lier. Se rencontrer."
         >
           <span className={styles.titleMask}>
-            <span className={`${styles.titleLine} ${styles.titleLineSans}`}>
+            <span
+              ref={titleLine1Ref}
+              className={`${styles.titleLine} ${styles.titleLineSans}`}
+            >
               SE DIRE. SE LIER.
             </span>
           </span>
 
           <span className={styles.titleMask}>
-            <span className={`${styles.titleLine} ${styles.titleLineSerif}`}>
+            <span
+              ref={titleLine2Ref}
+              className={`${styles.titleLine} ${styles.titleLineSerif}`}
+            >
               SE RENCONTRER.
             </span>
           </span>
         </div>
         <div className={styles.textButtonWrapper}>
           <AnimatedText as="p" className={styles.text}>
-            Chaque message est une rencontre possible. N’hésitez pas à me
+            Chaque message est une rencontre possible. N&apos;hésitez pas à me
             contacter pour toute collaboration ou projet. Je prends le temps de
             lire et de répondre à chaque échange.
           </AnimatedText>
+
           <a
+            ref={ctaRef}
             href={ctaHref}
             className={styles.ctaButton}
             target="_blank"

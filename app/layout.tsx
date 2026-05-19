@@ -1,4 +1,5 @@
 import { siteConfig } from '@/config/site';
+import { AnimationProvider } from '@/context/AnimationContext';
 import type { Metadata, Viewport } from 'next';
 import localFont from 'next/font/local';
 import '../styles/globals.css';
@@ -120,7 +121,9 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
         />
-        <SmoothScrollProvider>{children}</SmoothScrollProvider>
+        <AnimationProvider>
+          <SmoothScrollProvider>{children}</SmoothScrollProvider>
+        </AnimationProvider>
       </body>
     </html>
   );

@@ -24,6 +24,14 @@ export function useIntroOrchestration({
     const container = containerRef.current;
     const images = imageRefs.current;
     if (!container || !images?.length) return;
+    // ✅ Solo resetear si la intro no ha sido vista
+    if (introComplete) {
+      // ✅ Mostrar imagen en posición final directamente
+      gsap.set(container.parentElement, { opacity: 1 });
+      gsap.set(container, { y: 0, scale: 1 });
+      gsap.set(images, { scale: 1, opacity: 1 });
+      return;
+    }
 
     // Reset phase and navbarReady on every mount. AnimationProvider persists
     // across client-side navigations, so both can be stale when the user
@@ -43,6 +51,7 @@ export function useIntroOrchestration({
     const container = containerRef.current;
     const images = imageRefs.current;
     if (!container || !images?.length) return;
+    if (introComplete) return; // ✅ no arrancar si ya se vio
 
     let ctx: gsap.Context | undefined;
 

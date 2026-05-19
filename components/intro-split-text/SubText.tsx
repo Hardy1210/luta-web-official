@@ -20,10 +20,16 @@ export function SubText({
   const splitRef = useRef<SplitText | null>(null);
   const clipsRef = useRef<HTMLDivElement[]>([]);
 
-  const { phase } = useAnimation();
+  const { phase, introComplete } = useAnimation();
 
   useIsomorphicLayoutEffect(() => {
     if (!ref.current) return;
+
+    // ✅ Si intro ya fue vista, mostrar directamente
+    if (introComplete) {
+      gsap.set(ref.current, { opacity: 1 });
+      return;
+    }
 
     const ctx = gsap.context(() => {
       splitRef.current = new SplitText(ref.current!, {
@@ -73,13 +79,14 @@ export function SubText({
   }, []);
 
   useEffect(() => {
+    if (introComplete) return;
     if (phase === 'complete') {
       timelineRef.current?.progress(1, false);
       return;
     }
     if (phase !== 'subText') return;
     timelineRef.current?.restart();
-  }, [phase]);
+  }, [phase, introComplete]);
 
   return (
     <p

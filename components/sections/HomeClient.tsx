@@ -1,7 +1,6 @@
 //orquestacion intro
 'use client';
 
-import { AnimationProvider } from '@/context/AnimationContext';
 import DibujoLuta from '../icons/dibujos/DibujoLuta';
 import { IntroImage } from '../intro-image/IntroImage';
 import { IntroOverlay } from '../intro-overlay/IntroOverlay';
@@ -104,134 +103,129 @@ const { props: revealProps } = getImageProps({
 
 export function HomeClient({ name, description }: HomeClientProps) {
   return (
-    <AnimationProvider>
-      <div className="relative w-full h-full">
-        <IntroOverlay />
+    <div className="relative w-full h-full">
+      <IntroOverlay />
 
-        <header>
-          <Navbar />
-        </header>
+      <header>
+        <Navbar />
+      </header>
 
-        <main className="">
-          <section id="hero" className=" h-186 sm:h-screen">
-            <div className="w-full h-full">
-              <div className="relative w-full h-full flex flex-col items-center justify-center ">
-                {/* contenedor en full */}
-                <div className="h-full w-full flex flex-col  justify-center items-center">
-                  <h1 className="sr-only">Luta Musique</h1>
-                  {/**primer bloque para col */}
-                  <div className="relative w-full flex-1">
-                    <div
-                      className="absolute inset-0 m-auto translate-y-55 w-[clamp(270px,23.5vw,350px)] pointer-events-none hidden sm:block"
-                      style={{ zIndex: 'var(--z-dibujo)' }}
-                    >
-                      <DibujoLuta
-                        className="absolute -left-17 -top-13 "
-                        duration={2}
-                        stroke="currentColor"
-                      />
-                    </div>
-                    {/* Marco absoluto centrado */}
-                    <div className="absolute inset-0 m-auto translate-y-55 w-[clamp(270px,23.5vw,350px)] pointer-events-none hidden sm:block">
-                      <SubText
-                        className="absolute left-full top-1/2 ml-[35px] -translate-y-48 "
-                        aria-hidden="true"
-                      />
-                    </div>
-
-                    {/* IntroImage queda libre con su clase original */}
-                    <IntroImage
-                      className="absolute inset-0 m-auto translate-y-15 sm:translate-y-55"
-                      hoverSrc={revealProps.src}
-                      brushSize={0.65}
-                      trailDecay={2.5}
-                      smoothness={0.95}
+      <main className="">
+        <section id="hero" className=" h-186 sm:h-screen">
+          <div className="w-full h-full">
+            <div className="relative w-full h-full flex flex-col items-center justify-center ">
+              {/* contenedor en full */}
+              <div className="h-full w-full flex flex-col  justify-center items-center">
+                <h1 className="sr-only">Luta Musique</h1>
+                {/**primer bloque para col */}
+                <div className="relative w-full flex-1">
+                  <div
+                    className="absolute inset-0 m-auto translate-y-55 w-[clamp(270px,23.5vw,350px)] pointer-events-none hidden sm:block"
+                    style={{ zIndex: 'var(--z-dibujo)' }}
+                  >
+                    <DibujoLuta
+                      className="absolute -left-17 -top-13 "
+                      duration={2}
+                      stroke="currentColor"
                     />
                   </div>
-                  {/**segundo bloque para el col */}
-                  <HeroText
-                    className="text-center flex-1 hidden sm:block pt-40"
-                    aria-hidden="true"
-                  />
-                  <HeroText
-                    className="text-center   pb-3 sm:hidden"
-                    aria-hidden="true"
+                  {/* Marco absoluto centrado */}
+                  <div className="absolute inset-0 m-auto translate-y-55 w-[clamp(270px,23.5vw,350px)] pointer-events-none hidden sm:block">
+                    <SubText
+                      className="absolute left-full top-1/2 ml-[35px] -translate-y-48 "
+                      aria-hidden="true"
+                    />
+                  </div>
+
+                  {/* IntroImage queda libre con su clase original */}
+                  <IntroImage
+                    className="absolute inset-0 m-auto translate-y-15 sm:translate-y-55"
+                    hoverSrc={revealProps.src}
+                    brushSize={0.65}
+                    trailDecay={2.5}
+                    smoothness={0.95}
                   />
                 </div>
+                {/**segundo bloque para el col */}
+                <HeroText
+                  className="text-center flex-1 hidden sm:block pt-40"
+                  aria-hidden="true"
+                />
+                <HeroText
+                  className="text-center   pb-3 sm:hidden"
+                  aria-hidden="true"
+                />
               </div>
             </div>
-          </section>
-          <section id="bio">
-            <TextScrollAnimation eyebrow="(BIO)" lines={defaultLines} />
-            {/* SVG Camino para movil */}
-            <div className="flex w-full h-10 justify-center  sm:hidden">
-              <Camino size={100} className="-mt-20" />
-            </div>
-          </section>
+          </div>
+        </section>
+        <section id="bio">
+          <TextScrollAnimation eyebrow="(BIO)" lines={defaultLines} />
+          {/* SVG Camino para movil */}
+          <div className="flex w-full h-10 justify-center  sm:hidden">
+            <Camino size={100} className="-mt-20" />
+          </div>
+        </section>
 
-          <section>
-            <BioSection
-              imageSrc="/images/lu-gui.webp"
-              imageMobileSrc="/images/lu-gui.webp"
-              imageAlt="Luta en concert"
+        <section>
+          <BioSection
+            imageSrc="/images/lu-gui.webp"
+            imageMobileSrc="/images/lu-gui.webp"
+            imageAlt="Luta en concert"
+          />
+        </section>
+        <section>
+          <ImageExpand />
+          {/* SVG  para movil */}
+          <div className="relative flex w-full h-24 justify  sm:hidden">
+            <Nota
+              size={70}
+              className="absolute left-1/2 -translate-x-1/2 mt-20"
             />
-          </section>
-          <section>
-            <ImageExpand />
-            {/* SVG  para movil */}
-            <div className="relative flex w-full h-24 justify  sm:hidden">
-              <Nota
-                size={70}
-                className="absolute left-1/2 -translate-x-1/2 mt-20"
-              />
-            </div>
-          </section>
-          <section id="music" className="relative">
-            <TextScrollAnimation
-              eyebrow="(MUSIQUE)"
-              lines={defaultSecondLines}
-            />
-          </section>
+          </div>
+        </section>
+        <section id="music" className="relative">
+          <TextScrollAnimation eyebrow="(MUSIQUE)" lines={defaultSecondLines} />
+        </section>
 
-          <section>
-            <VinylScrollWrapper />
-          </section>
-          <section className="w-full py-10 md:py-50 flex justify-center items-center px-(--container-pad)">
-            <div className="flex-1 min-w-40 max-w-240">
-              <SpotifyCollectionEmbed artistId="7lIbxiBTO3ycZCiD0JLjWD" />
-            </div>
-          </section>
-          <section>
-            <PoesieSection
-              mainImage={{
-                src: '/images/poesie-section/main-image.webp',
-                alt: 'Main image',
-              }}
-              floatImageTop={{
-                src: '/images/vinyl/v3.webp',
-                alt: 'Top image',
-              }}
-              floatImageBottom={{
-                src: '/images/vinyl/v4.webp',
-                alt: 'Bottom image',
-              }}
+        <section>
+          <VinylScrollWrapper />
+        </section>
+        <section className="w-full py-10 md:py-50 flex justify-center items-center px-(--container-pad)">
+          <div className="flex-1 min-w-40 max-w-240">
+            <SpotifyCollectionEmbed artistId="7lIbxiBTO3ycZCiD0JLjWD" />
+          </div>
+        </section>
+        <section>
+          <PoesieSection
+            mainImage={{
+              src: '/images/poesie-section/main-image.webp',
+              alt: 'Main image',
+            }}
+            floatImageTop={{
+              src: '/images/vinyl/v3.webp',
+              alt: 'Top image',
+            }}
+            floatImageBottom={{
+              src: '/images/vinyl/v4.webp',
+              alt: 'Bottom image',
+            }}
+          />
+          {/** SVG para movil */}
+          <div className="relative flex w-full h-24 justify  sm:hidden">
+            <Camino
+              size={100}
+              className="absolute left-1/2 -translate-x-1/2 mt-20"
             />
-            {/** SVG para movil */}
-            <div className="relative flex w-full h-24 justify  sm:hidden">
-              <Camino
-                size={100}
-                className="absolute left-1/2 -translate-x-1/2 mt-20"
-              />
-            </div>
-          </section>
-          <section id="contact">
-            <ContactSection />
-          </section>
-        </main>
-        <footer>
-          <FooterSection />
-        </footer>
-      </div>
-    </AnimationProvider>
+          </div>
+        </section>
+        <section id="contact">
+          <ContactSection />
+        </section>
+      </main>
+      <footer>
+        <FooterSection />
+      </footer>
+    </div>
   );
 }

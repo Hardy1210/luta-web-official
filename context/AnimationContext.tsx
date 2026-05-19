@@ -33,7 +33,20 @@ interface AnimationContextType {
 const AnimationContext = createContext<AnimationContextType | null>(null);
 
 export function AnimationProvider({ children }: { children: ReactNode }) {
-  const [phase, setPhase] = useState<AnimationPhase>('idle');
+  // Inicialización lazy: leemos sessionStorage de forma síncrona en el primer
+  // render del cliente para que `introComplete` sea correcto desde el primer
+  // commit. Si esperáramos a un layout effect, los hijos verían `phase==='idle'`
+  // y dispararían sus animaciones antes de que se corrija el estado.
+  const [phase, setPhase] = useState<AnimationPhase>(() => {
+    if (typeof window === 'undefined') return 'idle';
+
+    const stored = sessionStorage.getItem('introPlayed');
+    const EXPIRY_MS = 30 * 1000; // 30 segundos
+
+    const seen = stored && Date.now() - parseInt(stored) < EXPIRY_MS;
+    return seen ? 'complete' : 'idle';
+    // ❌ eliminado: sessionStorage.setItem aquí — causaba el bug
+  });
   const [navbarReady, setNavbarReady] = useState(false);
 
   const triggerNavbar = useCallback(() => setNavbarReady(true), []);
@@ -41,6 +54,7 @@ export function AnimationProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (phase === 'complete') return;
+    sessionStorage.setItem('introPlayed', Date.now().toString());
 
     const stopScroll = (e: Event) => e.preventDefault();
     const stopKeyScroll = (e: KeyboardEvent) => {

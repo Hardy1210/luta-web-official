@@ -94,11 +94,15 @@ export function AnimatedText({
       clipsRef.current = [];
       ctx.revert();
     };
-  }, []);
+  }, [duration, stagger, ease, delay, markers]);
 
   return (
-    // @ts-expect-error — Tag dinámico con ref genérico
-    <Tag ref={ref} className={`${styles.root} ${className ?? ''}`} aria-hidden={ariaHidden}>
+    <Tag
+      // @ts-expect-error — Tag dinámico con ref genérico
+      ref={ref}
+      className={`${styles.root} ${className ?? ''}`}
+      aria-hidden={ariaHidden}
+    >
       {children}
     </Tag>
   );

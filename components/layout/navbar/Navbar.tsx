@@ -63,7 +63,7 @@ function LogoMark() {
 }
 
 export default function Navbar() {
-  const { navbarReady } = useAnimation();
+  const { navbarReady, introComplete } = useAnimation();
   //CONDICIONAMOS LA ANIMACION DE NAVBAR SOLO PARA LA HOME
   const pathname = usePathname();
   const isHome = pathname === '/';
@@ -72,11 +72,27 @@ export default function Navbar() {
   const logoRef = useRef<HTMLDivElement>(null);
   const linksRef = useRef<(HTMLAnchorElement | null)[]>([]);
   const socialIconsRef = useRef<(HTMLAnchorElement | null)[]>([]);
+  // Evita que la timeline corra dos veces si navbarReady cambia varias veces
+  // (p. ej. por resetNavbar en un remount) — la intro siempre se ejecuta una
+  // sola vez por sesión y este guard protege contra reanimaciones espurias.
+  const animatedRef = useRef(false);
 
   // ─── Ocultar ANTES del paint — evita flash del navbar ────────
   useIsomorphicLayoutEffect(() => {
     //si no estamos en home, no hacemos nada de animacion
     if (!isHome) return;
+    // ✅ Si intro ya fue vista, mostrar directamente
+    if (introComplete) {
+      gsap.set(
+        [
+          logoRef.current,
+          ...linksRef.current.filter(Boolean),
+          ...socialIconsRef.current.filter(Boolean),
+        ],
+        { opacity: 1 },
+      );
+      return;
+    }
     gsap.set(
       [
         logoRef.current,
@@ -88,7 +104,11 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
-    if (!isHome || !navbarReady) return;
+    if (!isHome) return;
+    if (introComplete) return; // ya visible, layout effect dejó opacity:1
+    if (!navbarReady) return;
+    if (animatedRef.current) return;
+    animatedRef.current = true;
     const links = linksRef.current.filter(Boolean);
     const socialIcons = socialIconsRef.current.filter(Boolean);
     const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
@@ -157,7 +177,7 @@ export default function Navbar() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label={label}
-            style={isHome ? { opacity: 0 } : undefined}
+            style={{ opacity: 0 }}
           >
             {icon}
           </a>
