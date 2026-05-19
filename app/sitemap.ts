@@ -1,5 +1,5 @@
-import type { MetadataRoute } from 'next'
-import { siteConfig } from '@/config/site'
+import { siteConfig } from '@/config/site';
+import type { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
@@ -16,10 +16,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
-      url: `${siteConfig.url}/contact`,
+      url: `${siteConfig.url}/mentions-legales`,
       lastModified: new Date(),
       changeFrequency: 'yearly',
       priority: 0.5,
     },
-  ]
+    // {
+    //   url: `${siteConfig.url}/contact`,
+    //   lastModified: new Date(),
+    //   changeFrequency: 'yearly',
+    //   priority: 0.5,
+    // },
+  ];
 }

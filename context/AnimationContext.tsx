@@ -44,7 +44,17 @@ export function AnimationProvider({ children }: { children: ReactNode }) {
 
     const stopScroll = (e: Event) => e.preventDefault();
     const stopKeyScroll = (e: KeyboardEvent) => {
-      if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' '].includes(e.key))
+      if (
+        [
+          'ArrowUp',
+          'ArrowDown',
+          'PageUp',
+          'PageDown',
+          'Home',
+          'End',
+          ' ',
+        ].includes(e.key)
+      )
         e.preventDefault();
     };
 

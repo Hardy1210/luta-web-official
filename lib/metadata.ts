@@ -1,14 +1,14 @@
-import type { Metadata } from 'next'
-import type { PageSeoProps } from '@/types/seo'
-import { siteConfig } from '@/config/site'
+import { siteConfig } from '@/config/site';
+import type { PageSeoProps } from '@/types/seo';
+import type { Metadata } from 'next';
 
 export function generateMetadata(page: PageSeoProps): Metadata {
   const canonicalUrl = page.slug
     ? `${siteConfig.url}/${page.slug}`
-    : siteConfig.url
+    : siteConfig.url;
 
-  const ogImage = page.ogImage ?? siteConfig.ogImage
-  const titleFormatted = `${page.title} | ${siteConfig.name}`
+  const ogImage = page.ogImage ?? siteConfig.ogImage;
+  const titleFormatted = `${page.title} | ${siteConfig.name}`;
 
   return {
     metadataBase: new URL(siteConfig.url),
@@ -26,16 +26,10 @@ export function generateMetadata(page: PageSeoProps): Metadata {
       locale: siteConfig.locale,
       type: 'website',
     },
-    twitter: {
-      card: 'summary_large_image',
-      title: titleFormatted,
-      description: page.description,
-      creator: siteConfig.social.twitter,
-      images: [ogImage],
-    },
+
     robots: {
       index: true,
       follow: true,
     },
-  }
+  };
 }
