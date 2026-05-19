@@ -20,6 +20,7 @@ interface AnimatedTextProps {
   children: React.ReactNode;
   as?: AnimatedTextTag;
   className?: string;
+  'aria-hidden'?: boolean | 'true' | 'false';
   /** Duración por línea en segundos. Default: 0.85 */
   duration?: number;
   /** Delay entre líneas. Default: 0.12 */
@@ -36,6 +37,7 @@ export function AnimatedText({
   children,
   as: Tag = 'p',
   className,
+  'aria-hidden': ariaHidden,
   duration = 0.85,
   stagger = 0.12,
   ease = 'power3.out',
@@ -96,7 +98,7 @@ export function AnimatedText({
 
   return (
     // @ts-expect-error — Tag dinámico con ref genérico
-    <Tag ref={ref} className={`${styles.root} ${className ?? ''}`}>
+    <Tag ref={ref} className={`${styles.root} ${className ?? ''}`} aria-hidden={ariaHidden}>
       {children}
     </Tag>
   );

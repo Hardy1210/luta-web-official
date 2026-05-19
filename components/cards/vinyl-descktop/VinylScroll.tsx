@@ -28,7 +28,7 @@ const CARDS: CardData[] = [
     imageSrc: '/images/vinyl/v1.webp',
     imageAlt: "Pochette d'album Luta ",
     spotifyTrackId: '6XuDnTULzjbbbGHgxXS4dD',
-    spotifyTrackTitle: '',
+    spotifyTrackTitle: 'Âme égarée',
   },
   {
     id: 2,
@@ -39,7 +39,7 @@ const CARDS: CardData[] = [
     imageSrc: '/images/vinyl/v2.webp',
     imageAlt: "Pochette d'album Luta",
     spotifyTrackId: '2dXlZsGlpvzQpJp12o9gaE',
-    spotifyTrackTitle: '',
+    spotifyTrackTitle: 'Aucun regret',
   },
   {
     id: 3,
@@ -50,7 +50,7 @@ const CARDS: CardData[] = [
     imageSrc: '/images/vinyl/v3.webp',
     imageAlt: "Pochette d'album Luta ",
     spotifyTrackId: '5tDemIejMRJJSoX6yTMhQw',
-    spotifyTrackTitle: '',
+    spotifyTrackTitle: "Someone I still don't know",
   },
   {
     id: 4,
@@ -61,7 +61,7 @@ const CARDS: CardData[] = [
     imageSrc: '/images/vinyl/v4.webp',
     imageAlt: "Pochette d'album Luta",
     spotifyTrackId: '4KQIScQE4h0NliE0l2b2QV',
-    spotifyTrackTitle: '',
+    spotifyTrackTitle: 'Passager à bord',
   },
   {
     id: 5,
@@ -72,7 +72,7 @@ const CARDS: CardData[] = [
     imageSrc: '/images/vinyl/v5.webp',
     imageAlt: "Pochette d'album Luta",
     spotifyTrackId: '6tjF22SjD2M73DsKHQevw8',
-    spotifyTrackTitle: '',
+    spotifyTrackTitle: 'Larme en plein coeur',
   },
 ];
 
@@ -260,6 +260,7 @@ export default function VinylScroll() {
                 boxRefs.current[i] = el;
               }}
               className={styles.boxMusic}
+              role="group"
               aria-label={`Écouter : ${card.spotifyTrackTitle}`}
             >
               <p className={styles.boxLabel} aria-hidden="true">
@@ -289,6 +290,7 @@ export default function VinylScroll() {
               <li key={card.id} className={styles.progressItem}>
                 <span
                   className={styles.progressDot}
+                  role="img"
                   aria-label={`${card.albumTitle} – ${card.artist}`}
                   data-index={i}
                 />

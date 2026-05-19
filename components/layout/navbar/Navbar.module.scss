@@ -34,6 +34,8 @@
   letter-spacing: 0.1em;
   color: var(--c-white);
   transition: opacity 0.2s ease;
+  padding: 0.5rem 0.25rem;
+  margin: -0.5rem -0.25rem;
 
   &:hover {
     opacity: 0.5;

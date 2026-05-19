@@ -8,9 +8,13 @@ import styles from './HeroText.module.scss';
 
 interface HeroTextProps {
   className?: string;
+  'aria-hidden'?: boolean | 'true' | 'false';
 }
 
-export function HeroText({ className }: HeroTextProps) {
+export function HeroText({
+  className,
+  'aria-hidden': ariaHidden,
+}: HeroTextProps) {
   const line1Ref = useRef<HTMLSpanElement>(null);
   const line2ARef = useRef<HTMLSpanElement>(null);
   const line2BRef = useRef<HTMLSpanElement>(null);
@@ -117,7 +121,7 @@ export function HeroText({ className }: HeroTextProps) {
   }, [phase]);
 
   return (
-    <div className={className}>
+    <div className={className} aria-hidden={ariaHidden}>
       <span
         ref={line1Ref}
         className={`${styles.text} font-display`}

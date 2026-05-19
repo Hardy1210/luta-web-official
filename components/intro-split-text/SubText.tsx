@@ -8,9 +8,13 @@ import styles from './SubText.module.scss';
 
 interface SubTextProps {
   className?: string;
+  'aria-hidden'?: boolean | 'true' | 'false';
 }
 
-export function SubText({ className }: SubTextProps) {
+export function SubText({
+  className,
+  'aria-hidden': ariaHidden,
+}: SubTextProps) {
   const ref = useRef<HTMLParagraphElement>(null);
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
   const splitRef = useRef<SplitText | null>(null);
@@ -78,7 +82,11 @@ export function SubText({ className }: SubTextProps) {
   }, [phase]);
 
   return (
-    <p ref={ref} className={`${styles.text} ${className}`}>
+    <p
+      ref={ref}
+      className={`${styles.text} ${className}`}
+      aria-hidden={ariaHidden}
+    >
       Mon dernier single est disponible je vous invite à l écouter, une chanson
       qui marque le début d un nouveau cycle. Une chanson récente, tout
       simplement.

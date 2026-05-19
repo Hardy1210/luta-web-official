@@ -46,6 +46,7 @@ export function IntroImage({
               alt={img.alt}
               fill
               priority={i === 0}
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
               style={{ objectFit: 'cover' }}
             />
           </div>

@@ -133,7 +133,10 @@ export function HomeClient({ name, description }: HomeClientProps) {
                     </div>
                     {/* Marco absoluto centrado */}
                     <div className="absolute inset-0 m-auto translate-y-55 w-[clamp(270px,23.5vw,350px)] pointer-events-none hidden sm:block">
-                      <SubText className="absolute left-full top-1/2 ml-[35px] -translate-y-48 " />
+                      <SubText
+                        className="absolute left-full top-1/2 ml-[35px] -translate-y-48 "
+                        aria-hidden="true"
+                      />
                     </div>
 
                     {/* IntroImage queda libre con su clase original */}
@@ -146,8 +149,14 @@ export function HomeClient({ name, description }: HomeClientProps) {
                     />
                   </div>
                   {/**segundo bloque para el col */}
-                  <HeroText className="text-center  flex-1 hidden sm:block pt-40" />
-                  <HeroText className="text-center   pb-3 sm:hidden" />
+                  <HeroText
+                    className="text-center flex-1 hidden sm:block pt-40"
+                    aria-hidden="true"
+                  />
+                  <HeroText
+                    className="text-center   pb-3 sm:hidden"
+                    aria-hidden="true"
+                  />
                 </div>
               </div>
             </div>

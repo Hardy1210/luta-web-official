@@ -137,7 +137,9 @@ export default function FooterSection({
         </div>
 
         <div className={styles.legal}>
-          <span ref={legalRef}>© 2026 LUTA</span>
+          <span ref={legalRef} aria-label="Copyright">
+            © 2026 LUTA
+          </span>
           <Link href="/mentions-legales">
             <span ref={mentionsRef} className={styles.mentionsLegales}>
               MENTIONS LÉGALES
